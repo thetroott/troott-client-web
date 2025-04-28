@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'PlayfairDisplay-Regular';
+    src: url('static/PlayfairDisplay-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-Medium';
+    src: url('static/PlayfairDisplay-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-SemiBold';
+    src: url('static/PlayfairDisplay-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-Bold';
+    src: url('static/PlayfairDisplay-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-ExtraBold';
+    src: url('static/PlayfairDisplay-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-Black';
+    src: url('static/PlayfairDisplay-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-Italic';
+    src: url('static/PlayfairDisplay-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-MediumItalic';
+    src: url('static/PlayfairDisplay-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-SemiBoldItalic';
+    src: url('static/PlayfairDisplay-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-BoldItalic';
+    src: url('static/PlayfairDisplay-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-ExtraBoldItalic';
+    src: url('static/PlayfairDisplay-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PlayfairDisplay-BlackItalic';
+    src: url('static/PlayfairDisplay-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Utility classes for using Playfair Display fonts */
+.font-playfairdisplay, .font-playfairdisplay a, .font-playfairdisplay span {
+    font-family: 'PlayfairDisplay-Regular';
+}
+
+.font-playfairdisplay-medium, .font-playfairdisplay-medium a, .font-playfairdisplay-medium span {
+    font-family: 'PlayfairDisplay-Medium';
+}
+
+.font-playfairdisplay-semibold, .font-playfairdisplay-semibold a, .font-playfairdisplay-semibold span {
+    font-family: 'PlayfairDisplay-SemiBold';
+}
+
+.font-playfairdisplay-bold, .font-playfairdisplay-bold a, .font-playfairdisplay-bold span {
+    font-family: 'PlayfairDisplay-Bold';
+}
+
+.font-playfairdisplay-extrabold, .font-playfairdisplay-extrabold a, .font-playfairdisplay-extrabold span {
+    font-family: 'PlayfairDisplay-ExtraBold';
+}
+
+.font-playfairdisplay-black, .font-playfairdisplay-black a, .font-playfairdisplay-black span {
+    font-family: 'PlayfairDisplay-Black';
+}
+
+.font-playfairdisplay-italic, .font-playfairdisplay-italic a, .font-playfairdisplay-italic span {
+    font-family: 'PlayfairDisplay-Italic';
+}
+
+.font-playfairdisplay-mediumitalic, .font-playfairdisplay-mediumitalic a, .font-playfairdisplay-mediumitalic span {
+    font-family: 'PlayfairDisplay-MediumItalic';
+}
+
+.font-playfairdisplay-semibolditalic, .font-playfairdisplay-semibolditalic a, .font-playfairdisplay-semibolditalic span {
+    font-family: 'PlayfairDisplay-SemiBoldItalic';
+}
+
+.font-playfairdisplay-bolditalic, .font-playfairdisplay-bolditalic a, .font-playfairdisplay-bolditalic span {
+    font-family: 'PlayfairDisplay-BoldItalic';
+}
+
+.font-playfairdisplay-extrabolditalic, .font-playfairdisplay-extrabolditalic a, .font-playfairdisplay-extrabolditalic span {
+    font-family: 'PlayfairDisplay-ExtraBoldItalic';
+}
+
+.font-playfairdisplay-blackitalic, .font-playfairdisplay-blackitalic a, .font-playfairdisplay-blackitalic span {
+    font-family: 'PlayfairDisplay-BlackItalic';
+}

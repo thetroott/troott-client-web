@@ -1,0 +1,132 @@
+@font-face {
+    font-family: 'DMSans-Bold';
+    src: url('DMSans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-BlackItalic';
+    src: url('DMSans-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-Thin';
+    src: url('DMSans-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-BoldItalic';
+    src: url('DMSans-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-ThinItalic';
+    src: url('DMSans-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-Light';
+    src: url('DMSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-LightItalic';
+    src: url('DMSans-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-Black';
+    src: url('DMSans-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-Medium';
+    src: url('DMSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-MediumItalic';
+    src: url('DMSans-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-RegularItalic';
+    src: url('DMSans-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans-Regular';
+    src: url('DMSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.font-dmsans-bold, .font-dmsans-bold a, .font-dmsans-bold span {
+    font-family: 'DMSans-Bold';
+}
+.font-dmsans-blacki, .font-dmsans-blacki a, .font-dmsans-blacki span {
+    font-family: 'DMSans-BlackItalic';
+}
+.font-dmsans-thin, .font-dmsans-thin a, .font-dmsans-thin span {
+    font-family: 'DMSans-Thin';
+}
+.font-dmsans-boldi, .font-dmsans-boldi a, .font-dmsans-boldi span {
+    font-family: 'DMSans-BoldItalic';
+}
+.font-dmsans-thini, .font-dmsans-thini a, .font-dmsans-thini span {
+    font-family: 'DMSans-ThinItalic';
+}
+.font-dmsans-light, .font-dmsans-light a, .font-dmsans-light span {
+    font-family: 'DMSans-Light';
+}
+.font-dmsans-lighti, .font-dmsans-lighti a, .font-dmsans-lighti span {
+    font-family: 'DMSans-LightItalic';
+}
+.font-dmsans-black, .font-dmsans-black a, .font-dmsans-black span {
+    font-family: 'DMSans-Black';
+}
+.font-dmsans-medium, .font-dmsans-medium a, .font-dmsans-medium span {
+    font-family: 'DMSans-Medium';
+}
+.font-dmsans-mediumi, .font-dmsans-mediumi a, .font-dmsans-mediumi span {
+    font-family: 'DMSans-MediumItalic';
+}
+.font-dmsans, .font-dmsans a, .font-dmsans span {
+    font-family: 'DMSans-Regular';
+}
+.font-dmsansi, .font-dmsansi a, .font-dmsansi span {
+    font-family: 'DMSans-RegularItalic';
+}

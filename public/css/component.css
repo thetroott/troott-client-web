@@ -1,0 +1,65 @@
+
+/* TextArea Styles */
+.form-group {
+    margin-bottom: 1rem;
+    position: relative;
+    width: 100%;
+  }
+  
+  .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical; /* Let users resize vertically only */
+  }
+  
+  .form-control:focus {
+    border-color: #1d79ff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(29, 121, 255, 0.25);
+  }
+  
+  /* Focused Style if showFocus class applied manually */
+  .focused {
+    border-color: #1d79ff;
+    box-shadow: 0 0 0 0.2rem rgba(29, 121, 255, 0.25);
+  }
+  
+  /* Error State */
+  .input-error {
+    border-color: #dc3545; /* Bootstrap danger color */
+    background-color: #f8d7da;
+  }
+  
+  .text-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+  }
+  
+  /* Padding if hasIcon */
+  .pdl2 {
+    padding-left: 2rem;
+  }
+  
+  .pdl3 {
+    padding-left: 3rem;
+  }
+  
+  /* Icon inside input */
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #adb5bd;
+    pointer-events: none;
+  }

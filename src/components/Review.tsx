@@ -4,7 +4,7 @@ const Review = (props: IReview) => {
   const { children } = props;
 
   return (
-    <div className="review-page-container">
+    <div >
       <div className="review-content">{children}</div>
     </div>
   );

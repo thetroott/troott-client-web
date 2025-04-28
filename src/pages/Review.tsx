@@ -1,4 +1,5 @@
 import TextArea from "../components/input/TextAreaInput";
+import TextInput from "../components/input/TextInput";
 import Review from "../components/Review";
 
 
@@ -6,8 +7,9 @@ const Preview = () => {
   
 
   return (
-    <Review>
-        <TextArea
+    <div  className="review-page-container">
+    
+        {/* <TextArea
           placeholder="Review"
           name="review"
           id="review"
@@ -20,8 +22,26 @@ const Preview = () => {
           onChange={(e) => {
             console.log(e.target.value);
           }}
+        /> */}
+
+        <TextInput
+        type="email"
+        placeholder="Email"
+        name="email"
+        id="email"
+        hasIcon={true}
+        icon="mail"
+        defaultValue=""
+        className="form-control"
+        showFocus={true}
+        onChange={(e) => {
+          console.log(e.target.value);
+        }}
+        
         />
-    </Review>
+
+    </div>
+    
   );
 };
 

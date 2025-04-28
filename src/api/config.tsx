@@ -1,5 +1,20 @@
 import axios from "axios";
 import storage from "../utils/storage.util";
+import Auth from "./Auth";
+import Bite from "./bite";
+import Catalog from "./catalog";
+import Email from "./email";
+import Feed from "./feed";
+import Invitation from "./invitation";
+import Library from "./library";
+import Notification from "./notification";
+import Playlist from "./playlist";
+import Preacher from "./preacher";
+import Search from "./search";
+import Sermon from "./sermon";
+import Staff from "./staff";
+import Subscription from "./subscription";
+import User from "./user";
 
 const BaseURL = process.env.REACT_TROOTT_API_URL as string;
 

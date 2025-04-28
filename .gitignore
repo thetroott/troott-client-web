@@ -2,6 +2,13 @@
 
 # dependencies
 /node_modules
+.env
+.trunk
+.txt
+*/.txt
+/.txt
+*.txt
+*/.txt
 /.pnp
 .pnp.js
 

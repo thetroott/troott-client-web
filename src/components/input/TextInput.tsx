@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import {  useEffect } from "react";
 import { ITextInput } from "../../utils/interface.util";
 
 const TextInput = (props: ITextInput) => {

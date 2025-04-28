@@ -14,6 +14,10 @@ export interface IStorage {
     multiRemove(keys: string[]): Promise<void>;
 }
 
+export interface IReview {
+    children: React.ReactNode;
+}
+
 export interface ITitle {
     text: string,
     size?: string,
@@ -40,6 +44,7 @@ export interface ITextInput{
     autoComplete?: boolean
     onChange(e: ChangeEvent<HTMLInputElement>): void
 }
+
 
 export interface IPasswordInput{
     ref?: RefObject<HTMLInputElement>
@@ -70,6 +75,45 @@ export interface IRadioInput{
     phoneNumber?: string;
     onChange(e: ChangeEvent<HTMLInputElement>): void
 }
+export interface ISelectInput{
+    name: string
+    options?: {
+        label: string,
+        value: string
+    } []
+    defaultValue?: string
+    className?: string
+    id?: string
+    onChange(e: ChangeEvent<HTMLInputElement>): void    
+}
+export interface ITextArea {
+    ref?: RefObject<HTMLTextAreaElement>;
+    value?: string;
+    defaultValue?: string;
+    onChange(e: ChangeEvent<HTMLTextAreaElement>): void;
+  
+    placeholder?: string;
+    name?: string;
+    id?: string;
+  
+    rows?: number;
+    autoComplete?: boolean;
+    readOnly?: boolean;
+    disabled?: boolean;
+    hasIcon?: boolean;
+    icon?: string;
+  
+    showFocus?: boolean;
+    className?: string;
+  
+    error?: boolean;
+    errorMessage?: string;
+    
+    ariaLabel?: string;
+    minLength?: number;
+    maxLength?: number;
+  }
+  
 
 export interface IButton{
     text: string

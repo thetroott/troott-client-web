@@ -1,6 +1,6 @@
 import axios from "axios";
 import storage from "../utils/storage.util";
-import Auth from "./Auth";
+import Auth from "./auth";
 import Bite from "./bite";
 import Catalog from "./catalog";
 import Email from "./email";

@@ -62,7 +62,7 @@ export interface IPasswordInput {
   showFocus?: boolean;
   className?: string;
   defaultValue?: string;
-  readonly?: boolean;
+  readOnly?: boolean;
   id?: string;
   hasIcon?: boolean;
   icon?: string;
@@ -70,6 +70,19 @@ export interface IPasswordInput {
   placeholder?: string;
   autoComplete?: boolean;
   onChange(e: ChangeEvent<HTMLInputElement>): void;
+  error?: boolean;
+  helperText?: string;
+  autoFocus?: boolean;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  borderRadius?: string;
+  value?: string;
+  label?: string;
+  style?: React.CSSProperties;
+  textColor?: string;   
+  fontSize?: string;
+  borderColor?: string;
 }
 
 export interface IRadioInput {

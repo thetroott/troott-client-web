@@ -17,7 +17,6 @@ const TextInput = (props: ITextInput) => {
     readOnly = false,
     error = false,
     helperText = "",
-    value,
     color = "primary",
     onBlur,
     onFocus,
@@ -31,7 +30,6 @@ const TextInput = (props: ITextInput) => {
   } = props;
 
   const [focused, setFocused] = useState(false);
-  const [hasValue, setHasValue] = useState(false);
 
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -43,12 +41,6 @@ const TextInput = (props: ITextInput) => {
     setFocused(false);
     if (onBlur) onBlur(e);
   };
-
-
-  useEffect(() => {
-    setHasValue(!!value || !!defaultValue);
-  }, [value, defaultValue]);
-
 
   const textInputClassNames = [
     "form-control",
@@ -67,59 +59,49 @@ const TextInput = (props: ITextInput) => {
     "transition-all",
     "duration-200",
     "pointer-events-none",
-    focused || hasValue ? "label-float" : "",
     error ? "text-danger" : focused ? `text-${color}` : "text-gray-600",
     variant === "outlined" ? "label-outlined" : "label-standard",
   ].join(" ");
-
 
   return (
     <>
       <div
         className={`form-group ui-relative ${fullWidth ? "w-100" : ""} mrgb1`}
       >
-            <div className="input-container relative">
+        <div className="input-container relative">
           {label && (
             <label htmlFor={id} className={labelClassNames}>
               {label}
             </label>
           )}
 
+          {hasIcon && (
+            <span
+              className={`fe ${icon}  ui-absolute input-icon brand-gray `}
+            />
+          )}
 
-        {/* {hasIcon && (
-          <span
-            className={`fe ${icon} ui-absolute input-icon brand-gray`}
-          ></span>
-        )} */}
-
-        {hasIcon && icon && iconPosition === "left" &&(
-          <span
-            className={`fe ${icon}  ui-absolute input-icon brand-gray `}
+          <input
+            id={id ? id : ""}
+            type={type}
+            name={name ? name : ""}
+            placeholder={placeholder ? placeholder : "Type here"}
+            defaultValue={defaultValue ? defaultValue : ""}
+            onChange={onChange}
+            autoComplete={autoComplete ? "on" : "off"}
+            className={textInputClassNames}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            readOnly={readOnly}
+            disabled={disabled}
+            autoFocus={autoFocus}
+            aria-describedby={helperText ? `${id}-helper-text` : undefined}
+            style={{
+              borderRadius: borderRadius,
+            }}
           />
-        )}
-
-        <input
-          id={id ? id : ""}
-          type={type}
-          name={name ? name : ""}
-          placeholder={placeholder ? placeholder : "Type here"}
-          defaultValue={defaultValue ? defaultValue : ""}
-          value={value? value : ""}
-          onChange={onChange}
-          autoComplete={autoComplete ? "on" : "off"}
-          className={textInputClassNames}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          readOnly={readOnly}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          aria-describedby={helperText ? `${id}-helper-text` : undefined}
-          style={{
-            borderRadius: borderRadius,
-          }}
-        />
         </div>
-        {helperText && focused &&  (
+        {helperText && focused && (
           <small
             id={`${id}-helper-text`}
             className="form-text text-muted"
@@ -128,17 +110,7 @@ const TextInput = (props: ITextInput) => {
             {helperText}
           </small>
         )}
-
-        {/* {error && (
-          <div className="invalid-feedback">
-            <span id={`${id}-error`} role="alert">
-              Invalid input
-            </span>
-          </div>
-        )} */}
       </div>
-
-      
     </>
   );
 };

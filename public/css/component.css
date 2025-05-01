@@ -1,297 +1,46 @@
-
-/* TextArea Styles */
-.form-group {
-    margin-bottom: 1rem;
-    position: relative;
-    width: 100%;
-  }
-  
-  .form-control {
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #333;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.5rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    resize: vertical; /* Let users resize vertically only */
-  }
-  
-  .form-control:focus {
-    border-color: #1d79ff;
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(29, 121, 255, 0.25);
-  }
-  
-  /* Focused Style if showFocus class applied manually */
-  .focused {
-    border-color: #1d79ff;
-    box-shadow: 0 0 0 0.2rem rgba(29, 121, 255, 0.25);
-  }
-  
-  /* Error State */
-  .input-error {
-    border-color: #dc3545; /* Bootstrap danger color */
-    background-color: #f8d7da;
-  }
-  
-  .text-error {
-    color: #dc3545;
-    font-size: 0.875rem;
-  }
-  
-  /* Padding if hasIcon */
-  .pdl2 {
-    padding-left: 2rem;
-  }
-  
-  .pdl3 {
-    padding-left: 3rem;
-  }
-  
-  /* Icon inside input */
-  .input-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-    color: #adb5bd;
-    pointer-events: none;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    input {
-      background-color: #1a1a1a; /* Dark gray/black */
-      color: red; /* White text */
-      border: 1px solid #444; /* Softer border */
-    }
-  }
-
-
-  
-.auth-container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   
+ .password-input-wrapper {
+  min-height: 80px;
 }
 
-.auth-container-inner {
-    width: 100%;
-    max-width: 1200px;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f8f8 !important;
+.transition {
+  transition: all 0.2s ease-in-out;
 }
 
-.auth-container-inner .pair {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1; 
-    width: 100%;
-    height: 100%;
+input.form-control:focus {
+          border-color: #1d79ff !important;
+          box-shadow: none;
+        }
 
+.form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: none;
 }
 
-.auth-container-inner .pair.left {
-    max-width: 45%;
-
-}
-
-.auth-container-inner .pair.right {
-    max-width: 55%; 
-}
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-.auth-form {
-    width: 100%;
-    max-width: 500px; 
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 10px;
-    
-}
-
-.auth-form .form-tab {
-    width: 100%;
-}
-
-.auth-form .form-tab .inner {
-    width: 54.3%;
-    background-color: rgb(241, 247, 241);
-    display: flex;
-    padding: 3px;
-    border-radius: 22px;
-}
-
-.auth-form .form-tab .tab {
-    padding: 0.8rem 1rem;
-    border-radius: 20px;
-}
-
-.auth-form .form-tab .tab.active {
-    background-color: #15a157;
-    color: #fff;
-}
-
-.form .form-group {
-    width: 100%;
-}
-
-.form .form-control {
-    width: 100%;
-    padding: 1.2rem 1rem ; 
-    box-shadow: #15a157;
-    outline: none; 
-    border: 1px solid #dae0eb;
-
-    -webkit-transition: all 0.35s ease-out;
-    -moz-transition: all 0.35s ease-out;
-    transition: all 0.35s ease-out;
-}
-
-.form .form-control.show-focus {
-    border: 1px solid #15a157 !important;
-}
-
-.form .btn {
-    display: block;
-    width: 100%;
-    padding: 1.2rem 1rem;
-    background-color: #15a157;
-    text-align: center;
-    border-radius: 10px;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form .btn:hover {
-    background-color: #138a49;
-}
-
-.input-icon {
-    left: 1.2rem;
-    top: 36.5%;
-}
-
-.form .eye-icon {
-    right: 1.2rem;
-    top: 36.5%;
+.form-control.is-invalid:focus {
+  border-color: var(--bs-danger);
+  box-shadow: none;
 }
 
 
-.auth-form .auth-divider {
-    width: 100%;
-    position: relative;
-    padding: 1rem 0rem;
+.form-text {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.25rem;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
 }
 
-.auth-form .auth-divider .line {
-    height: 1px;
-    background-color: #727473;
-    width: 70%;
-    margin: 0 auto;
+.form-text:not(:empty) {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.auth-form .auth-divider span {
-    padding: 0.5rem 1rem;
-    background-color: #f8f8f8;
-    top: -2.8px;
-    left: 31.5%;
-    position: absolute;
-    border-radius: 10px;
-}
+.eye-icon {
+  right: 1.2rem;
+  top: 56.5%;
 
-.auth-form .brand-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem; /* Spacing between social media icons */
+  transform: translateY(-50%);
+          cursor: pointer;
+          z-index: 2;
 }
-
-.auth-form .icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50px;
-    border: 1px solid #15a157;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.auth-form .icon-button:hover {
-    background-color: #15a157;
-    color: #fff;
-}
-
-.auth-form .icon-button img {
-    width: 40px;
-    height: 40px;
-}
-
-.hero-image {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    padding-left: 30px;
-}
-
-.hero-image img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover;
-}
-
-@media (max-width: 768px) {
-    .container-inner {
-      flex-direction: column; 
-      padding: 1rem; 
-    }
-  
-    .container-inner .pair {
-      width: 100%; 
-      height: auto; 
-      max-width: none; 
-    }
-  
-    .container-inner .pair.left, 
-    .container-inner .pair.right {
-      max-width: 100%; 
-      padding: 0; 
-    }
-  
-    .auth-form {
-      padding: 20px;
-    }
-  
-    .hero-image {
-        display: none;
-    }
-  
-    .auth-form .auth-divider span {
-      left: 50%; 
-      transform: translateX(-50%);
-    }
-  }

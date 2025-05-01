@@ -2,10 +2,9 @@ import { useState } from "react";
 import TextArea from "../components/input/TextAreaInput";
 import TextInput from "../components/input/TextInput";
 import Review from "../components/Review";
-
+import PasswordField from "../components/ui/PasswordField";
 
 const Preview = () => {
-  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,9 +18,8 @@ const Preview = () => {
     }));
   };
   return (
-    <div  className="review-page-container">
-    
-        {/* <TextArea
+    <div className="container review-page-container">
+      {/* <TextArea
           placeholder="Review"
           name="review"
           id="review"
@@ -36,13 +34,14 @@ const Preview = () => {
           }}
         /> */}
 
-        <TextInput
-        type="email"
+      {/* <TextInput
+        type="text"
         placeholder="Enter your email"
         name="email"
         id="email"
-        label="Email"
+        label="Password"
         hasIcon={true}
+        iconPosition="left"
         icon="fe-lock"
         color="secondary"
         variant="outlined"        
@@ -54,32 +53,33 @@ const Preview = () => {
         onChange={(e) => {
           console.log(e.target.value);
         }}
-        />
+        /> */}
 
-        <div className="mrgb10"></div>
-{/* 
-        <TextInput
-          id="password"
-          name="password"
-          type="number"
-          icon="fe-at-sign"
-          hasIcon={true}
-          defaultValue=""
-          className="form-control"
-          showFocus={true}
-          placeholder="Enter your password"
-          value={formData.password}
-          onChange={handleInputChange}
-          label="Password"
-          autoComplete
-          color="secondary"
-          variant="outlined"
-          error={formData.password.length < 6}
-          helperText={formData.password.length < 6 ? "Password must be at least 6 characters" : ""}
+      {/* <div className="pdl40"></div>
+
+        <PasswordInput
+        
+        placeholder="Enter your password"
+        name="password"
+        id="password"
+        label="Password"
+        borderRadius="5px"
+        helperText="password must be at least 6 characters"
+        
+        
+        borderColor="#1d79ff"
+        hasIcon={true}
+        icon="fe-lock"
+        style={{
+          
+          
+          
+        }}
+        
+        onChange={handleInputChange}
         /> */}
 
     </div>
-    
   );
 };
 

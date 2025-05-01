@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { IButton } from "../../utils/interface.util";
+import { IButton } from "../../../utils/interface.util";
 import { Link } from 'react-router-dom'
 
 const Button = (props: IButton) => {

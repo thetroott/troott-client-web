@@ -1,6 +1,6 @@
-import Tag from "../../components/Tag/Tag";
-import FAQSection from "../../layouts/FAQSection";
-import Navigation from "../../layouts/Navigation";
+import Tag from "../../ui/components/Tag/Tag";
+import FAQSection from "../../ui/Theme/layouts/FAQSection";
+import Navigation from "../../ui/Theme/layouts/Navigation";
 
 
 const Home = () => {

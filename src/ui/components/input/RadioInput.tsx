@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { IRadioInput} from "../../utils/interface.util";
+import { IRadioInput} from "../../../utils/interface.util";
 
 const RadioInput = (props: IRadioInput) => {
 

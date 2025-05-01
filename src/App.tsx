@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
-import Home from "./pages/home/Home";
-import Preview from "./pages/Review";
-import LoginForm from "./pages/auth/Login";
+import Home from "./screens/home/Home";
+import Preview from "./screens/Review";
+import LoginForm from "./screens/auth/Login";
 
 
 const App = () => {

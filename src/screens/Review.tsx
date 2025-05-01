@@ -1,8 +1,8 @@
 import { useState } from "react";
-import TextArea from "../components/input/TextAreaInput";
-import TextInput from "../components/input/TextInput";
-import Review from "../components/Review";
-import PasswordField from "../components/ui/PasswordField";
+import TextArea from "../ui/components/input/TextAreaInput";
+import TextInput from "../ui/components/input/TextInput";
+import Review from "../ui/components/Review";
+import PasswordField from "../ui/components/input/PasswordField";
 
 const Preview = () => {
   const [formData, setFormData] = useState({

@@ -1,4 +1,4 @@
-import { ITextArea } from "../../utils/interface.util";
+import { ITextArea } from "../../../utils/interface.util";
 
 const TextArea = (props: ITextArea) => {
   const {

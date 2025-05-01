@@ -1,4 +1,4 @@
-import { IReview } from "../utils/interface.util";
+import { IReview } from "../../utils/interface.util";
 
 const Review = (props: IReview) => {
   const { children } = props;

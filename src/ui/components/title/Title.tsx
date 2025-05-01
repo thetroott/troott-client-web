@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-concat */
 import React, { useEffect } from 'react';
-import { ITitle } from "../../utils/interface.util"
+import { ITitle } from "../../../utils/interface.util"
 
 const Title = (props: ITitle) => {
 

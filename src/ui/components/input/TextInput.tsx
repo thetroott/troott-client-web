@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ITextInput } from "../../utils/interface.util";
+import { ITextInput } from "../../../utils/interface.util";
 
 const TextInput = (props: ITextInput) => {
   const {

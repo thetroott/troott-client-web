@@ -1,27 +1,29 @@
 import TextField from "@mui/material/TextField";
-import { ITextInputField } from "../../../utils/ui.util";
+import { ITextAreaField } from "../../../utils/ui.util";
 
 
-const TextInputField = (props: ITextInputField) => {
-
-    const {
-        label,
-        placeholder,
-        value,
-        onChange,
-        error,
-        helperText,
-        autoComplete,
-        autoFocus,
-        fullWidth = true,
-        borderRadius = "8px",
-        color = "#1d79ff",
-        sx = {},
-        ...rest
-      } = props
-
+const TextAreaField = (props: ITextAreaField & { rows?: number }) => {
+  const {
+    label,
+    placeholder,
+    value,
+    onChange,
+    error,
+    helperText,
+    autoComplete,
+    autoFocus,
+    fullWidth = true,
+    borderRadius = "8px",
+    color = "#1d79ff",
+    sx = {},
+    rows = 4,
+    ...rest
+  } = props
+  
   return (
     <TextField
+      multiline
+      rows={rows}
       label={label}
       placeholder={placeholder}
       value={value}
@@ -59,4 +61,4 @@ const TextInputField = (props: ITextInputField) => {
   );
 };
 
-export default TextInputField;
+export default TextAreaField;

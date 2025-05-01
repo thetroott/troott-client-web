@@ -30,4 +30,35 @@ export interface IPasswordField {
     color?: string;
     [key: string]: any; // allows extension
   }
-  
+
+  export interface ITextInputField {
+    label?: string;
+    placeholder?: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: boolean;
+    helperText?: string;
+    autoComplete?: string;
+    autoFocus?: boolean;
+    fullWidth?: boolean;
+    borderRadius?: string;
+    color?: string;
+    sx?: object;
+  }
+
+  export interface ITextAreaField {
+      label?: string;
+      placeholder?: string;
+      value: string;
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+      error?: boolean;
+      helperText?: string;
+      autoComplete?: string;
+      autoFocus?: boolean;
+      fullWidth?: boolean;
+      borderRadius?: string;
+      color?: string;
+      rows?: number;
+      sx?: object;
+
+  }

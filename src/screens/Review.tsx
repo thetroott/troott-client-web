@@ -3,13 +3,17 @@ import TextArea from "../ui/components/input/TextAreaField";
 import TextInput from "../ui/components/input/TextInput";
 import Review from "../ui/components/Review";
 import PasswordField from "../ui/components/input/PasswordField";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, ListItemText, Typography } from "@mui/material";
 import TextAreaField from "../ui/components/input/TextAreaField";
 import EmailField from "../ui/components/input/EmailField";
 import RadioField from "../ui/components/input/RadioField";
 import VCheckbox from "../ui/components/input/CheckBoxField";
 import OTPField from "../ui/components/input/OTPField";
 import SelectField from "../ui/components/input/SelectField";
+import MultiSelectField from "../ui/components/input/MutliSelectField";
+import CodeIcon from "@mui/icons-material/Code";
+import BrushIcon from "@mui/icons-material/Brush";
+import StorageIcon from "@mui/icons-material/Storage";
 
 const Preview = () => {
   const [formData, setFormData] = useState({
@@ -38,6 +42,23 @@ const Preview = () => {
   const [gender, setGender] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [otp, setOtp] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+
+  const toptions = [
+    {
+      value: "frontend",
+      label: "Frontend",
+    },
+    {
+      value: "backend",
+      label: "Backend",
+    },
+    {
+      value: "fullstack",
+      label: "Fullstack",
+      
+    },
+  ];
 
   const handleOTPSubmit = () => {
     console.log("OTP Entered:", otp);
@@ -87,6 +108,25 @@ const Preview = () => {
           autoFocus
           sx={{ mb: 2 }}
         />
+        {/* <MultiSelectField
+          label="Select Skills"
+          value={skills}
+          onChange={(e) => setSkills(e.target.value as string[])}
+          options={toptions}
+          renderOption={(toption) => (
+            <ListItemText
+              primary={
+                <Box display="flex" alignItems="center" gap={1}>
+                  {toption.icon}
+                  {toption.label}
+                </Box>
+              }
+            />
+          )}
+          helperText="Pick all that apply"
+          fullWidth
+        /> */}
+        ;
         {/* 
         <TextAreaField
           label="Message"

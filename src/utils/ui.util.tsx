@@ -91,8 +91,8 @@ export interface IOTPField {
 }
 
 export interface ISelectField {
-  label: string;
-  value: string | number;
+  label?: string
+  value: string | number
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options: { value: string | number; label: string }[];
   error?: boolean;
@@ -107,7 +107,7 @@ export interface ISelectField {
 
 export interface IMultiSelectField
   extends Omit<ISelectField, "value" | "onChange"> {
-  value: string[];
+  value: (string | number)[];
   onChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
   renderOption?: (option: { value: string; label: string }) => React.ReactNode;
 }

@@ -62,3 +62,32 @@ export interface IPasswordField {
       sx?: object;
 
   }
+
+export interface IVCheckbox {
+    label: string;
+    checked: boolean;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: boolean;
+    helperText?: string;
+  }
+ 
+  export interface IRadioField {
+    label: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    options: { label: string; value: string }[];
+    error?: boolean;
+    helperText?: string;
+    row?: boolean;
+  }
+  
+  export interface IOTPField {
+    length?: number;
+    value: string;
+    onChange: (val: string) => void;
+    error?: boolean;
+    helperText?: string;
+    borderRadius?: string;
+    color?: string;
+    disabled?: boolean;
+  }

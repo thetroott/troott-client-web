@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
-import Home from "./screens/home/Home";
+
 import Preview from "./screens/Review";
 import LoginForm from "./screens/auth/Login";
 
@@ -23,7 +23,7 @@ const App = () => {
           onError={errorHandler}
         >
           <Routes>
-            <Route path="/" element={<Home />} />
+            
             <Route path="/preview" element={<Preview/>}/>
             <Route path="/login" element={<LoginForm/>}/>
 

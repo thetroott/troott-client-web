@@ -1,21 +1,9 @@
 import React, { useState } from "react";
-import TextArea from "../components/components/input/TextAreaField";
-import TextInput from "../components/components/input/TextInput";
-import Review from "../components/components/Review";
-import PasswordField from "../components/components/input/PasswordField";
 import { Box, Button, ListItemText, Tooltip, Typography } from "@mui/material";
-import TextAreaField from "../components/components/input/TextAreaField";
-import EmailField from "../components/components/input/EmailField";
-import RadioField from "../components/components/input/RadioField";
-import VCheckbox from "../components/components/input/CheckBoxField";
-import OTPField from "../components/components/input/OTPField";
-import SelectField from "../components/components/input/SelectField";
-import MultiSelectField from "../components/components/input/MutliSelectField";
-import CodeIcon from "@mui/icons-material/Code";
-import BrushIcon from "@mui/icons-material/Brush";
-import StorageIcon from "@mui/icons-material/Storage";
-import MyComponent from "../components/components/base/Tooltip";
-import TourTooltip from "../components/components/base/Tooltip";
+import SelectField from "../components/ui/input/SelectField";
+import EmailField from "../components/ui/input/EmailField";
+import MyButton from "../components/ui/Button/Button";
+import ThemeToggleSwitch from "../components/ui/Button/Toggle";
 
 const Preview = () => {
   const [formData, setFormData] = useState({
@@ -111,6 +99,9 @@ const Preview = () => {
           fullWidth
         />
         ;
+
+      <ThemeToggleSwitch/>
+
         <EmailField
           label="Enter your email"
           value={email}
@@ -140,7 +131,19 @@ const Preview = () => {
           Login
         </Button>
 
-        <TourTooltip
+        <MyButton
+          type="submit"
+          variant="outlined"
+          fullWidth
+          
+          disabled={!isEmailValid }
+          
+        >
+          Sign In
+        </MyButton>
+
+
+        {/* <TourTooltip
       title="My clips"
       description="Manage and organize your teachings, clips. Upload content from your device, track pending reviews, and keep everything in one place as you build your impact library."
       currentStep={step}
@@ -149,7 +152,7 @@ const Preview = () => {
       onPrevious={handlePrevious}
       onSkip={handleSkip}
     />
-  
+   */}
 
      
         {/* <MultiSelectField

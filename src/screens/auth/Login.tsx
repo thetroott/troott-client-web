@@ -1,9 +1,8 @@
 // pages/LoginForm.tsx
 import React, { useState } from "react";
-
 import { Box, Button, Typography } from "@mui/material";
-import PasswordField from "../../components/components/input/PasswordField";
-import EmailField from "../../components/components/input/EmailField";
+import EmailField from "../../components/ui/input/EmailField";
+import PasswordField from "../../components/ui/input/PasswordField";
 
 const LoginForm = () => {
   const [password, setPassword] = useState("");

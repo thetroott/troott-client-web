@@ -3,14 +3,19 @@ import React, { useState } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 import PasswordField from "../../components/ui/PasswordField";
+import EmailField from "../../components/ui/EmailField";
 
 const LoginForm = () => {
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Submitted Email:", email);
     console.log("Submitted Password:", password);
   };
+
+  const isEmailValid = email.includes("@") && email.includes(".");
 
   return (
     <Box
@@ -22,12 +27,30 @@ const LoginForm = () => {
         Sign In
       </Typography>
 
+      <EmailField
+        label="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={!isEmailValid && email.length > 0}
+        helperText={
+          !isEmailValid && email.length > 0
+            ? "Enter a valid email address"
+            : ""
+        }
+        autoComplete="email"
+        fullWidth
+        color="#1d79ff"
+        borderRadius="8px"
+        autoFocus
+        sx={{ mb: 2 }}
+      />
+
       <PasswordField
         label="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         error={password.length < 6}
-        helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
+        helperText={password.length > 0 && password.length < 6 ? "Password must be at least 6 characters" : ""}
         autoComplete="current-password"
         fullWidth
         color="#1d79ff"

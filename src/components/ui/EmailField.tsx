@@ -1,38 +1,30 @@
-import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IPasswordField } from "../../utils/ui.util";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { IEmailField } from "../../utils/ui.util";
 
-const PasswordField = (props: IPasswordField) => {
-
+const EmailField = (props: IEmailField) => {
   const {
     label,
+    placeholder,
     value,
     onChange,
     error,
     helperText,
     autoComplete,
-    placeholder,
     autoFocus,
     fullWidth,
     borderRadius,
     color,
     ...rest
   } = props;
-  
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleToggle = () => setShowPassword((prev) => !prev);
 
   return (
     <TextField
-      type={showPassword ? "text" : "password"}
+      type="email"
       label={label}
+      placeholder={placeholder}
       value={value}
-      placeholder={placeholder} 
       onChange={onChange}
       error={!!error}
       helperText={helperText}
@@ -42,18 +34,21 @@ const PasswordField = (props: IPasswordField) => {
       variant="outlined"
       slotProps={{
         input: {
-       
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleToggle} edge="end">
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
+          startAdornment: (
+            <InputAdornment position="start">
+              
             </InputAdornment>
           ),
           sx: {
             borderRadius: borderRadius,
           },
-        }
+        },
+        inputLabel: {
+          shrink: true,
+          sx: {
+            color: color,
+          },
+        },
       }}
       sx={{
         "& .MuiOutlinedInput-root": {
@@ -68,4 +63,4 @@ const PasswordField = (props: IPasswordField) => {
   );
 };
 
-export default PasswordField;
+export default EmailField;

@@ -9,6 +9,7 @@ import EmailField from "../ui/components/input/EmailField";
 import RadioField from "../ui/components/input/RadioField";
 import VCheckbox from "../ui/components/input/CheckBoxField";
 import OTPField from "../ui/components/input/OTPField";
+import SelectField from "../ui/components/input/SelectField";
 
 const Preview = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,13 @@ const Preview = () => {
     }));
   };
 
+  const options = [
+    { value: "frontend", label: "Frontend Developer" },
+    { value: "backend", label: "Backend Developer" },
+    { value: "fullstack", label: "Fullstack Developer" },
+  ];
+
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -34,7 +42,6 @@ const Preview = () => {
   const handleOTPSubmit = () => {
     console.log("OTP Entered:", otp);
   };
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,20 +61,15 @@ const Preview = () => {
         <Typography variant="h6" gutterBottom>
           Sign In
         </Typography>
-
-        <TextAreaField
-          label="Message"
-          placeholder="Write your feedback here..."
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          error={feedback.length < 10}
-          helperText={
-            feedback.length < 10 ? "Minimum 10 characters required." : ""
-          }
-          color="#1d79ff"
-          borderRadius="8px"
+        <SelectField
+          label="Select Role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          options={options}
+          helperText="Pick your role"
+          fullWidth
         />
-
+        ;
         <EmailField
           label="Enter your email"
           value={email}
@@ -85,7 +87,20 @@ const Preview = () => {
           autoFocus
           sx={{ mb: 2 }}
         />
-
+        {/* 
+        <TextAreaField
+          label="Message"
+          placeholder="Write your feedback here..."
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          error={feedback.length < 10}
+          helperText={
+            feedback.length < 10 ? "Minimum 10 characters required." : ""
+          }
+          color="#1d79ff"
+          borderRadius="8px"
+        /> */}
+        {/* 
         <PasswordField
           label="Enter your password"
           value={password}
@@ -100,8 +115,8 @@ const Preview = () => {
           fullWidth
           color="#1d79ff"
           borderRadius="8px"
-        />
-
+        /> */}
+        {/* 
         <RadioField
           label="Gender"
           value={gender}
@@ -123,8 +138,7 @@ const Preview = () => {
           helperText={
             !termsAccepted ? "You must accept the terms to proceed." : ""
           }
-        />
-
+        /> */}
         <Button
           type="submit"
           variant="contained"
@@ -133,8 +147,7 @@ const Preview = () => {
         >
           Login
         </Button>
-
-        <form onSubmit={(e) => { e.preventDefault(); handleOTPSubmit(); }}>
+        {/* <form onSubmit={(e) => { e.preventDefault(); handleOTPSubmit(); }}>
       <OTPField
         value={otp}
         onChange={setOtp}
@@ -145,7 +158,7 @@ const Preview = () => {
       <button type="submit" disabled={otp.length < 6}>
         Verify OTP
       </button>
-    </form>
+    </form> */}
       </Box>
     </>
   );

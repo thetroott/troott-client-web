@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import TextArea from "../ui/components/input/TextAreaField";
-import TextInput from "../ui/components/input/TextInput";
-import Review from "../ui/components/Review";
-import PasswordField from "../ui/components/input/PasswordField";
+import TextArea from "../components/components/input/TextAreaField";
+import TextInput from "../components/components/input/TextInput";
+import Review from "../components/components/Review";
+import PasswordField from "../components/components/input/PasswordField";
 import { Box, Button, ListItemText, Tooltip, Typography } from "@mui/material";
-import TextAreaField from "../ui/components/input/TextAreaField";
-import EmailField from "../ui/components/input/EmailField";
-import RadioField from "../ui/components/input/RadioField";
-import VCheckbox from "../ui/components/input/CheckBoxField";
-import OTPField from "../ui/components/input/OTPField";
-import SelectField from "../ui/components/input/SelectField";
-import MultiSelectField from "../ui/components/input/MutliSelectField";
+import TextAreaField from "../components/components/input/TextAreaField";
+import EmailField from "../components/components/input/EmailField";
+import RadioField from "../components/components/input/RadioField";
+import VCheckbox from "../components/components/input/CheckBoxField";
+import OTPField from "../components/components/input/OTPField";
+import SelectField from "../components/components/input/SelectField";
+import MultiSelectField from "../components/components/input/MutliSelectField";
 import CodeIcon from "@mui/icons-material/Code";
 import BrushIcon from "@mui/icons-material/Brush";
 import StorageIcon from "@mui/icons-material/Storage";
-import MyComponent from "../ui/components/base/Tooltip";
-import TourTooltip from "../ui/components/base/Tooltip";
+import MyComponent from "../components/components/base/Tooltip";
+import TourTooltip from "../components/components/base/Tooltip";
 
 const Preview = () => {
   const [formData, setFormData] = useState({

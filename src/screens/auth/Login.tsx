@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
-import PasswordField from "../../ui/components/input/PasswordField";
-import EmailField from "../../ui/components/input/EmailField";
+import PasswordField from "../../components/components/input/PasswordField";
+import EmailField from "../../components/components/input/EmailField";
 
 const LoginForm = () => {
   const [password, setPassword] = useState("");

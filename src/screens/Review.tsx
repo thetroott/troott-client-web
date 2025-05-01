@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TextArea from "../ui/components/input/TextAreaField";
 import TextInput from "../ui/components/input/TextInput";
 import Review from "../ui/components/Review";
 import PasswordField from "../ui/components/input/PasswordField";
-import { Box, Button, ListItemText, Typography } from "@mui/material";
+import { Box, Button, ListItemText, Tooltip, Typography } from "@mui/material";
 import TextAreaField from "../ui/components/input/TextAreaField";
 import EmailField from "../ui/components/input/EmailField";
 import RadioField from "../ui/components/input/RadioField";
@@ -14,6 +14,8 @@ import MultiSelectField from "../ui/components/input/MutliSelectField";
 import CodeIcon from "@mui/icons-material/Code";
 import BrushIcon from "@mui/icons-material/Brush";
 import StorageIcon from "@mui/icons-material/Storage";
+import MyComponent from "../ui/components/base/Tooltip";
+import TourTooltip from "../ui/components/base/Tooltip";
 
 const Preview = () => {
   const [formData, setFormData] = useState({
@@ -56,7 +58,6 @@ const Preview = () => {
     {
       value: "fullstack",
       label: "Fullstack",
-      
     },
   ];
 
@@ -71,6 +72,25 @@ const Preview = () => {
   };
 
   const isEmailValid = email.includes("@") && email.includes(".");
+
+  
+    const [step, setStep] = React.useState(3);
+    const totalSteps = 5;
+  
+    const handleNext = () => {
+      if (step < totalSteps) setStep(step + 1);
+      console.log('Next clicked');
+    };
+  
+    const handlePrevious = () => {
+      if (step > 1) setStep(step - 1);
+      console.log('Previous clicked');
+    };
+  
+    const handleSkip = () => {
+      console.log('Skip clicked');
+      // Logic to end the tour
+    };
 
   return (
     <>
@@ -106,8 +126,32 @@ const Preview = () => {
           color="#1d79ff"
           borderRadius="8px"
           autoFocus
+
           sx={{ mb: 2 }}
         />
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          
+          disabled={!isEmailValid }
+          sx={{ mt: 6, backgroundColor: "#08FFDB" }}
+        >
+          Login
+        </Button>
+
+        <TourTooltip
+      title="My clips"
+      description="Manage and organize your teachings, clips. Upload content from your device, track pending reviews, and keep everything in one place as you build your impact library."
+      currentStep={step}
+      totalSteps={totalSteps}
+      onNext={handleNext}
+      onPrevious={handlePrevious}
+      onSkip={handleSkip}
+    />
+  
+
+     
         {/* <MultiSelectField
           label="Select Skills"
           value={skills}
@@ -179,14 +223,6 @@ const Preview = () => {
             !termsAccepted ? "You must accept the terms to proceed." : ""
           }
         /> */}
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ mt: 3, backgroundColor: "#1d79ff" }}
-        >
-          Login
-        </Button>
         {/* <form onSubmit={(e) => { e.preventDefault(); handleOTPSubmit(); }}>
       <OTPField
         value={otp}

@@ -1,6 +1,6 @@
 {
-  "short_name": "React-ts App",
-  "name": "mY React-ts Boilerplate",
+  "short_name": "troott",
+  "name": "troott-client-web",
   "icons": [
     {
       "src": "favicon.ico",

@@ -29,10 +29,9 @@ We’re answering key questions to improve user experience:
 ## Technologies
 
 - **TypeScript**
+- **Vite**
 - **TanStack Query**
 - **React Router**
-- **React-track-player**
-- **React-video**
 
 ## Getting Started
 
@@ -52,18 +51,34 @@ To get it up and running on your local machine, follow the steps below:
    ```
 
 3. **Set up environment variables**  
-   Ensure you have a `.env` file with the necessary environment variables for your app.
+   Ensure you have a `.env` file with the necessary environment variables for your app. 
+    ```bash
+   VITE_API_BASE_URL=https://api.example.com
+   ```
 
-7. **Run the app in development mode**  
+4. **Run the app in development mode**
    Start the web app:
    ```bash
-   npm start
+   npm run dev
    # or
-   yarn start
+   yarn dev
+   ```
+
+5. **Run the app in production mode**
+   Start the web app:
+   ```bash
+   npm run build
+   # or
+   yarn build
+   ```
+
+6. **Run the app to preview development build**  
+   Start the web app:
+   ```bash
+  npm run preview
    ```
 
 ## Branch Structure
-
 
 | Branch               | Purpose                                                                 |
 |----------------------|-------------------------------------------------------------------------|
@@ -177,9 +192,9 @@ If you discover a bug or have a suggestion, raise an issue via the GitHub Issues
 
 | Command            | Description                                   |
 |--------------------|-----------------------------------------------|
-| `npm start`      | Starts the app in development mode.             |
-| `npm build`        | Starts the app in production mode.            |
+| `npm run dev`      | Starts the app in development mode.           |
 | `npm run build`    | Build app for production                      |
+| `npm run preview`    | Preview production build locally              |
 
 ## Pull Request Notes
 

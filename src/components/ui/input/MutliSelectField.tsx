@@ -5,7 +5,7 @@ import {
   MenuItem,
   OutlinedInput,
 } from "@mui/material";
-import { IMultiSelectField } from "../../../utils/ui.util";
+import type { IMultiSelectField } from "../../../utils/ui.util";
 
 const MultiSelectField = (props: IMultiSelectField) => {
   const {

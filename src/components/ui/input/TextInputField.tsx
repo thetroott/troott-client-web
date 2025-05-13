@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import { ITextInputField } from "../../../utils/ui.util";
+import type { ITextInputField } from "../../../utils/ui.util";
 
 
 const TextInputField = (props: ITextInputField) => {

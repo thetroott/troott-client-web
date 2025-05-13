@@ -1,4 +1,4 @@
-import { IRadioField } from "../../../utils/ui.util";
+import type { IRadioField } from "../../../utils/ui.util";
 import {
   FormControl,
   FormLabel,

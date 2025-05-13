@@ -1,4 +1,4 @@
-import {
+import type {
     activatePayload,
     changePasswordPayload,
     forgotPasswordPayload,
@@ -13,7 +13,8 @@ import {
   class Auth {
     client;
     secondaryClient;
-  
+
+
     /**
      * Creates an instance of Auth service
      * @param {any} client - Primary HTTP client for auth requests

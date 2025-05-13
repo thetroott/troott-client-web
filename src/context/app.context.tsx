@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { ThemeProvider, CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { appReducer } from "./app.reducer";
-import { AppAction } from "./app.actions";
-import initialState, { IAppState } from "../utils/app.util";
+import type { AppAction } from "./app.actions";
+import type { IAppState } from "../utils/app.util";
+import initialState from "../utils/app.util";
 import storage from "../utils/storage.util";
-
-
 
 
 const getInitialTheme = (): "light" | "dark" => {

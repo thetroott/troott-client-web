@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { IIconButton } from "../../../utils/interface.util";
+import { useEffect } from "react";
+import type { IIconButton } from "../../../utils/interface.util";
 import { Link } from "react-router-dom";
 
 function IconButton(props: IIconButton) {

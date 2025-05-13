@@ -1,5 +1,5 @@
 import { TextField, MenuItem } from "@mui/material";
-import { ISelectField } from "../../../utils/ui.util";
+import type { ISelectField } from "../../../utils/ui.util";
 
 const SelectField = (props: ISelectField) => {
   const {

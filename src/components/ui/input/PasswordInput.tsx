@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IPasswordInput } from "../../../utils/interface.util";
+import type { IPasswordInput } from "../../../utils/interface.util";
 import { Link } from "react-router-dom";
 
 const PasswordInputt = (props: IPasswordInput) => {

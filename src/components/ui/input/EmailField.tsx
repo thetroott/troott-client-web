@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import { IEmailField } from "../../../utils/ui.util";
+import type { IEmailField } from "../../../utils/ui.util";
 
 const EmailField = (props: IEmailField) => {
   const {

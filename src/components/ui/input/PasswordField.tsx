@@ -4,7 +4,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IPasswordField } from "../../../utils/ui.util";
+import type { IPasswordField } from "../../../utils/ui.util";
 
 const PasswordField = (props: IPasswordField) => {
 

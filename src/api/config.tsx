@@ -16,7 +16,7 @@ import Staff from "./staff";
 import Subscription from "./subscription";
 import User from "./user";
 
-const BaseURL = process.env.REACT_TROOTT_API_URL as string;
+const BaseURL = import.meta.env.REACT_TROOTT_API_URL as string;
 
 export const axiosPublic = axios.create({
   baseURL: BaseURL,

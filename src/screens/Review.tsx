@@ -62,7 +62,7 @@ const Preview = () => {
   const isEmailValid = email.includes("@") && email.includes(".");
 
   
-    const [step, setStep] = React.useState(3);
+    const [step, setStep] = useState(3);
     const totalSteps = 5;
   
     const handleNext = () => {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import MuiButton from "@mui/material/Button";
-import { IButton } from "../../../utils/ui.util";
+import type { IButton } from "../../../utils/ui.util";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Button = (props: IButton) => {

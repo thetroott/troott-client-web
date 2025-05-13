@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Box, TextField, Typography } from "@mui/material";
-import { IOTPField } from "../../../utils/ui.util";
+import type { IOTPField } from "../../../utils/ui.util";
 
 const OTPField = (props: IOTPField) => {
   const {

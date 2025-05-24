@@ -9,8 +9,6 @@ import {
 import { useAppContext } from "@/context/app.context";
 
 
-
-
 const ThemeToggle = () => {
   const { state, dispatch } = useAppContext();
 

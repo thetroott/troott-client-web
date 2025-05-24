@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { ThemeProvider, CssBaseline, createTheme, useMediaQuery } from "@mui/material";
 import { appReducer } from "./app.reducer";
 import type { AppAction } from "./app.actions";
 import type { IAppState } from "../utils/app.util";

@@ -7,7 +7,7 @@ import { Box, Button, Typography, useTheme } from "@mui/material";
 import { Container, Row, Col } from "react-bootstrap";
 import EmailField from "../../components/ui/input/EmailField";
 import PasswordField from "../../components/ui/input/PasswordField";
-import ThemeToggleSwitch from "../../components/ui/Button/Toggle";
+import ThemeToggleSwitch from "../../components/ui/Toggle";
 import TextInputField from "../../components/ui/input/TextInputField";
 
 

@@ -13,11 +13,6 @@ export interface IStorage {
   multiFetch(keys: string[]): Promise<{ [key: string]: any | null }>;
   multiRemove(keys: string[]): Promise<void>;
 }
-
-export interface IReview {
-  children: React.ReactNode;
-}
-
 export interface ITitle {
   text: string;
   size?: string;

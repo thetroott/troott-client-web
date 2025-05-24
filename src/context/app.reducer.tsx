@@ -1,6 +1,7 @@
 import type { IAppState } from "../utils/app.util";
 import type { AppAction } from "./app.actions";
 
+
 export const appReducer = (state: IAppState, action: AppAction): IAppState => {
   switch (action.type) {
     case "TOGGLE_THEME":
@@ -18,11 +19,7 @@ export const appReducer = (state: IAppState, action: AppAction): IAppState => {
     case "SET_USER":
       return {
         ...state,
-        user: {
-          id: action.payload.id,
-          name: action.payload.name,
-          email: action.payload.email,
-        },
+        user: action.payload
       };
     case "LOGOUT_USER":
       return {

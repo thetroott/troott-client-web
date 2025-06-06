@@ -1,7 +1,7 @@
-import type { ThemeMode } from "./types.util";
+import type { Theme } from "./types.util";
 
 export interface ThemeState {
-  mode: ThemeMode;
+  mode: Theme;
 }
 
 export interface UserState {
@@ -17,7 +17,7 @@ export interface IAppState {
 
 const initialState: IAppState = {
     theme: {
-      mode: "light",
+      mode: "system",
     },
     user: null,
   };

@@ -1,8 +1,8 @@
-import type { ThemeMode } from "../utils/types.util";
+import type { Theme } from "../utils/types.util";
 
 export type ThemeAction =
   | { type: "TOGGLE_THEME" }
-  | { type: "SET_THEME"; payload: ThemeMode };
+  | { type: "SET_THEME"; payload: Theme };
 
 export type UserAction =
   | { type: "SET_USER"; payload: { id: string; name: string; email: string } }

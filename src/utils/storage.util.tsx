@@ -1,4 +1,4 @@
-import { IStorage } from "./interface.util";
+import type { IStorage } from "./interface.util";
 
 const keep = (key: string, data: any | string) => {
   let result: string = "";

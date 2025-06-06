@@ -2,10 +2,10 @@ import { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
-import Preview from "./screens/Review";
+import Preview from "./screens/Preview";
 import Login from "./screens/auth/Login";
 import Register from "./screens/auth/Register";
-
+import Home from "./screens/home/Home";
 
 const App = () => {
   const errorHandler = (err: any, info: any) => {
@@ -24,12 +24,11 @@ const App = () => {
           onError={errorHandler}
         >
           <Routes>
-            
-            <Route path="/preview" element={<Preview/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
+            <Route path="/" element={<Home />} />
 
-            
+            <Route path="/preview" element={<Preview />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </ErrorBoundary>
       </Suspense>

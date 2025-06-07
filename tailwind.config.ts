@@ -18,7 +18,8 @@ const config = {
     },
     extend: {
       colors: {
-        primary: "#14b8a6", // Teal-500 or your custom teal
+        "primary": "#134e4a",
+        "bg-primary": "#134e4a", // teal
         "primary-foreground": "#ffffff", // white text on teal
       },
       fontFamily: {

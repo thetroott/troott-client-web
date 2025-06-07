@@ -148,3 +148,8 @@ export interface IIconButton {
     height?: string;
   };
 }
+
+export interface ILoginForm extends React.ComponentProps<"form"> {
+  className?: string;
+}
+

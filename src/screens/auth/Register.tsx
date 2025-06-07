@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/layouts/RegisterFrom";
+import RegisterForm from "@/components/layouts/RegisterForm";
 import { GalleryVerticalEnd } from "lucide-react";
 
 const Register = () => {

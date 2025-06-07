@@ -153,3 +153,15 @@ export interface ILoginForm extends React.ComponentProps<"form"> {
   className?: string;
 }
 
+export interface IRegisterFormErrors {
+  firstName?: string
+  lastName?: string
+  email?: string
+  password?: string
+}
+
+export interface ILoginrFormErrors {
+  email?: string
+  password?: string
+}
+

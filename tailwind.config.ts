@@ -17,6 +17,10 @@ const config = {
       },
     },
     extend: {
+      colors: {
+        primary: "#14b8a6", // Teal-500 or your custom teal
+        "primary-foreground": "#ffffff", // white text on teal
+      },
       fontFamily: {
         matter: ["Matter-Regular", "sans-serif"],
         "matter-bold": ["Matter-Bold", "sans-serif"],
@@ -24,6 +28,7 @@ const config = {
         "matter-medium": ["Matter-Medium", "sans-serif"],
         "matter-heavy": ["Matter-Heavy", "sans-serif"],
       },
+      
     },
   },
   plugins: [],

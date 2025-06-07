@@ -2,13 +2,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { ILoginForm, ILoginrFormErrors } from "@/utils/interface.util";
+import type { IForm, ILoginrFormErrors } from "@/utils/interface.util";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LockIcon, Mail } from "lucide-react";
 
 
 
-const LoginForm = (data: ILoginForm) => {
+const LoginForm = (data: IForm) => {
   const { className, ...props } = data;
 
   const [formData, setFormData] = useState({
@@ -164,6 +164,8 @@ const LoginForm = (data: ILoginForm) => {
         <div className="grid gap-6">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
+            <div className="relative">
+            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               id="email"
               type="email"
@@ -172,6 +174,7 @@ const LoginForm = (data: ILoginForm) => {
               onChange={handleInputChange("email")}
               onBlur={handleBlur("email")}
               className={cn(
+                "pl-9",
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -181,6 +184,7 @@ const LoginForm = (data: ILoginForm) => {
                 errors.email && touched.email ? "email-error" : undefined
               }
             />
+            </div>
             {errors.email && touched.email && (
               <p
                 id="email-error"
@@ -191,6 +195,8 @@ const LoginForm = (data: ILoginForm) => {
               </p>
             )}
           </div>
+
+
           <div className="grid gap-2">
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
@@ -202,6 +208,7 @@ const LoginForm = (data: ILoginForm) => {
               </a>
             </div>
             <div className="relative">
+            <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -209,6 +216,7 @@ const LoginForm = (data: ILoginForm) => {
                 onChange={handleInputChange("password")}
                 onBlur={handleBlur("password")}
                 className={cn(
+                  "pl-9",
                   "pr-10",
                   errors.password &&
                     touched.password &&
@@ -223,6 +231,7 @@ const LoginForm = (data: ILoginForm) => {
                     : undefined
                 }
               />
+            
               <Button
                 type="button"
                 variant="ghost"
@@ -282,6 +291,7 @@ const LoginForm = (data: ILoginForm) => {
                 )}
               </div>
             )}
+            
 
             {errors.password && touched.password && (
               <p

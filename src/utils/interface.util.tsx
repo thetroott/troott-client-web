@@ -149,7 +149,7 @@ export interface IIconButton {
   };
 }
 
-export interface ILoginForm extends React.ComponentProps<"form"> {
+export interface IForm extends React.ComponentProps<"form"> {
   className?: string;
 }
 
@@ -164,4 +164,9 @@ export interface ILoginrFormErrors {
   email?: string
   password?: string
 }
+
+export interface IOtpFormErrors {
+  otp?: string
+}
+
 

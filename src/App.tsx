@@ -6,6 +6,7 @@ import Preview from "./screens/Preview";
 import Login from "./screens/auth/Login";
 import Register from "./screens/auth/Register";
 import Home from "./screens/home/Home";
+import Verification from "./screens/auth/Verification";
 
 const App = () => {
   const errorHandler = (err: any, info: any) => {
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/preview" element={<Preview />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/verify-otp" element={<Verification />} />
           </Routes>
         </ErrorBoundary>
       </Suspense>

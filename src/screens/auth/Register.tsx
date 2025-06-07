@@ -1,18 +1,15 @@
-import RegisterForm from "@/components/layouts/RegisterFrom";
-import { GalleryVerticalEnd } from "lucide-react";
+import RegisterForm from "@/components/layouts/RegisterForm";
+import { TroottLogo } from "@/components/ui/troot-logo";
 
 const Register = () => {
- 
-
-  return (<>
-
-  
-<div className="grid min-h-svh lg:grid-cols-2">
+  return (
+    <>
+      <div className="grid min-h-svh lg:grid-cols-2">
         <div className="flex flex-col gap-4 p-6 md:p-10">
           <div className="flex justify-center gap-2 md:justify-start">
             <a href="/" className="flex items-center gap-2 font-medium">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                <GalleryVerticalEnd className="size-4" />
+                <TroottLogo className="size-4" />
               </div>
               troott
             </a>
@@ -31,11 +28,8 @@ const Register = () => {
           />
         </div>
       </div>
-  
-  </>
+    </>
   );
 };
 
 export default Register;
-
-        

@@ -5,6 +5,7 @@ import type { IForm, IOtpFormErrors } from "@/utils/interface.util"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner";
 
 const OtpForm = (data: IForm) => {
     const { className, ...props } = data;
@@ -88,9 +89,11 @@ const OtpForm = (data: IForm) => {
         console.log("Verifying OTP:", otp.join(""))
   
         // Handle successful verification here
-        alert("OTP verified successfully!")
+        toast.success("OTP verified successfully!")
       } catch (error) {
         console.error("OTP verification failed:", error)
+        
+        toast.error("Verification failed. Please check your code and try again.")
       } finally {
         setIsSubmitting(false)
       }
@@ -118,10 +121,7 @@ const OtpForm = (data: IForm) => {
   
     return (
       <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Enter verification code</h1>
-          <p className="text-balance text-sm text-muted-foreground">We sent a 6-digit code to your email address</p>
-        </div>
+
         <div className="grid gap-6">
           <div className="grid gap-2">
             <Label htmlFor="otp-0">Verification Code</Label>

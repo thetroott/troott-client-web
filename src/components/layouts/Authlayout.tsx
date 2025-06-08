@@ -1,19 +1,8 @@
-import type React from "react"
 import { TroottLogo } from "../ui/troot-logo"
 import { Copyright } from "../ui/copyright"
+import type { IAuthLayout } from "@/utils/interface.util"
 
 
-
-interface IAuthLayout {
-  children: React.ReactNode
-  title?: string
-  description?: string
-  showLogo?: boolean
-  showCopyright?: boolean
-  maxWidth?: "xs" | "sm" | "md" | "lg"
-  backgroundImage?: string
-  className?: string
-}
 
 export function AuthLayout(data: IAuthLayout) {
 
@@ -26,6 +15,7 @@ export function AuthLayout(data: IAuthLayout) {
         maxWidth = "xs",
         backgroundImage = "/placeholder.svg",
         className = "",
+        hideHeaderOnSuccess = false,
       } = data
 
   const maxWidthClasses = {
@@ -51,7 +41,7 @@ export function AuthLayout(data: IAuthLayout) {
 
         <div className="flex flex-1 items-center justify-center">
           <div className={`w-full ${maxWidthClasses[maxWidth]}`}>
-            {(title || description) && (
+            {(title || description) && !hideHeaderOnSuccess  && (
               <div className="flex flex-col items-center gap-2 text-center mb-6">
                 {title && <h1 className="text-2xl font-bold">{title}</h1>}
                 {description && <p className="text-balance text-sm text-muted-foreground">{description}</p>}

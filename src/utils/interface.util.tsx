@@ -151,6 +151,20 @@ export interface IIconButton {
 
 export interface IForm extends React.ComponentProps<"form"> {
   className?: string;
+  onStepChange?: (step: "email" | "otp" | "success") => void
+  onSuccess?: () => void
+
+}
+export interface IAuthLayout {
+  children: React.ReactNode
+  title?: string
+  description?: string
+  showLogo?: boolean
+  showCopyright?: boolean
+  maxWidth?: "xs" | "sm" | "md" | "lg"
+  backgroundImage?: string
+  className?: string
+  hideHeaderOnSuccess?: boolean
 }
 
 export interface IRegisterFormErrors {
@@ -167,6 +181,21 @@ export interface ILoginrFormErrors {
 
 export interface IOtpFormErrors {
   otp?: string;
+}
+
+export interface IForgotPwdFormErrors {
+  email?: string;
+  otp?: string;
+}
+export interface IResetPwdFormErrors {
+  password?: string;
+  confirmPassword?: string;
+}
+
+export interface IChangePwdFormErrors {
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
 }
 
 export interface ICopyright {

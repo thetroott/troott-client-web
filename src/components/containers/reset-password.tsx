@@ -7,13 +7,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Lock } from "lucide-react"
+import type { IForm } from "@/utils/interface.util"
 
 interface FormErrors {
   password?: string
   confirmPassword?: string
 }
 
-export function ResetPasswordForm({ className, ...props }: React.ComponentPropsWithoutRef<"form">) {
+function ResetPasswordForm(data: IForm) {
+  
+  const { className, onSuccess, ...props } = data
+
+  const [step, setStep] = useState<"form" | "success">("form")
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -27,6 +32,52 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    feedback: [] as string[],
+    label: "Very Weak",
+  })
+
+  const calculatePasswordStrength = (password: string) => {
+    let score = 0
+    const feedback: string[] = []
+
+    if (password.length >= 8) {
+      score += 1
+    } else {
+      feedback.push("At least 8 characters")
+    }
+
+    if (/[a-z]/.test(password)) {
+      score += 1
+    } else {
+      feedback.push("One lowercase letter")
+    }
+
+    if (/[A-Z]/.test(password)) {
+      score += 1
+    } else {
+      feedback.push("One uppercase letter")
+    }
+
+    if (/[0-9]/.test(password)) {
+      score += 1
+    } else {
+      feedback.push("One number")
+    }
+
+    if (/[^a-zA-Z0-9]/.test(password)) {
+      score += 1
+    } else {
+      feedback.push("One special character")
+    }
+
+    const labels = ["Very Weak", "Weak", "Fair", "Good", "Strong"]
+    const label = labels[Math.min(score, 4)]
+
+    return { score, feedback, label }
+  }
+
   const validatePassword = (password: string): string | undefined => {
     if (!password) return "Password is required"
     if (password.length < 8) return "Password must be at least 8 characters"
@@ -39,6 +90,25 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
     return undefined
   }
 
+  
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setFormData((prev) => ({ ...prev, password: value }))
+    setPasswordStrength(calculatePasswordStrength(value))
+
+    if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }))
+    if (errors.confirmPassword && formData.confirmPassword) {
+      const confirmError = validateConfirmPassword(value, formData.confirmPassword)
+      if (!confirmError) setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
+    }
+  }
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setFormData((prev) => ({ ...prev, confirmPassword: value }))
+
+    if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setTouched({ password: true, confirmPassword: true })
@@ -61,11 +131,42 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
       await new Promise((resolve) => setTimeout(resolve, 2000))
       console.log("Password reset successful")
       // Redirect to login or show success message
+      setStep("success")
+      onSuccess?.()
     } catch (error) {
       console.error("Failed to reset password:", error)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  
+  if (step === "success") {
+    return (
+      <div className={cn("flex flex-col gap-6 text-center", className)}>
+        <div className="flex flex-col gap-2">
+          <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <svg
+              className="w-6 h-6 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-semibold">Password updated!</h2>
+          <p className="text-sm text-muted-foreground">
+            Your password has been successfully updated. You can now sign in with your new password.
+          </p>
+        </div>
+
+        <Button onClick={() => (window.location.href = "/login")} className="w-full">
+          Continue to login
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -78,10 +179,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
             id="password"
             type={showPassword ? "text" : "password"}
             value={formData.password}
-            onChange={(e) => {
-              setFormData((prev) => ({ ...prev, password: e.target.value }))
-              if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }))
-            }}
+            onChange={handlePasswordChange}
             className={cn(
               "pl-10 pr-10",
               errors.password && touched.password && "border-destructive focus-visible:ring-destructive",
@@ -104,6 +202,50 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
             )}
           </Button>
         </div>
+
+           {/* Password Strength Indicator */}
+           {formData.password && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className={cn(
+                    "h-full transition-all duration-300 rounded-full",
+                    passwordStrength.score === 0 && "w-0",
+                    passwordStrength.score === 1 && "w-1/5 bg-red-500",
+                    passwordStrength.score === 2 && "w-2/5 bg-orange-500",
+                    passwordStrength.score === 3 && "w-3/5 bg-yellow-500",
+                    passwordStrength.score === 4 && "w-4/5 bg-blue-500",
+                    passwordStrength.score === 5 && "w-full bg-green-500",
+                  )}
+                />
+              </div>
+              <span
+                className={cn(
+                  "text-xs font-medium",
+                  passwordStrength.score <= 1 && "text-red-500",
+                  passwordStrength.score === 2 && "text-orange-500",
+                  passwordStrength.score === 3 && "text-yellow-600",
+                  passwordStrength.score === 4 && "text-blue-500",
+                  passwordStrength.score === 5 && "text-green-500",
+                )}
+              >
+                {passwordStrength.label}
+              </span>
+            </div>
+
+            {passwordStrength.feedback.length > 0 && (
+              <div className="text-xs text-muted-foreground">
+                <p className="mb-1">Password needs:</p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  {passwordStrength.feedback.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
         {errors.password && touched.password && (
           <p id="password-error" className="text-sm text-destructive" role="alert">
             {errors.password}
@@ -119,10 +261,7 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
-            onChange={(e) => {
-              setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))
-              if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
-            }}
+            onChange={handleConfirmPasswordChange}
             className={cn(
               "pl-10 pr-10",
               errors.confirmPassword && touched.confirmPassword && "border-destructive focus-visible:ring-destructive",
@@ -165,3 +304,5 @@ export function ResetPasswordForm({ className, ...props }: React.ComponentPropsW
     </form>
   )
 }
+
+export default ResetPasswordForm

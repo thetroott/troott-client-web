@@ -155,12 +155,6 @@ const LoginForm = (data: IForm) => {
         onSubmit={handleSubmit}
         {...props}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
-          <p className="text-balance text-sm text-muted-foreground">
-            Enter your email below to login to your account
-          </p>
-        </div>
         <div className="grid gap-6">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>

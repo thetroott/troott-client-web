@@ -169,6 +169,7 @@ const LoginForm = (data: IForm) => {
               onBlur={handleBlur("email")}
               className={cn(
                 "pl-9",
+                "pr-10",  
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -201,6 +202,7 @@ const LoginForm = (data: IForm) => {
                 Forgot your password?
               </a>
             </div>
+
             <div className="relative">
             <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input

@@ -181,8 +181,8 @@ const RegisterForm = (data: IForm) => {
       {...props}
     >
       <div className="grid gap-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="grid gap-2">
+        <div className="grid grid-cols-2 gap-4 items-start">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="firstName">First name</Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -203,16 +203,15 @@ const RegisterForm = (data: IForm) => {
               />
               </div>
 
-              <div className="min-h-[20px]">
               {errors.firstName && touched.firstName && (
-                <p id="firstName-error" className="text-sm text-destructive mt-1" role="alert">
+                <p id="firstName-error" className="text-sm min-h-[20px] text-destructive mt-1" role="alert">
                   {errors.firstName}
                 </p>
               )}
-            </div>
+            
           </div>
 
-          <div className="grid gap-2">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="lastName">Last name</Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -232,13 +231,13 @@ const RegisterForm = (data: IForm) => {
                 aria-describedby={errors.lastName && touched.lastName ? "lastName-error" : undefined}
               />
               </div>
-              <div className="min-h-[20px]">
+              
               {errors.lastName && touched.lastName && (
-                <p id="lastName-error" className="text-sm text-destructive mt-1" role="alert">
+                <p id="lastName-error" className="text-sm min-h-[20px] text-destructive mt-1" role="alert">
                   {errors.lastName}
                 </p>
               )}
-            </div>
+            
           </div>
         </div>
 
@@ -255,6 +254,7 @@ const RegisterForm = (data: IForm) => {
               onBlur={handleBlur("email")}
               className={cn(
                 "pl-9",
+                "pr-10",
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -262,12 +262,13 @@ const RegisterForm = (data: IForm) => {
               aria-invalid={errors.email && touched.email ? "true" : "false"}
               aria-describedby={errors.email && touched.email ? "email-error" : undefined}
             />
-            {errors.email && touched.email && (
+            
+          </div>
+          {errors.email && touched.email && (
               <p id="email-error" className="text-sm text-destructive mt-1" role="alert">
                 {errors.email}
               </p>
             )}
-          </div>
         </div>
 
         <div className="grid gap-2">

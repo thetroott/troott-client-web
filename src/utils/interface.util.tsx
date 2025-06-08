@@ -151,9 +151,10 @@ export interface IIconButton {
 
 export interface IForm extends React.ComponentProps<"form"> {
   className?: string;
+  email?: string
   onStepChange?: (step: "email" | "otp" | "success") => void
   onSuccess?: () => void
-
+  onResend?: () => void
 }
 export interface IAuthLayout {
   children: React.ReactNode

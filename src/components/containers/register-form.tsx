@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { IForm, IRegisterFormErrors } from "@/utils/interface.util";
 import { useState } from "react";
-import { Eye, EyeOffIcon } from "lucide-react";
+import { Eye, EyeOffIcon, LockIcon, Mail, User } from "lucide-react";
 
 const RegisterForm = (data: IForm) => {
   const { className, ...props } = data;
@@ -30,15 +30,12 @@ const RegisterForm = (data: IForm) => {
     label: "Very Weak",
   });
 
-  const validateFirstName = (firstName: string): string | undefined => {
-    if (!firstName) return "First name is required";
-    if (firstName.length < 2) return "First name must be at least 2 characters";
-    return undefined;
-  };
-
-  const validateLastName = (lastName: string): string | undefined => {
-    if (!lastName) return "Last name is required";
-    if (lastName.length < 2) return "Last name must be at least 2 characters";
+  const validateName = (
+    name: string,
+    fieldName: string
+  ): string | undefined => {
+    if (!name) return `${fieldName} is required`;
+    if (name.length < 2) return `${fieldName} must be at least 4 characters`;
     return undefined;
   };
 
@@ -98,8 +95,8 @@ const RegisterForm = (data: IForm) => {
   const validateForm = (): boolean => {
     const newErrors: IRegisterFormErrors = {};
 
-    const firstNameError = validateFirstName(formData.firstName);
-    const lastNameError = validateLastName(formData.lastName);
+    const firstNameError = validateName(formData.firstName, "First Name");
+    const lastNameError = validateName(formData.lastName, "Last Name");
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
 
@@ -135,10 +132,10 @@ const RegisterForm = (data: IForm) => {
     // Validate field on blur
     const newErrors = { ...errors };
     if (field === "firstName") {
-      const firstNameError = validateFirstName(formData.firstName);
+      const firstNameError = validateName(formData.firstName, "First Name");
       if (firstNameError) newErrors.firstName = firstNameError;
     } else if (field === "lastName") {
-      const lastNameError = validateLastName(formData.lastName);
+      const lastNameError = validateName(formData.lastName, "Last Name");
       if (lastNameError) newErrors.lastName = lastNameError;
     } else if (field === "email") {
       const emailError = validateEmail(formData.email);
@@ -186,203 +183,200 @@ const RegisterForm = (data: IForm) => {
       <div className="grid gap-6">
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              type="text"
-              placeholder="John"
-              value={formData.firstName}
-              onChange={handleInputChange("firstName")}
-              onBlur={handleBlur("firstName")}
-              className={cn(
-                errors.firstName &&
-                  touched.firstName &&
-                  "border-destructive focus-visible:ring-destructive"
-              )}
-              aria-invalid={
-                errors.firstName && touched.firstName ? "true" : "false"
-              }
-              aria-describedby={
-                errors.firstName && touched.firstName
-                  ? "firstName-error"
-                  : undefined
-              }
-            />
-            {errors.firstName && touched.firstName && (
-              <p
-                id="firstName-error"
-                className="text-sm text-destructive"
-                role="alert"
-              >
-                {errors.firstName}
-              </p>
-            )}
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              type="text"
-              placeholder="Doe"
-              value={formData.lastName}
-              onChange={handleInputChange("lastName")}
-              onBlur={handleBlur("lastName")}
-              className={cn(
-                errors.lastName &&
-                  touched.lastName &&
-                  "border-destructive focus-visible:ring-destructive"
-              )}
-              aria-invalid={
-                errors.lastName && touched.lastName ? "true" : "false"
-              }
-              aria-describedby={
-                errors.lastName && touched.lastName
-                  ? "lastName-error"
-                  : undefined
-              }
-            />
-            {errors.lastName && touched.lastName && (
-              <p
-                id="lastName-error"
-                className="text-sm text-destructive"
-                role="alert"
-              >
-                {errors.lastName}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="m@example.com"
-            value={formData.email}
-            onChange={handleInputChange("email")}
-            onBlur={handleBlur("email")}
-            className={cn(
-              errors.email &&
-                touched.email &&
-                "border-destructive focus-visible:ring-destructive"
-            )}
-            aria-invalid={errors.email && touched.email ? "true" : "false"}
-            aria-describedby={
-              errors.email && touched.email ? "email-error" : undefined
-            }
-          />
-          {errors.email && touched.email && (
-            <p
-              id="email-error"
-              className="text-sm text-destructive"
-              role="alert"
-            >
-              {errors.email}
-            </p>
-          )}
-        </div>
-        <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="/forgot-password"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleInputChange("password")}
-              onBlur={handleBlur("password")}
-              className={cn(
-                "pr-10",
-                errors.password &&
-                  touched.password &&
-                  "border-destructive focus-visible:ring-destructive"
-              )}
-              aria-invalid={
-                errors.password && touched.password ? "true" : "false"
-              }
-              aria-describedby={
-                errors.password && touched.password
-                  ? "password-error"
-                  : undefined
-              }
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? (
-                <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <Eye className="h-4 w-4 text-muted-foreground" />
-              )}
-            </Button>
-          </div>
-
-          {/* Password Strength Indicator */}
-          {formData.password && (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className={cn(
-                      "h-full transition-all duration-300 rounded-full",
-                      passwordStrength.score === 0 && "w-0",
-                      passwordStrength.score === 1 && "w-1/5 bg-red-500",
-                      passwordStrength.score === 2 && "w-2/5 bg-orange-500",
-                      passwordStrength.score === 3 && "w-3/5 bg-yellow-500",
-                      passwordStrength.score === 4 && "w-4/5 bg-blue-500",
-                      passwordStrength.score === 5 && "w-full bg-green-500"
-                    )}
-                  />
-                </div>
-                <span
-                  className={cn(
-                    "text-xs font-medium",
-                    passwordStrength.score <= 1 && "text-red-500",
-                    passwordStrength.score === 2 && "text-orange-500",
-                    passwordStrength.score === 3 && "text-yellow-600",
-                    passwordStrength.score === 4 && "text-blue-500",
-                    passwordStrength.score === 5 && "text-green-500"
-                  )}
-                >
-                  {passwordStrength.label}
-                </span>
+            <Label htmlFor="firstName">First name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="firstName"
+                type="text"
+                value={formData.firstName}
+                onChange={handleInputChange("firstName")}
+                onBlur={handleBlur("firstName")}
+                className={cn(
+                  "pl-10",
+                  errors.firstName &&
+                    touched.firstName &&
+                    "border-destructive focus-visible:ring-destructive"
+                )}
+                aria-invalid={errors.firstName && touched.firstName ? "true" : "false"}
+                aria-describedby={errors.firstName && touched.firstName ? "firstName-error" : undefined}
+              />
               </div>
 
-              {passwordStrength.feedback.length > 0 && (
-                <div className="text-xs text-muted-foreground">
-                  <p className="mb-1">Password needs:</p>
-                  <ul className="list-disc list-inside space-y-0.5">
-                    {passwordStrength.feedback.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="min-h-[20px]">
+              {errors.firstName && touched.firstName && (
+                <p id="firstName-error" className="text-sm text-destructive mt-1" role="alert">
+                  {errors.firstName}
+                </p>
               )}
             </div>
-          )}
+          </div>
 
-          {errors.password && touched.password && (
-            <p
-              id="password-error"
-              className="text-sm text-destructive"
-              role="alert"
-            >
-              {errors.password}
-            </p>
-          )}
+          <div className="grid gap-2">
+            <Label htmlFor="lastName">Last name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="lastName"
+                type="text"
+                value={formData.lastName}
+                onChange={handleInputChange("lastName")}
+                onBlur={handleBlur("lastName")}
+                className={cn(
+                  "pl-10",
+                  errors.lastName &&
+                    touched.lastName &&
+                    "border-destructive focus-visible:ring-destructive"
+                )}
+                aria-invalid={errors.lastName && touched.lastName ? "true" : "false"}
+                aria-describedby={errors.lastName && touched.lastName ? "lastName-error" : undefined}
+              />
+              </div>
+              <div className="min-h-[20px]">
+              {errors.lastName && touched.lastName && (
+                <p id="lastName-error" className="text-sm text-destructive mt-1" role="alert">
+                  {errors.lastName}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email</Label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              value={formData.email}
+              onChange={handleInputChange("email")}
+              onBlur={handleBlur("email")}
+              className={cn(
+                "pl-9",
+                errors.email &&
+                  touched.email &&
+                  "border-destructive focus-visible:ring-destructive"
+              )}
+              aria-invalid={errors.email && touched.email ? "true" : "false"}
+              aria-describedby={errors.email && touched.email ? "email-error" : undefined}
+            />
+            {errors.email && touched.email && (
+              <p id="email-error" className="text-sm text-destructive mt-1" role="alert">
+                {errors.email}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid gap-2">
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <a
+                href="/forgot-password"
+                className="ml-auto text-sm underline-offset-4 hover:underline"
+              >
+                Forgot your password?
+              </a>
+            </div>
+            <div className="relative">
+            <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleInputChange("password")}
+                onBlur={handleBlur("password")}
+                className={cn(
+                  "pl-9",
+                  "pr-10",
+                  errors.password &&
+                    touched.password &&
+                    "border-destructive focus-visible:ring-destructive"
+                )}
+                aria-invalid={
+                  errors.password && touched.password ? "true" : "false"
+                }
+                aria-describedby={
+                  errors.password && touched.password
+                    ? "password-error"
+                    : undefined
+                }
+              />
+            
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
+              </Button>
+            </div>
+
+            {/* Password Strength Indicator */}
+            {formData.password && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full transition-all duration-300 rounded-full",
+                        passwordStrength.score === 0 && "w-0",
+                        passwordStrength.score === 1 && "w-1/5 bg-red-500",
+                        passwordStrength.score === 2 && "w-2/5 bg-orange-500",
+                        passwordStrength.score === 3 && "w-3/5 bg-yellow-500",
+                        passwordStrength.score === 4 && "w-4/5 bg-blue-500",
+                        passwordStrength.score === 5 && "w-full bg-green-500"
+                      )}
+                    />
+                  </div>
+                  <span
+                    className={cn(
+                      "text-xs font-medium",
+                      passwordStrength.score <= 1 && "text-red-500",
+                      passwordStrength.score === 2 && "text-orange-500",
+                      passwordStrength.score === 3 && "text-yellow-600",
+                      passwordStrength.score === 4 && "text-blue-500",
+                      passwordStrength.score === 5 && "text-green-500"
+                    )}
+                  >
+                    {passwordStrength.label}
+                  </span>
+                </div>
+
+                {passwordStrength.feedback.length > 0 && (
+                  <div className="text-xs text-muted-foreground">
+                    <p className="mb-1">Password needs:</p>
+                    <ul className="list-disc list-inside space-y-0.5">
+                      {passwordStrength.feedback.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+            
+
+            {errors.password && touched.password && (
+              <p
+                id="password-error"
+                className="text-sm text-destructive"
+                role="alert"
+              >
+                {errors.password}
+              </p>
+            )}
+          </div>
+          
         <Button
           type="submit"
           className="w-full"

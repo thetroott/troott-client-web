@@ -1,11 +1,21 @@
-
+import ResetPasswordForm from "@/components/containers/reset-password";
+import { AuthLayout } from "@/components/layouts/Authlayout";
+import { useState } from "react";
 
 const ResetPassword = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  const [showSuccess, setShowSuccess] = useState(false);
 
-export default ResetPassword
+  return (
+    <>
+      <AuthLayout
+        title={showSuccess ? "" : "Reset your password"}
+        description={showSuccess ? "" : "Enter your new password below"}
+        hideHeaderOnSuccess={showSuccess}
+      >
+        <ResetPasswordForm onSuccess={() => setShowSuccess(true)} />
+      </AuthLayout>
+    </>
+  );
+};
+
+export default ResetPassword;

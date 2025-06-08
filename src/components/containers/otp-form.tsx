@@ -5,14 +5,16 @@ import type { IForm, IOtpFormErrors } from "@/utils/interface.util"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner";
 
 const OtpForm = (data: IForm) => {
-    const { className, ...props } = data;
+    const { className, email, onSuccess, onResend, ...props } = data;
 
     const [otp, setOtp] = useState(["", "", "", "", "", ""])
     const [errors, setErrors] = useState<IOtpFormErrors>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [touched, setTouched] = useState(false)
+    const [resendCountdown, setResendCountdown] = useState(0)
   
     const otpRefs = useRef<(HTMLInputElement | null)[]>([])
   
@@ -23,35 +25,81 @@ const OtpForm = (data: IForm) => {
       if (!/^\d+$/.test(otpString)) return "OTP must contain only numbers"
       return undefined
     }
+
+    
+  const maskEmail = (email: string): string => {
+    if (!email) return ""
+    const [localPart, domain] = email.split("@")
+    if (localPart.length <= 2) return email
+    const maskedLocal = localPart[0] + "*".repeat(localPart.length - 2) + localPart[localPart.length - 1]
+    return `${maskedLocal}@${domain}`
+  }
+
+  const startResendCountdown = () => {
+    setResendCountdown(60)
+    const timer = setInterval(() => {
+      setResendCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }
   
-    const validateForm = (): boolean => {
-      const otpError = validateOTP(otp)
-      if (otpError) {
-        setErrors({ otp: otpError })
-        return false
-      }
+
+  
+  const handleOTPChange = (index: number, value: string) => {
+    // Only allow single digit
+    if (value.length > 1) return
+
+    const newOtp = [...otp]
+    newOtp[index] = value
+    setOtp(newOtp)
+
+    // Clear error when user starts typing
+    if (errors.otp) {
       setErrors({})
-      return true
     }
-  
-    const handleOTPChange = (index: number, value: string) => {
-      // Only allow single digit
-      if (value.length > 1) return
-  
-      const newOtp = [...otp]
-      newOtp[index] = value
-      setOtp(newOtp)
-  
-      // Clear error when user starts typing
-      if (errors.otp) {
-        setErrors({})
-      }
-  
-      // Auto-focus next input
-      if (value && index < 5) {
-        otpRefs.current[index + 1]?.focus()
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      otpRefs.current[index + 1]?.focus()
+    }
+
+    // Auto-submit when all fields are filled
+    if (value && index === 5) {
+      const fullOtp = [...newOtp]
+      if (fullOtp.every((digit) => digit !== "")) {
+        // Use setTimeout to ensure state is updated and avoid validation errors
+        setTimeout(() => {
+          setTouched(true)
+
+          const otpError = validateOTP(fullOtp)
+          if (!otpError) {
+            setErrors({})
+            setIsSubmitting(true)
+
+            // Simulate API call to verify OTP
+            setTimeout(async () => {
+              try {
+                await new Promise((resolve) => setTimeout(resolve, 2000))
+                console.log("OTP verified:", fullOtp.join(""))
+                onSuccess?.()
+              } catch (error) {
+                console.error("OTP verification failed:", error)
+              } finally {
+                setIsSubmitting(false)
+              }
+            }, 0)
+          } else {
+            setErrors({ otp: otpError })
+          }
+        }, 100)
       }
     }
+  }
   
     const handleOTPKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
       // Handle backspace
@@ -70,6 +118,32 @@ const OtpForm = (data: IForm) => {
   
         // Focus the last input
         otpRefs.current[5]?.focus()
+  
+        // Auto-submit after paste
+        setTimeout(() => {
+          setTouched(true)
+  
+          const otpError = validateOTP(newOtp)
+          if (!otpError) {
+            setErrors({})
+            setIsSubmitting(true)
+  
+            // Simulate API call to verify OTP
+            setTimeout(async () => {
+              try {
+                await new Promise((resolve) => setTimeout(resolve, 2000))
+                console.log("OTP verified:", newOtp.join(""))
+                onSuccess?.()
+              } catch (error) {
+                console.error("OTP verification failed:", error)
+              } finally {
+                setIsSubmitting(false)
+              }
+            }, 0)
+          } else {
+            setErrors({ otp: otpError })
+          }
+        }, 100)
       }
     }
   
@@ -78,7 +152,13 @@ const OtpForm = (data: IForm) => {
   
       setTouched(true)
   
-      if (!validateForm()) return
+      const otpError = validateOTP(otp)
+      if (otpError) {
+        setErrors({ otp: otpError })
+        return
+      }
+  
+      setErrors({})
   
       setIsSubmitting(true)
   
@@ -88,9 +168,11 @@ const OtpForm = (data: IForm) => {
         console.log("Verifying OTP:", otp.join(""))
   
         // Handle successful verification here
-        alert("OTP verified successfully!")
+        toast.success("OTP verified successfully!")
       } catch (error) {
         console.error("OTP verification failed:", error)
+        
+        toast.error("Verification failed. Please check your code and try again.")
       } finally {
         setIsSubmitting(false)
       }
@@ -108,7 +190,9 @@ const OtpForm = (data: IForm) => {
         setOtp(["", "", "", "", "", ""])
         setErrors({})
         setTouched(false)
+        startResendCountdown()
         otpRefs.current[0]?.focus()
+        onResend?.()
       } catch (error) {
         console.error("Failed to resend OTP:", error)
       } finally {
@@ -118,11 +202,14 @@ const OtpForm = (data: IForm) => {
   
     return (
       <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Enter verification code</h1>
-          <p className="text-balance text-sm text-muted-foreground">We sent a 6-digit code to your email address</p>
-        </div>
+
         <div className="grid gap-6">
+        {email && (
+          <div className="text-center text-sm text-muted-foreground">
+            <p>We sent a verification code to</p>
+            <p className="font-medium text-foreground">{maskEmail(email)}</p>
+          </div>
+        )}
           <div className="grid gap-2">
             <Label htmlFor="otp-0">Verification Code</Label>
             <div className="flex gap-2 justify-center">
@@ -160,6 +247,9 @@ const OtpForm = (data: IForm) => {
           <div className="text-center text-sm text-muted-foreground">
             <p>
               Didn't receive the code?{" "}
+              {resendCountdown > 0 ? (
+              <span>Resend in {resendCountdown}s</span>
+            ) : (
               <button
                 type="button"
                 onClick={handleResendOTP}
@@ -168,6 +258,7 @@ const OtpForm = (data: IForm) => {
               >
                 Resend code
               </button>
+            )}
             </p>
           </div>
   

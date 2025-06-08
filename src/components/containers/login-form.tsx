@@ -155,12 +155,6 @@ const LoginForm = (data: IForm) => {
         onSubmit={handleSubmit}
         {...props}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
-          <p className="text-balance text-sm text-muted-foreground">
-            Enter your email below to login to your account
-          </p>
-        </div>
         <div className="grid gap-6">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
@@ -175,6 +169,7 @@ const LoginForm = (data: IForm) => {
               onBlur={handleBlur("email")}
               className={cn(
                 "pl-9",
+                "pr-10",  
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -201,12 +196,13 @@ const LoginForm = (data: IForm) => {
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
               <a
-                href="#"
+                href="/forgot-password"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
                 Forgot your password?
               </a>
             </div>
+
             <div className="relative">
             <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -303,6 +299,7 @@ const LoginForm = (data: IForm) => {
               </p>
             )}
           </div>
+          
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Signing in..." : "Login"}
           </Button>

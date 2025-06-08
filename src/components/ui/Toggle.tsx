@@ -10,7 +10,7 @@ import { useAppContext } from "@/context/app.context";
 
 
 const ThemeToggle = () => {
-  const { state, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
 
   const setTheme = (theme: "light" | "dark" | "system") => {
     dispatch({ type: "SET_THEME", payload: theme });

@@ -1,4 +1,4 @@
-import {  OTPForm } from "@/components/layouts/Test";
+import {  OTPForm } from "@/components/containers/Test";
 
 const Preview = () => {
   

@@ -40,16 +40,16 @@ export interface ITextInput {
   error?: boolean;
   helperText?: string;
   value?: string;
-  color?: "primary" | "secondary"; 
+  color?: "primary" | "secondary";
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  variant?: "standard" | "outlined"; 
+  variant?: "standard" | "outlined";
   label?: string;
-  fullWidth?: boolean; 
+  fullWidth?: boolean;
   disabled?: boolean;
   autoFocus?: boolean;
   borderRadius?: string;
-  iconPosition?: "left" | "right"; 
+  iconPosition?: "left" | "right";
 }
 
 export interface IPasswordInput {
@@ -75,7 +75,7 @@ export interface IPasswordInput {
   value?: string;
   label?: string;
   style?: React.CSSProperties;
-  textColor?: string;   
+  textColor?: string;
   fontSize?: string;
   borderColor?: string;
 }
@@ -154,19 +154,23 @@ export interface IForm extends React.ComponentProps<"form"> {
 }
 
 export interface IRegisterFormErrors {
-  firstName?: string
-  lastName?: string
-  email?: string
-  password?: string
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
 }
 
 export interface ILoginrFormErrors {
-  email?: string
-  password?: string
+  email?: string;
+  password?: string;
 }
 
 export interface IOtpFormErrors {
-  otp?: string
+  otp?: string;
 }
 
-
+export interface ICopyright {
+  year?: number;
+  company?: string;
+  className?: string;
+}

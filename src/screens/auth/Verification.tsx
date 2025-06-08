@@ -1,4 +1,4 @@
-import OtpForm from "@/components/layouts/OtpForm"
+import OtpForm from "@/components/containers/OtpForm"
 import { GalleryVerticalEnd } from "lucide-react"
 
 

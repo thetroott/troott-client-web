@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/layouts/RegisterForm";
+import RegisterForm from "@/components/containers/RegisterForm";
 import { TroottLogo } from "@/components/ui/troot-logo";
 
 const Register = () => {

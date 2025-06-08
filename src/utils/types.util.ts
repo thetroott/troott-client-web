@@ -7,4 +7,9 @@ export type RouteType = {
     element: JSX.Element;
     roles?: string[];
   };
-  
+
+  export interface IFallbackandError {
+    element: JSX.Element
+    fallbackUI?: React.ReactNode;
+    errorUI?: React.ReactNode; 
+  }

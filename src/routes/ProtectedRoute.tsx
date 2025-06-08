@@ -27,8 +27,7 @@
 
 // export default ProtectedRoute;
 import React from "react";
-import { Navigate } from "react-router-dom";
-//import { useAuth } from "../hooks/useAuth"; // Your auth hook
+
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -37,7 +36,7 @@ interface ProtectedRouteProps {
 
 
 
-const ProtectedRoute = ({ children, roles }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   //const { user, loading } = useAuth();
 
   // if (loading) {

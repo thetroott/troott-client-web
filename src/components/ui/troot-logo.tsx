@@ -8,7 +8,7 @@ export const TroottLogo: React.FC<Omit<TroottLogoProps, "src" | "alt">> = (props
 
     const { state } = useAppContext()
 
-    const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+    const [,setResolvedTheme ] = useState<"light" | "dark">("light");
 
     useEffect(() => {
       const getSystemTheme = () =>

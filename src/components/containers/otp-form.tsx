@@ -262,7 +262,7 @@ const OtpForm = (data: IForm) => {
             </p>
           </div>
   
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
             {isSubmitting ? "Verifying..." : "Verify code"}
           </Button>
         </div>

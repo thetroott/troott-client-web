@@ -181,7 +181,7 @@ function ResetPasswordForm(data: IForm) {
             value={formData.password}
             onChange={handlePasswordChange}
             className={cn(
-              "pl-10 pr-10",
+              "pl-10 pr-10 h-12",
               errors.password && touched.password && "border-destructive focus-visible:ring-destructive",
             )}
             aria-invalid={errors.password && touched.password ? "true" : "false"}
@@ -263,7 +263,7 @@ function ResetPasswordForm(data: IForm) {
             value={formData.confirmPassword}
             onChange={handleConfirmPasswordChange}
             className={cn(
-              "pl-10 pr-10",
+              "pl-10 pr-10 h-12",
               errors.confirmPassword && touched.confirmPassword && "border-destructive focus-visible:ring-destructive",
             )}
             aria-invalid={errors.confirmPassword && touched.confirmPassword ? "true" : "false"}
@@ -273,7 +273,7 @@ function ResetPasswordForm(data: IForm) {
             type="button"
             variant="ghost"
             size="sm"
-            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+            className="absolute  right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             aria-label={showConfirmPassword ? "Hide password" : "Show password"}
           >
@@ -291,7 +291,7 @@ function ResetPasswordForm(data: IForm) {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-ful l h-12" disabled={isSubmitting}>
         {isSubmitting ? "Resetting..." : "Reset password"}
       </Button>
 

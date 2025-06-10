@@ -263,6 +263,7 @@ function ForgotPasswordForm(data: IForm) {
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+            
               id="email"
               type="email"
               placeholder="m@example.com"
@@ -270,6 +271,7 @@ function ForgotPasswordForm(data: IForm) {
               onChange={handleEmailChange}
               className={cn(
                 "pl-10",
+                "h-12",
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -291,7 +293,7 @@ function ForgotPasswordForm(data: IForm) {
           )}
         </div>
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
           {isSubmitting ? "Sending..." : "Request OTP"}
         </Button>
 

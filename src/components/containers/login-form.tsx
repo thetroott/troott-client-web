@@ -169,7 +169,11 @@ const LoginForm = (data: IForm) => {
               onBlur={handleBlur("email")}
               className={cn(
                 "pl-9",
-                "pr-10",  
+                "pr-10", 
+                "h-12" ,
+                "focus-visible:ring-2",           // enable ring on focus
+                "focus-visible:ring-teal-400", 
+                "focus-visible:outline-none",    
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -214,6 +218,7 @@ const LoginForm = (data: IForm) => {
                 className={cn(
                   "pl-9",
                   "pr-10",
+                  "h-12" ,
                   errors.password &&
                     touched.password &&
                     "border-destructive focus-visible:ring-destructive"
@@ -248,7 +253,7 @@ const LoginForm = (data: IForm) => {
             {formData.password && (
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="flex-1 h-2 bg-muted  rounded-full overflow-hidden">
                     <div
                       className={cn(
                         "h-full transition-all duration-300 rounded-full",
@@ -300,7 +305,7 @@ const LoginForm = (data: IForm) => {
             )}
           </div>
           
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full h-12 md:h-28" disabled={isSubmitting}>
             {isSubmitting ? "Signing in..." : "Login"}
           </Button>
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

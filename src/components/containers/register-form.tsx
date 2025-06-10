@@ -194,6 +194,7 @@ const RegisterForm = (data: IForm) => {
                 onBlur={handleBlur("firstName")}
                 className={cn(
                   "pl-10",
+                  "h-12" ,              
                   errors.firstName &&
                     touched.firstName &&
                     "border-destructive focus-visible:ring-destructive"
@@ -223,6 +224,7 @@ const RegisterForm = (data: IForm) => {
                 onBlur={handleBlur("lastName")}
                 className={cn(
                   "pl-10",
+                  "h-12" ,
                   errors.lastName &&
                     touched.lastName &&
                     "border-destructive focus-visible:ring-destructive"
@@ -255,6 +257,7 @@ const RegisterForm = (data: IForm) => {
               className={cn(
                 "pl-9",
                 "pr-10",
+                "h-12" ,
                 errors.email &&
                   touched.email &&
                   "border-destructive focus-visible:ring-destructive"
@@ -292,6 +295,7 @@ const RegisterForm = (data: IForm) => {
                 className={cn(
                   "pl-9",
                   "pr-10",
+                  "h-12" ,
                   errors.password &&
                     touched.password &&
                     "border-destructive focus-visible:ring-destructive"
@@ -380,7 +384,7 @@ const RegisterForm = (data: IForm) => {
           
         <Button
           type="submit"
-          className="w-full"
+          className="w-full h-12"
           disabled={isSubmitting}
           onClick={() => (window.location.href = "/verify-otp")}
         >

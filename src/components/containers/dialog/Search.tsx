@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useId } from "react";
-import { SidebarInput } from "@/components/ui/sidebar";
+import { SidebarInput, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import {
   ArrowUpRightIcon,
@@ -45,6 +45,24 @@ export function SearchForm(data: ISearchForm) {
     <form {...props}>
       <SidebarGroup className="py-0">
         <SidebarGroupContent className="relative">
+        <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+            
+            // tooltip={{
+            //   children: "Search",
+            //   hidden: false,
+            // }}
+          >
+           
+          </SidebarMenuButton>
+
+        </SidebarMenuItem>
+        </SidebarMenu>
+        
+
           <div className="relative w-full group-data-[collapsible=icon]:hidden">
             <SidebarInput
               id={id}
@@ -63,7 +81,7 @@ export function SearchForm(data: ISearchForm) {
             </div>
           </div>
 
-          <div className="hidden group-data-[collapsible=icon]:flex items-center justify-center">
+          <div className="hidden group-data-[collapsible=icon]:flex w-6 items-center justify-center">
             <button
               type="button"
               onClick={() => setOpen(true)}

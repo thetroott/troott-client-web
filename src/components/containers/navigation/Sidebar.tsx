@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { SearchForm } from "../dialog/Search.tsx";
 import { Link, useLocation } from "react-router-dom";
+import { Separator } from "@/components/ui/separator.tsx";
 
 
 interface ISideBar {
@@ -62,6 +63,7 @@ const AppSidebar = (data: ISideBar) => {
                         asChild
                         className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
                         data-active={isActive}
+                        tooltip={item.title}
                       >
                         <Link to={item.url}>
                           {item.icon && (
@@ -82,9 +84,10 @@ const AppSidebar = (data: ISideBar) => {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      
+      <Separator orientation="horizontal" className="mr-2 h-4" />
 
       <SidebarFooter>
-        <hr className="border-t border-border mx-2 -mt-px" />
         <SidebarMenu className="font-medium gap-3 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto">
           {navFooterItems.map((item) => (
             <SidebarMenuItem key={item.title}>

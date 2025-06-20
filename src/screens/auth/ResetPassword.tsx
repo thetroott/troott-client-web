@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/components/containers/reset-password";
+import ResetPasswordForm from "@/components/containers/auth/reset-password";
 import { AuthLayout } from "@/components/layouts/Authlayout";
 import { useState } from "react";
 

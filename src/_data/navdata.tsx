@@ -1,61 +1,68 @@
 import { Home, Inbox, LogOut, PhoneIcon } from "lucide-react";
 
-// export const navItems = {
-//  mainNav: [
-//   {
-//     title: "Main",
-//     url: "#",
-//     items: [
-//       {
-//         title: "Dashboard",
-//         url: "#",
-//         icon: Home,
-//       },
-//       {
-//         title: "Upload Sermon",
-//         url: "#",
-//         icon: Inbox,
-//       },
-//     ],
-//   },
-//  ],
-//  sermonNav: [
-//   {
-//     title: "Sermon Management",
-//     url: "#",
-//     items: [
-//       {
-//         title: "My Sermon",
-//         url: "#",
-//         icon: Home,
-//       },
-//       {
-//         title: "Series",
-//         url: "#",
-//         icon: Inbox,
-//       },
-//     ],
-//   },
-//  ],
-//  engagementNav: [
-//   {
-//     title: "Engagement & Analytics",
-//     url: "#",
-//     items: [
-//       {
-//         title: "Sermon Analytics",
-//         url: "#",
-//         icon: Home,
-//       },
-//       {
-//         title: "Comments & Feedback",
-//         url: "#",
-//         icon: Inbox,
-//       },
-//     ],
-//   },
-//  ];
-// };
+export const navItems = {
+ mainNav: [
+  {
+    title: "Main",
+    url: "#",
+    roles: ["staff", "preacher"],
+    items: [
+      {
+        title: "Dashboard",
+        url: "#",
+        icon: Home,
+        isActive: true,
+      },
+      {
+        title: "Upload Sermon",
+        url: "upload-sermon",
+        icon: Inbox,
+      },
+    ],
+  },
+ ],
+ sermonNav: [
+  {
+    title: "Sermon Management",
+    roles: ["staff", "preacher"],
+    url: "#",
+    items: [
+      {
+        title: "My Sermon",
+        url: "get-sermons",
+        icon: Home,
+      },
+      {
+        title: "Series",
+        url: "#",
+        icon: Inbox,
+      },
+    ],
+  },
+ ],
+ engagementNav: [
+  {
+    title: "Engagement & Analytics",
+    url: "#",
+    roles: ["staff", "preacher"],
+    items: [
+      {
+        title: "Sermon Analytics",
+        url: "#",
+        icon: Home,
+      },
+      {
+        title: "Comments & Feedback",
+        url: "#",
+        icon: Inbox,
+      },
+    ],
+  },
+ ]
+};
+
+
+
 
 export const navMainItems = {
   title: "Main",
@@ -113,11 +120,6 @@ export const navDataItems = {
   ],
 };
 
-export const navItems = {
-  mainNav: navMainItems,
-  sermonNav: navSermonItems,
-  engagementNav: navDataItems,
-}
 
 export const navFooterItems = [
   {

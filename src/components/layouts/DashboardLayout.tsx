@@ -7,7 +7,7 @@ const DashboardLayout = () => {
     
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar userRole="preacher" />
       <main>
         <SidebarTrigger />
         <Outlet />

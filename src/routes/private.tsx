@@ -58,7 +58,7 @@ export const privateRoutes = [
         roles: ["admin", "staff", "preacher"],
       },
       {
-        path: "my-trash",
+        path: "/my-trash",
         element: <Trash />,
         roles: ["admin", "staff", "preacher"],
       },

@@ -1,4 +1,4 @@
-import { navFooterItems, navItems } from "@/_data/navdata";
+import React from "react";import { navFooterItems, navItems } from "@/_data/navdata";
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +14,7 @@ import {
 import { SearchForm } from "../dialog/Search.tsx";
 import { Link, useLocation } from "react-router-dom";
 
+
 interface ISideBar {
   userRole: "admin" | "staff" | "preacher";
   props?: React.ComponentProps<typeof Sidebar>;
@@ -23,6 +24,7 @@ const AppSidebar = (data: ISideBar) => {
   const { userRole, ...props } = data;
   const location = useLocation();
   const currentPath = location.pathname;
+
 
   const items = [
     ...navItems.mainNav,
@@ -40,7 +42,7 @@ const AppSidebar = (data: ISideBar) => {
           alt="logo"
           className="w-20 h-10 rounded-md px-2"
         />
-        <SearchForm className="mt-3" />
+        <SearchForm   />
       </SidebarHeader>
 
       <SidebarContent>

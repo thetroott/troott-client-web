@@ -26,16 +26,26 @@ function withFallbackAndErrorBoundary(data: IFallbackandError) {
 }
 
 const parseRoutes = (routes: RouteType[], isPrivate = false): RouteObject[] => {
-  return routes.map(({ path, element, roles }) => ({
-    path,
-    element: withFallbackAndErrorBoundary({
-      element: isPrivate ? (
-        <ProtectedRoute roles={roles}>{element}</ProtectedRoute>
-      ) : (
-        element
-      ),
-    }),
-  }));
+  return routes.map(({ path, element, roles, children }) => {
+
+    let wrappedElement = element
+
+    if (isPrivate && roles) {
+      wrappedElement = (
+        <ProtectedRoute roles={roles}>
+          {element}
+        </ProtectedRoute>
+      )
+    }
+
+    return {
+      path,
+      element: withFallbackAndErrorBoundary({
+        element: wrappedElement,
+      }),
+      children: children ? parseRoutes(children, isPrivate) : undefined,
+    }
+  })
 };
 
 const AppRoutes = () => {

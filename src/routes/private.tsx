@@ -1,11 +1,30 @@
+import DashboardLayout from "@/components/layouts/DashboardLayout";
 import Home from "../screens/home/Home";
+import Dashboard from "@/screens/dashboard/Dashboard";
 
 // Example private routes with role metadata
 export const privateRoutes = [
   {
     path: "/",
     element: <Home />,
-    roles: ["admin", "staff", "listener"], // allowed roles
+    roles: ["admin", "staff", "listener"], 
   },
-  // add more private routes here as needed
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "",
+        element: <Dashboard />,
+        roles: ["admin", "staff", "listener"], 
+      },
+      {
+        path: "settings",
+        element: <Dashboard />,
+        roles: ["admin", "staff", "listener"], 
+      },
+    ],
+  },
+
+  
 ];

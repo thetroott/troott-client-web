@@ -1,9 +1,29 @@
-import React from 'react'
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
-const navdata = () => {
-  return (
-    <div>navdata</div>
-  )
-}
-
-export default navdata
+export const navItems = [
+  {
+    title: "Home",
+    url: "#",
+    icon: Home,
+  },
+  {
+    title: "Inbox",
+    url: "#",
+    icon: Inbox,
+  },
+  {
+    title: "Calendar",
+    url: "#",
+    icon: Calendar,
+  },
+  {
+    title: "Search",
+    url: "#",
+    icon: Search,
+  },
+  {
+    title: "Settings",
+    url: "#",
+    icon: Settings,
+  },
+];

@@ -1,68 +1,72 @@
-import { Home, Inbox, LogOut, PhoneIcon } from "lucide-react";
+import { Home, Inbox, LogOut, PhoneIcon, RocketIcon } from "lucide-react";
 
 export const navItems = {
- mainNav: [
-  {
-    title: "Main",
-    url: "#",
-    roles: ["staff", "preacher"],
-    items: [
-      {
-        title: "Dashboard",
-        url: "#",
-        icon: Home,
-        isActive: true,
-      },
-      {
-        title: "Upload Sermon",
-        url: "upload-sermon",
-        icon: Inbox,
-      },
-    ],
-  },
- ],
- sermonNav: [
-  {
-    title: "Sermon Management",
-    roles: ["staff", "preacher"],
-    url: "#",
-    items: [
-      {
-        title: "My Sermon",
-        url: "get-sermons",
-        icon: Home,
-      },
-      {
-        title: "Series",
-        url: "#",
-        icon: Inbox,
-      },
-    ],
-  },
- ],
- engagementNav: [
-  {
-    title: "Engagement & Analytics",
-    url: "#",
-    roles: ["staff", "preacher"],
-    items: [
-      {
-        title: "Sermon Analytics",
-        url: "#",
-        icon: Home,
-      },
-      {
-        title: "Comments & Feedback",
-        url: "#",
-        icon: Inbox,
-      },
-    ],
-  },
- ]
+  mainNav: [
+    {
+      title: "Main",
+      url: "#",
+      roles: ["staff", "preacher"],
+      items: [
+        {
+          title: "Get Started",
+          url: "/get-started",
+          icon: RocketIcon,
+          roles: ["staff", "preacher"],
+          showOnboarding: true,
+        },
+        {
+          title: "Dashboard",
+          url: "#",
+          icon: Home,
+          isActive: true,
+        },
+        {
+          title: "Upload Sermon",
+          url: "/upload-sermon",
+          icon: Inbox,
+        },
+      ],
+    },
+  ],
+  sermonNav: [
+    {
+      title: "Sermon Management",
+      roles: ["staff", "preacher"],
+      url: "#",
+      items: [
+        {
+          title: "My Sermon",
+          url: "/get-sermons",
+          icon: Home,
+        },
+        {
+          title: "Series",
+          url: "/my-series",
+          icon: Inbox,
+        },
+      ],
+    },
+  ],
+  engagementNav: [
+    {
+      title: "Engagement & Analytics",
+      url: "#",
+      roles: ["staff", "preacher"],
+      items: [
+        {
+          title: "Sermon Analytics",
+          url: "/my-analytics",
+          icon: Home,
+        },
+        {
+          title: "Comments & Feedback",
+          url: "#",
+          icon: Inbox,
+        },
+      ],
+    },
+  ],
 };
-
-
-
 
 export const navMainItems = {
   title: "Main",
@@ -119,7 +123,6 @@ export const navDataItems = {
     },
   ],
 };
-
 
 export const navFooterItems = [
   {

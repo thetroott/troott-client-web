@@ -1,6 +1,12 @@
 import * as React from "react";
 import { useId } from "react";
-import { SidebarInput, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  SidebarInput,
+  SidebarMenuButton,
+  SidebarMenu,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import {
   ArrowUpRightIcon,
@@ -20,14 +26,23 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 
+
+
 interface ISearchForm {
+  navItems?: Array<{
+    title: string
+    icon: React.ComponentType<{ className?: string }>
+  }>
+  onNavigate?: (item: string) => void
   collapsed?: boolean;
   props?: React.ComponentProps<"form">;
 }
 export function SearchForm(data: ISearchForm) {
   const { ...props } = data;
-  const id = useId();
   const [open, setOpen] = React.useState(false);
+  const { state } = useSidebar();
+  const id = useId();
+  
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -41,57 +56,54 @@ export function SearchForm(data: ISearchForm) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const isCollapsed = state === "collapsed";
+
   return (
     <form {...props}>
-      <SidebarGroup className="py-0">
-        <SidebarGroupContent className="relative">
-        <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            asChild
-            className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
-            
-            // tooltip={{
-            //   children: "Search",
-            //   hidden: false,
-            // }}
-          >
-           
-          </SidebarMenuButton>
+      <SidebarGroup>
+        <SidebarGroupContent className="px-1.5 md:px-0">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              {isCollapsed ? (
+                <SidebarMenuButton
+                  tooltip={{
+                    children: "Search (⌘K)",
+                    hidden: false,
+                  }}
+                  onClick={() => setOpen(true)}
+                >
+                  <Search className="size-4" />
+                  <span>Search</span>
+                </SidebarMenuButton>
+              ) : (
+                <SidebarMenuButton
+                  onClick={() => setOpen(true)}
+                  data-active={true}
+                  aria-label="Search"
+                  className="ps-2 pe-2 h-9 w-full flex items-center justify-start gap-2 rounded-md hover:bg-muted data-[active=true]:bg-muted"
+                >
+                  <div className="relative w-full">
+                    <SidebarInput
+                      id={id}
+                      className="ps-9 pe-9 cursor-pointer"
+                      aria-label="Search"
+                      placeholder="Search..."
+                      readOnly
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
+                      <Search size={16} aria-hidden="true" />
+                    </div>
+                    <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 text-muted-foreground">
+                      <kbd className="inline-flex size-5 max-h-full items-center justify-center rounded bg-input font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
+                        ⌘K
+                      </kbd>
+                    </div>
+                  </div>
+                </SidebarMenuButton>
+              )}
+            </SidebarMenuItem>
+          </SidebarMenu>
 
-        </SidebarMenuItem>
-        </SidebarMenu>
-        
-
-          <div className="relative w-full group-data-[collapsible=icon]:hidden">
-            <SidebarInput
-              id={id}
-              className="ps-4 pe-4 sm:"
-              aria-label="Search"
-              onClick={() => setOpen(true)}
-            />
-            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
-              <Search size={20} aria-hidden="true" />
-            </div>
-
-            <div className="pointer-events-none absolute inset-y-0 end-0 hidden items-center justify-center pe-2 text-muted-foreground">
-              <kbd className="inline-flex size-5 max-h-full items-center justify-center rounded bg-input px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
-                ⌘K
-              </kbd>
-            </div>
-          </div>
-
-          <div className="hidden group-data-[collapsible=icon]:flex w-6 items-center justify-center">
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              className="flex h-9 w-12 items-center justify-center rounded-md hover:bg-muted data-[active=true]:bg-muted "
-              aria-label="Open search"
-              data-active={open} 
-            >
-              <Search size={20} />
-            </button>
-          </div>
           <CommandDialog open={open} onOpenChange={setOpen}>
             <CommandInput placeholder="Type a command or search..." />
             <CommandList>

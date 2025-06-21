@@ -4,17 +4,25 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "../ui/sidebar";
 import AppSidebar from "../containers/navigation/Sidebar";
 import storage from "@/utils/storage.util";
 
-
-
 const DashboardLayout = () => {
   const [defaultOpen] = React.useState(() => {
     const stored = storage.fetchData("sidebar-collapsed");
-    return stored ? stored !== "true" : true; 
+    return stored ? stored !== "true" : true;
   });
-  
+
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar userRole="preacher" />
+    <SidebarProvider
+    defaultOpen={defaultOpen}
+      style={
+        {
+          "--sidebar-width": "300px",
+          "--sidebar-width-icon": "55px",
+        } as React.CSSProperties
+      }
+      
+    >
+      
+    <AppSidebar userRole="preacher" />
       <main>
         <SidebarTriggerWithStorage />
         <Outlet />
@@ -22,7 +30,6 @@ const DashboardLayout = () => {
     </SidebarProvider>
   );
 };
-
 
 const SidebarTriggerWithStorage = () => {
   const { open, setOpen } = useSidebar();
@@ -33,6 +40,5 @@ const SidebarTriggerWithStorage = () => {
 
   return <SidebarTrigger onClick={() => setOpen(!open)} />;
 };
-
 
 export default DashboardLayout;

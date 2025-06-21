@@ -43,9 +43,9 @@ const AppSidebar = (data: ISideBar) => {
           className="w-20 h-10 rounded-md px-2"
         />
       </SidebarHeader>
-
+      <SearchForm />
       <SidebarContent>
-        <SearchForm />
+        
 
         {visibleItem.map((group) => (
           <SidebarGroup>

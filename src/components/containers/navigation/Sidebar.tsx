@@ -36,23 +36,26 @@ const AppSidebar = (data: ISideBar) => {
 
   return (
     <Sidebar collapsible="icon" className="overflow-hidden" {...props}>
-      <SidebarHeader >
-        <img
-          src="/images/assets/troott-logo.svg"
-          alt="Troott logo"
-          className="w-20 h-7 truncate pe-1 mt-4 block group-data-[collapsible=icon]:hidden"
-        />
-        <img
-          src="/images/assets/troott-icon-dark.svg"
-          alt="Troott icon"
-          className="w-20 h-7 pe-1 truncate mt-4 hidden group-data-[collapsible=icon]:block"
-        />
-        
+           <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center mt-2">
+              <img
+                src="/images/assets/troott-icon-dark.svg"
+                alt="Troott icon"
+                className="w-10 h-7 pe-1"
+              />
+
+              <div className="group-data-[collapsible=icon]:hidden">
+                <span className="truncate font-semibold text-2xl">troott</span>
+              </div>
+            </div>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
+
       <SearchForm />
       <SidebarContent>
-        
-
         {visibleItem.map((group) => (
           <SidebarGroup>
             <SidebarGroupLabel className="uppercase text-muted-foreground/60 ">

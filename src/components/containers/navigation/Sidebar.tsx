@@ -35,13 +35,19 @@ const AppSidebar = (data: ISideBar) => {
   const visibleItem = items.filter((group) => group.roles.includes(userRole));
 
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+    <Sidebar collapsible="icon" className="overflow-hidden" {...props}>
+      <SidebarHeader >
         <img
           src="/images/assets/troott-logo.svg"
-          alt="logo"
-          className="w-20 h-10 rounded-md px-2"
+          alt="Troott logo"
+          className="w-20 h-7 truncate pe-1 mt-4 block group-data-[collapsible=icon]:hidden"
         />
+        <img
+          src="/images/assets/troott-icon-dark.svg"
+          alt="Troott icon"
+          className="w-20 h-7 pe-1 truncate mt-4 hidden group-data-[collapsible=icon]:block"
+        />
+        
       </SidebarHeader>
       <SearchForm />
       <SidebarContent>

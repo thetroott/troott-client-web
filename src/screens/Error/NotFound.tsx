@@ -1,12 +1,12 @@
-const Notfound = () => {
+// const Notfound = () => {
   
 
-    return (
-      <>
-        <div>Page not found</div>
-      </>
-    );
-  };
+//     return (
+//       <>
+//         <div>Page not found</div>
+//       </>
+//     );
+//   };
   
-  export default Notfound;
+//   export default Notfound;
   

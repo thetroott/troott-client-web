@@ -1,12 +1,9 @@
 const ErrorUI = () => {
-  
+  return (
+    <>
+      <div>Something went wrong.</div>
+    </>
+  );
+};
 
-    return (
-      <>
-        <div>Something went wrong.</div>
-      </>
-    );
-  };
-  
-  export default ErrorUI;
-  
+export default ErrorUI;

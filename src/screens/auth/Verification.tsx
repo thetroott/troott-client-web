@@ -1,5 +1,5 @@
 import { AuthLayout } from "@/components/layouts/Authlayout";
-import OtpForm from "@/components/containers/otp-form";
+import OtpForm from "@/components/containers/auth/otp-form";
 
 const Verification = () => {
   return (

@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "@/components/containers/forgot-password";
+import ForgotPasswordForm from "@/components/containers/auth/forgot-password";
 import { AuthLayout } from "@/components/layouts/Authlayout";
 import { useState } from "react";
 

@@ -5,12 +5,13 @@ import { Label } from "@/components/ui/label";
 import type { IForm, ILoginrFormErrors } from "@/utils/interface.util";
 import { useState } from "react";
 import { Eye, EyeOff, LockIcon, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const LoginForm = (data: IForm) => {
   const { className, ...props } = data;
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -140,6 +141,8 @@ const LoginForm = (data: IForm) => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Login attempt:", formData);
+
+      navigate("/dashboard");
       // Handle successful login here
     } catch (error) {
       console.error("Login failed:", error);
@@ -305,7 +308,7 @@ const LoginForm = (data: IForm) => {
             )}
           </div>
           
-          <Button type="submit" className="w-full h-12 md:h-28" disabled={isSubmitting}>
+          <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
             {isSubmitting ? "Signing in..." : "Login"}
           </Button>
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

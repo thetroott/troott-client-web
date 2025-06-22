@@ -8,7 +8,7 @@ import type { IFallbackandError, RouteType } from "@/utils/types.util";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import ErrorUI from "@/screens/Error/ErrorUI";
+import ErrorUI from "@/screens/error/ErrorUI";
 
 function withFallbackAndErrorBoundary(data: IFallbackandError) {
   
@@ -26,16 +26,26 @@ function withFallbackAndErrorBoundary(data: IFallbackandError) {
 }
 
 const parseRoutes = (routes: RouteType[], isPrivate = false): RouteObject[] => {
-  return routes.map(({ path, element, roles }) => ({
-    path,
-    element: withFallbackAndErrorBoundary({
-      element: isPrivate ? (
-        <ProtectedRoute roles={roles}>{element}</ProtectedRoute>
-      ) : (
-        element
-      ),
-    }),
-  }));
+  return routes.map(({ path, element, roles, children }) => {
+
+    let wrappedElement = element
+
+    if (isPrivate && roles) {
+      wrappedElement = (
+        <ProtectedRoute roles={roles}>
+          {element}
+        </ProtectedRoute>
+      )
+    }
+
+    return {
+      path,
+      element: withFallbackAndErrorBoundary({
+        element: wrappedElement,
+      }),
+      children: children ? parseRoutes(children, isPrivate) : undefined,
+    }
+  })
 };
 
 const AppRoutes = () => {

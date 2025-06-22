@@ -6,6 +6,7 @@ export type RouteType = {
     path: string;
     element: JSX.Element;
     roles?: string[];
+    children?: RouteType[]
   };
 
   export interface IFallbackandError {

@@ -43,10 +43,10 @@ const AppSidebar = (data: ISideBar) => {
               <img
                 src="/images/assets/troott-icon-dark.svg"
                 alt="Troott icon"
-                className="w-10 h-7 pe-1"
+                className="w-10 h-7"
               />
 
-              <div className="group-data-[collapsible=icon]:hidden">
+              <div className="group-data-[collapsible=icon]:hidden ">
                 <span className="truncate font-semibold text-2xl">troott</span>
               </div>
             </div>

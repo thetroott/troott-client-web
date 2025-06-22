@@ -18,15 +18,15 @@ const UserAvatar = () => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Avatar className="flex cursor-pointer justify-center items-center">
+          <Avatar className="flex cursor-pointer justify-center items-center pt-1.5">
             <AvatarImage
               src="https://github.com/shadcn.png"
               width={24}
               height={24}
-              className="rounded-lg"
+              className="rounded-lg  h-5 w-5 "
             />
-            <AvatarFallback>CN</AvatarFallback>
-            <IoIosArrowDown />
+            <AvatarFallback className="text-xs">CN</AvatarFallback>
+            <IoIosArrowDown className="h-4 w-4"/>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={10}>

@@ -12,22 +12,17 @@ const DashboardLayout = () => {
   });
 
   return (
-    <SidebarProvider
-      defaultOpen={defaultOpen}
-      // style={
-      //   {
-      //     "--sidebar-width": "300px",
-      //     "--sidebar-width-icon": "55px",
-      //   } as React.CSSProperties
-      // }
-      className="flex"
-    >
-      <AppSidebar userRole="preacher" />
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <div className="flex h-screen w-full bg-neutral-900/60">
+        <AppSidebar userRole="preacher" />
 
-      <main className="flex-1 overflow-auto">
-        <NavBar />
-        <Outlet />
-      </main>
+        <div className="flex flex-col flex-1">
+          <NavBar />
+          <main className="flex-1 m-3 pl-6 pt-2 pr-6 bg-neutral-900 rounded-md overflow-auto">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </SidebarProvider>
   );
 };

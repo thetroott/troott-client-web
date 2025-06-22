@@ -1,4 +1,18 @@
-import { Home, Inbox, LogOut, PhoneIcon, RocketIcon } from "lucide-react";
+import {
+  BarChart3Icon,
+  CloudUploadIcon,
+  CombineIcon,
+  FolderEdit,
+  Home,
+  Inbox,
+  LogOut,
+  LucideBookAudio,
+  LucideLayoutDashboard,
+  PhoneIcon,
+  PlaySquare,
+  RocketIcon,
+  TrashIcon,
+} from "lucide-react";
 
 export const navItems = {
   mainNav: [
@@ -17,14 +31,14 @@ export const navItems = {
         },
         {
           title: "Dashboard",
-          url: "#",
-          icon: Home,
+          url: "/dashboard",
+          icon: LucideLayoutDashboard,
           isActive: true,
         },
         {
           title: "Upload Sermon",
           url: "/upload-sermon",
-          icon: Inbox,
+          icon: CloudUploadIcon,
           isActive: false,
         },
       ],
@@ -39,13 +53,25 @@ export const navItems = {
         {
           title: "My Sermon",
           url: "/get-sermons",
-          icon: Home,
+          icon: LucideBookAudio,
           isActive: false,
         },
         {
           title: "Series",
           url: "/my-series",
-          icon: Inbox,
+          icon: PlaySquare,
+          isActive: false,
+        },
+        {
+          title: "Drafts",
+          url: "/user-draft",
+          icon: FolderEdit,
+          isActive: false,
+        },
+        {
+          title: "Trash",
+          url: "/user-trash",
+          icon: TrashIcon,
           isActive: false,
         },
       ],
@@ -60,13 +86,13 @@ export const navItems = {
         {
           title: "Sermon Analytics",
           url: "/my-analytics",
-          icon: Home,
+          icon: BarChart3Icon,
           isActive: false,
         },
         {
           title: "Comments & Feedback",
           url: "#",
-          icon: Inbox,
+          icon: CombineIcon,
           isActive: false,
         },
       ],

@@ -1,8 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { SidebarProvider, SidebarTrigger, useSidebar } from "../ui/sidebar";
+import { SidebarProvider } from "../ui/sidebar";
 import AppSidebar from "../containers/navigation/Sidebar";
 import storage from "@/utils/storage.util";
+import NavBar from "../containers/navigation/NavBar";
 
 const DashboardLayout = () => {
   const [defaultOpen] = React.useState(() => {
@@ -12,33 +13,23 @@ const DashboardLayout = () => {
 
   return (
     <SidebarProvider
-    defaultOpen={defaultOpen}
-      style={
-        {
-          "--sidebar-width": "300px",
-          "--sidebar-width-icon": "55px",
-        } as React.CSSProperties
-      }
-      
+      defaultOpen={defaultOpen}
+      // style={
+      //   {
+      //     "--sidebar-width": "300px",
+      //     "--sidebar-width-icon": "55px",
+      //   } as React.CSSProperties
+      // }
+      className="flex"
     >
-      
-    <AppSidebar userRole="preacher" />
-      <main>
-        <SidebarTriggerWithStorage />
+      <AppSidebar userRole="preacher" />
+
+      <main className="flex-1 overflow-auto">
+        <NavBar />
         <Outlet />
       </main>
     </SidebarProvider>
   );
-};
-
-const SidebarTriggerWithStorage = () => {
-  const { open, setOpen } = useSidebar();
-
-  React.useEffect(() => {
-    storage.keepData("sidebar-collapsed", String(!open));
-  }, [open]);
-
-  return <SidebarTrigger onClick={() => setOpen(!open)} />;
 };
 
 export default DashboardLayout;

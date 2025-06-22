@@ -1,12 +1,12 @@
-const Unauthorized = () => {
+// const Unauthorized = () => {
   
 
-    return (
-      <>
-        <div>You have no access.</div>
-      </>
-    );
-  };
+//     return (
+//       <>
+//         <div>You have no access.</div>
+//       </>
+//     );
+//   };
   
-  export default Unauthorized;
+//   export default Unauthorized;
   

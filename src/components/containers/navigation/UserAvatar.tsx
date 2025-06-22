@@ -26,7 +26,7 @@ const UserAvatar = () => {
               className="rounded-lg  h-5 w-5 "
             />
             <AvatarFallback className="text-xs">CN</AvatarFallback>
-            <IoIosArrowDown className="h-4 w-4"/>
+            <IoIosArrowDown className="h-5 w-5"/>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={10}>

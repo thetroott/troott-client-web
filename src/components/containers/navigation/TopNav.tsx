@@ -9,15 +9,13 @@ import {
 import { useLocation } from "react-router-dom";
 import BreadcrumbMap from "./breadcrumb-map";
 
-
-
 const TopNav = () => {
   const location = useLocation();
   const pathParts = location.pathname.split("/").filter(Boolean);
 
   // Build up full paths progressively
-  const paths = pathParts.map((_, idx) =>
-    "/" + pathParts.slice(0, idx + 1).join("/")
+  const paths = pathParts.map(
+    (_, idx) => "/" + pathParts.slice(0, idx + 1).join("/")
   );
 
   return (

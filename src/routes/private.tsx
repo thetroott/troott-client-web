@@ -6,7 +6,7 @@ import Drafts from "@/screens/dashboard/Drafts";
 import Series from "@/screens/dashboard/Series";
 import Trash from "@/screens/dashboard/Trash";
 import GetStarted from "@/screens/dashboard/GetStarted";
-import Sermons from "@/screens/dashboard/mySermons";
+import Sermons from "@/screens/dashboard/MySermons";
 import Analytics from "@/screens/dashboard/Analytics";
 
 // Example private routes with role metadata

@@ -5,12 +5,13 @@ import { Label } from "@/components/ui/label";
 import type { IForm, ILoginrFormErrors } from "@/utils/interface.util";
 import { useState } from "react";
 import { Eye, EyeOff, LockIcon, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const LoginForm = (data: IForm) => {
   const { className, ...props } = data;
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -140,6 +141,8 @@ const LoginForm = (data: IForm) => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Login attempt:", formData);
+
+      navigate("/dashboard");
       // Handle successful login here
     } catch (error) {
       console.error("Login failed:", error);

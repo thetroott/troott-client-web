@@ -1,12 +1,16 @@
-// const Unauthorized = () => {
-  
+import { useLocation } from "react-router-dom";
 
-//     return (
-//       <>
-//         <div>You have no access.</div>
-//       </>
-//     );
-//   };
+const Unauthorized = () => {
+  const location = useLocation();
+
+    return (
+      <>
+        <div>
+          <h2>Error 401: {location.state?.message}</h2>
+        </div>
+      </>
+    );
+  };
   
-//   export default Unauthorized;
+  export default Unauthorized;
   

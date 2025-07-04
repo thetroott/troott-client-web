@@ -1,7 +1,13 @@
+import { useLocation } from "react-router-dom";
+
 const ErrorUI = () => {
+  const location = useLocation();
+
   return (
     <>
-      <div>Something went wrong.</div>
+      <div>
+        <h2>Error {location.state?.statusCode}: {location.state?.message}</h2>
+      </div>
     </>
   );
 };

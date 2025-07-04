@@ -8,11 +8,9 @@
     "skipLibCheck": true,
 
     // taiwlwindcss config
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["*"]
     },
 
     /* Bundler mode */

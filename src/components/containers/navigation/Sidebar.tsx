@@ -60,12 +60,12 @@ const AppSidebar = (data: ISideBar) => {
       <SidebarContent>
         {visibleItem.map((group) => (
           <SidebarGroup>
-            <SidebarGroupLabel className="uppercase text-muted-foreground/60 ">
+            <SidebarGroupLabel className="uppercase text-muted-foreground/60">
               {group.title}
             </SidebarGroupLabel>
             <Separator
               orientation="horizontal"
-              className="mb-4 hidden group-data-[collapsible=icon]:block"
+              className="mb-2 hidden group-data-[collapsible=icon]:block"
             />
             <SidebarGroupContent>
               <SidebarMenu>

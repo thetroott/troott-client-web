@@ -1,13 +1,13 @@
 import {
   BarChart3Icon,
   CloudUploadIcon,
-  CombineIcon,
   FolderEdit,
   Home,
   Inbox,
   LogOut,
   LucideBookAudio,
   LucideLayoutDashboard,
+  MessageCircle,
   PhoneIcon,
   PlaySquare,
   RocketIcon,
@@ -92,7 +92,7 @@ export const navItems = {
         {
           title: "Comments & Feedback",
           url: "#",
-          icon: CombineIcon,
+          icon: MessageCircle,
           isActive: false,
         },
       ],

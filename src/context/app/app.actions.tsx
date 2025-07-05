@@ -1,4 +1,4 @@
-import type { Theme } from "../utils/types.util";
+import type { Theme } from "../../utils/types.util";
 
 export type ThemeAction =
   | { type: "TOGGLE_THEME" }

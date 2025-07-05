@@ -1,4 +1,6 @@
-import type { ChangeEvent, RefObject } from "react";
+import type { JSX } from "react";
+import type { LoadingType, RouteActionType, RouteParamType } from "./types.util";
+
 
 export interface IStorage {
   keepData(key: string, data: object | string): void;
@@ -13,6 +15,19 @@ export interface IStorage {
   multiFetch(keys: string[]): Promise<{ [key: string]: any | null }>;
   multiRemove(keys: string[]): Promise<void>;
 }
+
+export type RouteType = {
+    path: string;
+    element: JSX.Element;
+    roles?: string[];
+    children?: RouteType[]
+  };
+
+  export interface IFallbackandError {
+    element: JSX.Element
+    fallbackUI?: React.ReactNode;
+    errorUI?: React.ReactNode; 
+  }
 export interface ITitle {
   text: string;
   size?: string;
@@ -23,186 +38,107 @@ export interface ITitle {
   };
 }
 
-export interface ITextInput {
-  type: "email" | "text" | "number";
-  ref?: RefObject<HTMLInputElement>;
-  showFocus?: boolean;
-  className?: string;
-  defaultValue?: string;
-  readOnly?: boolean;
-  id?: string;
-  hasIcon?: boolean;
-  icon?: string;
-  name?: string;
-  placeholder?: string;
-  autoComplete?: boolean;
-  onChange(e: ChangeEvent<HTMLInputElement>): void;
-  error?: boolean;
-  helperText?: string;
-  value?: string;
-  color?: "primary" | "secondary";
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  variant?: "standard" | "outlined";
-  label?: string;
-  fullWidth?: boolean;
-  disabled?: boolean;
-  autoFocus?: boolean;
-  borderRadius?: string;
-  iconPosition?: "left" | "right";
-}
-
-export interface IPasswordInput {
-  ref?: RefObject<HTMLInputElement>;
-  showFocus?: boolean;
-  className?: string;
-  defaultValue?: string;
-  readOnly?: boolean;
-  id?: string;
-  hasIcon?: boolean;
-  icon?: string;
-  name?: string;
-  placeholder?: string;
-  autoComplete?: boolean;
-  onChange(e: ChangeEvent<HTMLInputElement>): void;
-  error?: boolean;
-  helperText?: string;
-  autoFocus?: boolean;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
-  borderRadius?: string;
-  value?: string;
-  label?: string;
-  style?: React.CSSProperties;
-  textColor?: string;
-  fontSize?: string;
-  borderColor?: string;
-}
-
-export interface IRadioInput {
-  name: string;
-  options?: {
-    label: string;
-    value: string;
-  }[];
-  defaultValue?: string;
-  className?: string;
-  id?: string;
-  emailText?: string;
-  phoneNumber?: string;
-  onChange(e: ChangeEvent<HTMLInputElement>): void;
-}
-export interface ISelectInput {
-  name: string;
-  options?: {
-    label: string;
-    value: string;
-  }[];
-  defaultValue?: string;
-  className?: string;
-  id?: string;
-  onChange(e: ChangeEvent<HTMLInputElement>): void;
-}
-export interface ITextArea {
-  ref?: RefObject<HTMLTextAreaElement>;
-  value?: string;
-  defaultValue?: string;
-  onChange(e: ChangeEvent<HTMLTextAreaElement>): void;
-
-  placeholder?: string;
-  name?: string;
-  id?: string;
-
-  rows?: number;
-  autoComplete?: boolean;
-  readOnly?: boolean;
-  disabled?: boolean;
-  hasIcon?: boolean;
-  icon?: string;
-
-  showFocus?: boolean;
-  className?: string;
-
-  error?: boolean;
-  errorMessage?: string;
-
-  ariaLabel?: string;
-  minLength?: number;
-  maxLength?: number;
-}
-
-export interface IButton {
-  text: string;
-  onClick(e: any): void;
-}
-
-export interface IIconButton {
-  width?: string;
-  height?: string;
-  icon: {
-    type: "web" | "image";
-    name?: string;
-    url?: string;
-    width?: string;
-    height?: string;
-  };
-}
-
-export interface IForm extends React.ComponentProps<"form"> {
-  className?: string;
-  email?: string
-  onStepChange?: (step: "email" | "otp" | "success") => void
-  onSuccess?: () => void
-  onResend?: () => void
-}
-export interface IAuthLayout {
-  children: React.ReactNode
-  title?: string
-  description?: string
-  showLogo?: boolean
-  showCopyright?: boolean
-  maxWidth?: "xs" | "sm" | "md" | "lg"
-  backgroundImage?: string
-  className?: string
-  hideHeaderOnSuccess?: boolean
-}
-
-export interface IRegisterFormErrors {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-}
-
-export interface ILoginrFormErrors {
-  email?: string;
-  password?: string;
-}
-
-export interface IOtpFormErrors {
-  otp?: string;
-}
-
-export interface IForgotPwdFormErrors {
-  email?: string;
-  otp?: string;
-}
-export interface IResetPwdFormErrors {
-  password?: string;
-  confirmPassword?: string;
-}
-
-export interface IChangePwdFormErrors {
-  currentPassword?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-}
-
-export interface ICopyright {
-  year?: number;
-  company?: string;
-  className?: string;
+export interface IAPIResponse {
+    error: boolean,
+    errors: Array<any>,
+    count?: number,
+    total?: number,
+    pagination?: IPagination,
+    data: any,
+    message: string,
+    token?: string,
+    status: number
 }
 
 
+
+export interface IPagination {
+    next: { page: number, limit: number },
+    prev: { page: number, limit: number },
+}
+
+
+
+export interface ISetLoading {
+    option: LoadingType,
+    type?: string
+}
+
+export interface IUserPermission {
+    entity: string,
+    actions: Array<string>
+}
+
+export interface IUnsetLoading {
+    option: LoadingType,
+    type?: string,
+    message: string
+}
+
+export interface ISidebarProps {
+    collapsed: boolean,
+    route: IRouteItem,
+    inroutes: Array<IInRoute>,
+    subroutes: Array<IRouteItem>,
+    isOpen: boolean
+}
+
+
+export interface ISetCookie {
+    key: string,
+    payload: any,
+    expireAt?: Date,
+    maxAge?: number,
+    path?: string
+}
+
+export interface IGetCookie {
+    key: string,
+    parse?: boolean
+}
+
+export interface IRemoveCookie {
+    key: string,
+    parse?: boolean
+}
+
+export interface IRouteParam {
+    type: RouteParamType,
+    name: string,
+    value?: string
+}
+
+export interface IRouteItem {
+    name: string,
+    title?: string,
+    url: string,
+    isAuth: boolean,
+    iconName?: string,
+    action?: RouteActionType,
+    content: {
+        backButton?: boolean,
+        collapsed?: boolean
+    }
+    params?: Array<IRouteParam>
+}
+
+export interface IInRoute extends IRouteItem {
+    route: string,
+    parent: string,
+}
+
+export interface IRoute extends IRouteItem {
+    subroutes?: Array<IRouteItem>
+    inroutes?: Array<IInRoute>
+}
+
+
+export interface IFileUpload {
+    raw: any,
+    base64: string,
+    parsedSize: number,
+    name: string,
+    size: number,
+    type: string,
+    dur: number
+}

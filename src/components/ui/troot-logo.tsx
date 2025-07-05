@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAppContext } from "@/context/app.context";
+import { useAppContext } from "@/context/app/app.context";
 
 type TroottLogoProps = React.ImgHTMLAttributes<HTMLImageElement>;
 

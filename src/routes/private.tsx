@@ -8,6 +8,10 @@ import Trash from "@/screens/dashboard/Trash";
 import GetStarted from "@/screens/dashboard/GetStarted";
 import Sermons from "@/screens/dashboard/MySermons";
 import Analytics from "@/screens/dashboard/Analytics";
+import InnerLayout from "@/components/layouts/InnerLayout";
+import UploadSermon from "@/screens/upload/UploadSermon";
+import UserAccount from "@/screens/account/UserAccount";
+import UserProfile from "@/screens/profile/UserProfile";
 
 // Example private routes with role metadata
 export const privateRoutes = [
@@ -22,14 +26,13 @@ export const privateRoutes = [
     children: [
       {
         path: "dashboard",
-
         element: <Dashboard />,
         roles: ["admin", "staff", "preacher"],
       },
       {
         path: "/get-started",
         element: <GetStarted />,
-        roles: ["admin", "staff", "preacher"], 
+        roles: ["admin", "staff", "preacher"],
       },
       {
         path: "/upload-sermon",
@@ -61,6 +64,28 @@ export const privateRoutes = [
         path: "/my-trash",
         element: <Trash />,
         roles: ["admin", "staff", "preacher"],
+      },
+
+      {
+        path: "/get-started",
+        element: <InnerLayout />,
+        children: [
+          {
+            path: "verify-account",
+            element: <UserAccount />,
+            roles: ["admin", "staff", "preacher"],
+          },
+          {
+            path: "complete-profile",
+            element: <UserProfile />,
+            roles: ["admin", "staff", "preacher"],
+          },
+          {
+            path: "tour-guide",
+            element: <UploadSermon />,
+            roles: ["admin", "staff", "preacher"],
+          },
+        ],
       },
     ],
   },

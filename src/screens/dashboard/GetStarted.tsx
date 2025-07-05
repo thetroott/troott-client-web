@@ -54,9 +54,9 @@ const GetStarted = () => {
               {completedSteps.length}/{OnboardingItems.length} completed
             </span>
 
-            <div className="flex-1 bg-muted rounded-full h-2 w-full">
+            <div className="flex-1 bg-neutral-400/60 rounded-full h-2 w-full">
               <div
-                className="bg-primary h-2 rounded-full transition-all duration-300 ease-in-out"
+                className="bg-primary  text-amber-200  h-2 rounded-full transition-all duration-300 ease-in-out"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>

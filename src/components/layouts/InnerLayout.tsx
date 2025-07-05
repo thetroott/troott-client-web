@@ -1,13 +1,26 @@
-import { Outlet } from "react-router-dom"
-
+import { Outlet } from "react-router-dom";
+import SaveAndExit from "../containers/dashboard/SaveAndExit";
+import ProgressButtons from "../containers/dashboard/ProgressButtons";
 
 const InnerLayout = () => {
   return (
-    <div className="space-y-4 p-4">
-      <h2 className="text-xl font-bold">Inner Layout</h2>
-      <Outlet />
-    </div>
-  )
-}
+    <div className="flex-1 m-10 pl-6 pt-2 pr-6 rounded-md overflow-auto">
+      <div className="flex justify-end items-center cursor-pointer mb-10">
+        <SaveAndExit />
+      </div>
 
-export default InnerLayout
+      <div className="max-w-4xl mx-auto px-6 py-4">
+        <Outlet />
+
+           <div className="justify-items-start">
+        <ProgressButtons />
+      </div>
+      </div>
+
+   
+
+    </div>
+  );
+};
+
+export default InnerLayout;

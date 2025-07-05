@@ -3,7 +3,6 @@ import { Copyright } from "../ui/copyright"
 import type { IAuthLayout } from "@/utils/interface.util"
 
 
-
 export function AuthLayout(data: IAuthLayout) {
 
     const {

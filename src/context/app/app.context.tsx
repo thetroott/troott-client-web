@@ -8,7 +8,7 @@ import storage from "../../utils/storage.util";
 
 const getInitialTheme = (): "light" | "dark" | "system" => {
     try {
-      const storedTheme = storage.fetchData("theme");
+      const storedTheme = storage.fetch("theme");
       if (storedTheme === "light" || storedTheme === "dark" || storedTheme === "system") {
         return storedTheme;
       }
@@ -23,8 +23,6 @@ const getInitialTheme = (): "light" | "dark" | "system" => {
     }
     return "system";
   };
-
-  
 
 const AppContext = createContext<{
   state: IAppState;
@@ -52,8 +50,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       root.classList.add(state.theme.mode)
     }
 
+    storage.keep("theme", state.theme.mode);
 
-    storage.keepData("theme", state.theme.mode);
   }, [state.theme.mode]);
 
 

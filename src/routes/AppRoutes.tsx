@@ -4,7 +4,7 @@ import { publicRoutes } from "./public";
 import { privateRoutes } from "./private";
 import { fallbackRoutes } from "./fallback";
 import ProtectedRoute from "./ProtectedRoute";
-import type { IFallbackandError, RouteType } from "@/utils/types.util";
+import type { IFallbackandError, RouteType } from "@/utils/interfaces.util";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";

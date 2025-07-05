@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { IForm, IRegisterFormErrors } from "@/utils/interface.util";
+import type { IForm, IRegisterFormErrors } from "@/utils/interfaces.util";
 import { useState } from "react";
 import { Eye, EyeOffIcon, LockIcon, Mail, User } from "lucide-react";
 

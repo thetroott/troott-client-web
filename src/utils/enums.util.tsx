@@ -5,29 +5,35 @@ export enum ImageResizeMode {
     CENTER = "center"
 }
 
-export enum EENVType {
+export enum ENVType {
     PRODUCTION = "production",
     STAGING = "staging",
     DEVELOPMENT = "development",
   }
   
-  export enum EAppChannel {
+  export enum AppChannel {
     WEB = "web",
     MOBILE = "mobile",
     DESKTOP = "desktop",
     WATCH = "watch",
   }
   
-  // create passwordType: EPasswordType;
+  export enum HeaderType {
+    IDEMPOTENT = 'x-idempotent-key'
+}
+export enum CookieKeyType {
+    XHIT = 'x-hit'
+}
+
   
-  export enum EPasswordType {
+  export enum PasswordType {
     USERGENERATED = "user-generated",
     SYSTEMGENERATED = "system-generated",
     TEMPORARY = "temporary",
     RESET = "reset",
   }
   
-  export enum EUserType {
+  export enum UserType {
     SUPERADMIN = "superadmin",
     STAFF = "staff",
     PREACHER = "preacher",
@@ -36,7 +42,7 @@ export enum EENVType {
     USER = "user",
   }
   
-  export enum EStaffUnit {
+  export enum StaffUnit {
     ENGINEERING = "engineering",
     PRODUCT = "product",
     DESIGN = "design",
@@ -44,7 +50,7 @@ export enum EENVType {
     FINANCE = "finance",
   }
   
-  export enum EStaffRole {
+  export enum StaffRole {
     HEAD = "head",
     MANAGER = "manager",
     LEAD = "lead",
@@ -52,14 +58,14 @@ export enum EENVType {
     JUNIOR = "junior",
   }
   
-  export enum EAccountManagerRole {
+  export enum AccountManagerRole {
     OWNER = "owner",
     MANAGER = "manager",
     EDITOR = "editor",
     ANALYST = "analyst",
   }
   
-  export enum EVerificationStatus {
+  export enum VerificationStatus {
     PENDING = "pending",
     APPROVED = "approved",
     REJECTED = "rejected",
@@ -68,7 +74,7 @@ export enum EENVType {
     SUSPENDED = "suspended",
   }
   
-  export enum EDbModels {
+  export enum DbModels {
     USER = "user",
     ROLE = "role",
     PERMISSION = "permission",
@@ -88,17 +94,17 @@ export enum EENVType {
     TRANSACTION = "transaction",
   }
   
-  export enum EModel {
+  export enum Model {
     USER = "User",
     ROLE = "Role",
   }
   
-  export enum ESermonType {
+  export enum SermonType {
     SERIES = "series",
     ONEOFF = "one-off",
   }
   
-  export enum EPartType {
+  export enum PartType {
     ONE = "one",
     TW0 = "two",
     THREE = "three",
@@ -108,12 +114,12 @@ export enum EENVType {
     SEVEN = "seven",
   }
   
-  export enum EPlaylistType {
+  export enum PlaylistType {
     SERMON = "sermon",
     SERMONBITE = "sermonbite",
   }
   
-  export enum ECurrency {
+  export enum CurrencyType {
     NGN = "NGN",
     USD = "USD",
     EUR = "EUR",

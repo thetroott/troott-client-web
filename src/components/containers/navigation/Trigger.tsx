@@ -6,7 +6,7 @@ const Trigger = () => {
     const { open, setOpen } = useSidebar();
   
     React.useEffect(() => {
-      storage.keepData("sidebar-collapsed", String(!open));
+      storage.keep("sidebar-collapsed", String(!open));
     }, [open]);
   
     return <SidebarTrigger  onClick={() => setOpen(!open)} />;

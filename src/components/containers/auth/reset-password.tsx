@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Lock } from "lucide-react"
-import type { IForm } from "@/utils/interface.util"
+import type { IForm } from "@/utils/interfaces.util"
 
 interface FormErrors {
   password?: string

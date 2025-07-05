@@ -7,7 +7,7 @@ import {
     UNSET_LOADING
 } from '../types'
 import { useReducer } from 'react';
-import type { ISetLoading, ISidebarProps, IUnsetLoading } from '@/utils/interface.util';
+import type { ISetLoading, ISidebarProps, IUnsetLoading } from '@/utils/interfaces.util';
 import storage from '../../utils/storage.util'
 
 const UserState = (props: any) => {
@@ -99,8 +99,8 @@ const UserState = (props: any) => {
 
         let result: ISidebarProps | null = null;
     
-        const name = storage.fetchData('route.name');
-        const sub = storage.fetchData('route.subroute');
+        const name = storage.fetch('route.name');
+        const sub = storage.fetch('route.subroute');
     
         const route = sidebarRoutes.find((x) => x.name === name);
     

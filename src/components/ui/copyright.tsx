@@ -1,4 +1,4 @@
-import type { ICopyright } from "@/utils/interface.util";
+import type { ICopyright } from "@/utils/interfaces.util";
 
 
 export function Copyright(data: ICopyright) {

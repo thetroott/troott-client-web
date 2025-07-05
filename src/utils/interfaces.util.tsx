@@ -3,17 +3,23 @@ import type { LoadingType, RouteActionType, RouteParamType } from "./types.util"
 
 
 export interface IStorage {
-  keepData(key: string, data: object | string): void;
-  fetchData(key: string): string | null;
-  getJSON(key: string): Promise<any | null>;
-  exists(key: string): Promise<boolean>;
-  updateData(key: string, newData: object | string): Promise<void>;
-  mergeData(key: string, newData: object): Promise<void>;
-  removeData(key: string): Promise<void>;
-  clearAll(): Promise<void>;
-  multiKeep(items: { key: string; data: object | string }[]): Promise<void>;
-  multiFetch(keys: string[]): Promise<{ [key: string]: any | null }>;
-  multiRemove(keys: string[]): Promise<void>;
+    storeAuth(token: string, id: string): void,
+    checkToken(): boolean,
+    getToken(): string | null,
+    checkUserID(): boolean,
+    getUserID(): string,
+    checkUserEmail(): boolean,
+    getUserEmail(): string | null,
+    getConfig(): any,
+    getConfigWithBearer(): any,
+    clearAuth(): void,
+    keep(key: string, data: any): boolean,
+    keepLegacy(key: string, data: any): boolean,
+    fetch(key: string): any,
+    fetchLegacy(key: string): any,
+    deleteItem(key: string, legacy?: boolean): void,
+    trimSpace(str: string): void,
+    copyCode(code: string): void
 }
 
 export type RouteType = {

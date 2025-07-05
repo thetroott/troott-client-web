@@ -55,7 +55,7 @@ const api = {
  */
 axiosPrivate.interceptors.request.use(
   async function (config) {
-    const accessToken = await storage.fetchData("accessToken");
+    const accessToken = await storage.("accessToken");
     if (accessToken) {
       config.headers.authorization = `Bearer ${accessToken}`;
     }

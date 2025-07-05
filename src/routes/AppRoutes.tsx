@@ -8,7 +8,7 @@ import type { IFallbackandError, RouteType } from "@/utils/types.util";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import ErrorUI from "@/screens/Tell-me/ErrorUI";
+import ErrorUI from "@/screens/error/ErrorUI";
 
 function withFallbackAndErrorBoundary(data: IFallbackandError) {
   

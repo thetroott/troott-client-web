@@ -6,7 +6,7 @@ import VerifyAccountForm from "@/components/containers/dashboard/verify-account-
 function UserAccount() {
   return (
     <>
-      <div className="mb-10">
+      <div className="mb-8">
         <PageHeader
           title="Let’s get you verified"
           description="Select your residence and follow the steps"

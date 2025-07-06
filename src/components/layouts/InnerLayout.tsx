@@ -9,7 +9,7 @@ const InnerLayout = () => {
         <SaveAndExit />
       </div>
 
-      <div className="max-w-3xl mx-auto px-6 py-4">
+      <div className="max-w-3xl mx-auto px-6">
         <Outlet />
 
            <div className="justify-items-start">

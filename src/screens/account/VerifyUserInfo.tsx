@@ -4,14 +4,14 @@ import PersonalInfoForm from "@/components/containers/dashboard/personal-info-fo
 function PersonalInfo() {
   return (
     <>
-      <div className="mb-10">
+      <div className="mb-8">
         <PageHeader
           title="Personal Information"
-          description="Please provide the following information as shown on your passport or ID card."
+          description="Please provide the following information as shown <br/>  on your passport or ID card."
         />
       </div>
 
-      <div className="mt-8 mx-auto pr-80">
+      <div className="mt-0 mx-auto pr-80">
         <PersonalInfoForm />
       </div>
       

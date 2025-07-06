@@ -10,7 +10,7 @@ const VerifyAccountForm = (data: IOnboarding) => {
 
   return (
     <>
-      <div className="w-full">
+      <div className="">
         <CountrySelect />
 
         <h2 className="text-[15px] font-medium mt-6 text-muted-foreground">

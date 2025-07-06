@@ -14,6 +14,9 @@ import UserAccount from "@/screens/account/GetVerified";
 import UserProfile from "@/screens/profile/UserProfile";
 import PersonalInfo from "@/screens/account/VerifyUserInfo";
 import VerifyDocument from "@/screens/account/VerifyDocument";
+import SelectDocumentType from "@/components/containers/dashboard/SelectDocumentType";
+import UploadDocument from "@/components/containers/dashboard/UploadDocument";
+import VerifyDocumentForm from "@/components/containers/dashboard/verify-document";
 export const privateRoutes = [
   {
     path: "/",
@@ -29,7 +32,7 @@ export const privateRoutes = [
         element: <Dashboard />,
         roles: ["admin", "staff", "preacher"],
       },
-      
+
       // get-started landing page
       {
         path: "get-started",
@@ -54,6 +57,11 @@ export const privateRoutes = [
           {
             path: "verify-account/verify-document",
             element: <VerifyDocument />,
+            children: [
+              { path: "", element: <VerifyDocumentForm /> }, 
+              { path: "select", element: <SelectDocumentType /> }, 
+              { path: "upload", element: <UploadDocument /> }
+            ],
           },
           {
             path: "complete-profile",

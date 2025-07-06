@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { JSX, ReactNode } from "react";
 import type {
   LoadingType,
   RouteActionType,
@@ -274,4 +274,18 @@ export interface IDOBPicker {
 
 export interface IOnboarding {
   step?: string
+}
+
+
+export interface IconRadioOption {
+  label: string
+  value: string
+  icon: ReactNode
+}
+
+export interface IconRadioGroupProps {
+  options: IconRadioOption[]
+  value: string
+  onChange: (val: string) => void
+  className?: string
 }

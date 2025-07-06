@@ -24,7 +24,7 @@ const PageHeader = (props: IPageHeader) => {
 
                 <div>
                     <h2 className=" text-[28px] font-bold">{ title }</h2>
-                    <p className=" text-[16px]">{ description }</p>
+                    <p className=" text-[16px] text-muted-foreground">{ description }</p>
                 </div>
 
                 {

@@ -230,29 +230,44 @@ export interface IResult {
 }
 
 export interface IUserLocation {
-  ip: string
-  city: string
-  region: string
-  region_code: string
-  country: string
-  country_name: string
-  country_code: string
-  country_code_iso3: string
-  country_capital: string
-  country_tld: string
-  continent_code: string
-  in_eu: boolean
-  postal: string | null
-  latitude: number
-  longitude: number
-  timezone: string
-  utc_offset: string
-  country_calling_code: string
-  currency: string
-  currency_name: string
-  languages: string
-  country_area: number
-  country_population: number
-  asn: string
-  org: string
+  ip: string;
+  city: string;
+  region: string;
+  region_code: string;
+  country: string;
+  country_name: string;
+  country_code: string;
+  country_code_iso3: string;
+  country_capital: string;
+  country_tld: string;
+  continent_code: string;
+  in_eu: boolean;
+  postal: string | null;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  utc_offset: string;
+  country_calling_code: string;
+  currency: string;
+  currency_name: string;
+  languages: string;
+  country_area: number;
+  country_population: number;
+  asn: string;
+  org: string;
+}
+
+export interface ILegalNameInput {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  description?: string;
+  label?: string;
+  className?: string;
+}
+
+export interface IDOBPicker {
+  label?: string;
+  id?: string;
+  className?: string;
 }

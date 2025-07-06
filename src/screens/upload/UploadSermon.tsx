@@ -1,5 +1,3 @@
-import React from 'react'
-
 function UploadSermon() {
   return (
     <div>UploadSermon</div>

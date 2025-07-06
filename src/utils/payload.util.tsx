@@ -12,7 +12,7 @@ export interface loginPayload {
   password: string;
 }
 
-export interface PforgotPassword {
+export interface IforgotPassword {
   email: string;
 }
 export interface verifyOtpPayload {
@@ -37,6 +37,7 @@ export interface changePasswordPayload {
   currentPassword: string;
   newPassword: string;
 }
+
 
 export interface logoutPayload {
   userId: string;

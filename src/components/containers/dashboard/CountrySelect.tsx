@@ -15,24 +15,32 @@ import { Label } from "@/components/ui/label";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { readCountries, getCountry } from "@/utils/helpers.util";
 import { getUserLocation } from "@/lib/useLocation";
-import type { ICountry } from "@/utils/interfaces.util";
+import type { ICountry, ICountrySelect } from "@/utils/interfaces.util";
 
-export default function CountryCombobox() {
+export default function CountryCombobox(data: ICountrySelect) {
+  const { value, onChange } = data;
+
   const allCountries: ICountry[] = readCountries();
   const [open, setOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const detect = async () => {
-      const res = await getUserLocation();
-      const code = res?.data?.country_code;
-      if (code) {
-        const found = getCountry(code.toUpperCase());
-        if (found) setSelectedCountry(found);
-      }
-    };
-    detect();
-  }, []);
+    if (!value) {
+      const detect = async () => {
+        const res = await getUserLocation();
+        const code = res?.data?.country_code;
+        if (code) {
+          const found = getCountry(code.toUpperCase());
+          if (found) onChange?.(found);
+        }
+      };
+      detect();
+    }
+  }, [value, onChange]);
+
+  const filteredCountries = allCountries.filter((country) =>
+    country.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="space-y-2">
@@ -46,14 +54,14 @@ export default function CountryCombobox() {
             aria-expanded={open}
             className=" w-full justify-between"
           >
-            {selectedCountry ? (
+            {value ? (
               <span className="flex items-center gap-2">
                 <img
-                  src={selectedCountry.flag}
-                  alt={selectedCountry.name}
+                  src={value.flag}
+                  alt={value.name}
                   className="w-5 h-5 rounded-md"
                 />
-                {selectedCountry.name}
+                {value.name}
               </span>
             ) : (
               "Select country"
@@ -66,16 +74,21 @@ export default function CountryCombobox() {
           <Command>
             <div className="max-h-[350px] min-w-[400px] overflow-y-auto scrollbar-none">
               <div className="sticky top-0 z-10 bg-popover border-b">
-                <CommandInput placeholder="Search country" className="h-9m w-full" />
+                <CommandInput
+                  placeholder="Search country"
+                  className="h-9m w-full"
+                  value={search}
+                  onValueChange={setSearch}
+                />
               </div>
 
               <CommandGroup>
-                {allCountries.map((country) => (
+                {filteredCountries.map((country) => (
                   <CommandItem
                     key={country.code2}
                     value={country.name}
                     onSelect={() => {
-                      setSelectedCountry(country);
+                      onChange?.(country);
                       setOpen(false);
                     }}
                   >
@@ -86,7 +99,7 @@ export default function CountryCombobox() {
                         className="w-5 h-5 rounded-full object-cover"
                       />
                       <span className="flex-1 truncate">{country.name}</span>
-                      {selectedCountry?.code2 === country.code2 ? (
+                      {value?.code2 === country.code2 ? (
                         <Check className="ml-auto h-4 w-4 text-primary" />
                       ) : null}
                     </div>

@@ -1,17 +1,17 @@
 import CountrySelect from "@/components/containers/dashboard/CountrySelect";
-
-import type { IOnboarding } from "@/utils/interfaces.util";
+import type { ICountry } from "@/utils/interfaces.util";
 import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
 import { IconText } from "./IconText";
+import { useState } from "react";
 
-const VerifyAccountForm = (data: IOnboarding) => {
-  const { step } = data;
+const VerifyAccountForm = () => {
   
+  const [country, setCountry] = useState<ICountry | null>(null);
 
   return (
     <>
       <div className="">
-        <CountrySelect />
+        <CountrySelect value={country} onChange={setCountry} />
 
         <h2 className="text-[15px] font-medium mt-6 text-muted-foreground">
           Complete the following steps to verify your account in <br />{" "}
@@ -29,7 +29,6 @@ const VerifyAccountForm = (data: IOnboarding) => {
           text="Government-issued ID"
           className="text-sm text-muted-foreground mt-2"
         />
-
       </div>
     </>
   );

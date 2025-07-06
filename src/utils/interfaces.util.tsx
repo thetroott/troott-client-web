@@ -289,3 +289,8 @@ export interface IconRadioGroupProps {
   onChange: (val: string) => void
   className?: string
 }
+
+export interface ICountrySelect {
+  value?: ICountry | null;
+  onChange?: (country: ICountry) => void;
+}

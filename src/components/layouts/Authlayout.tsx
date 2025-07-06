@@ -1,7 +1,6 @@
 import { TroottLogo } from "../ui/troot-logo"
 import { Copyright } from "../ui/copyright"
-import type { IAuthLayout } from "@/utils/interface.util"
-
+import type { IAuthLayout } from "@/utils/interfaces.util"
 
 
 export function AuthLayout(data: IAuthLayout) {

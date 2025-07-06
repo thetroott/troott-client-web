@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail } from "lucide-react";
-import type { IForgotPwdFormErrors, IForm } from "@/utils/interface.util";
+import type { IForgotPwdFormErrors, IForm } from "@/utils/interfaces.util";
 
 function ForgotPasswordForm(data: IForm) {
   const { className,onStepChange, ...props } = data;

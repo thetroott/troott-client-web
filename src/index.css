@@ -215,3 +215,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* tailwind.config.css or global.css */
+.scrollbar-none::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

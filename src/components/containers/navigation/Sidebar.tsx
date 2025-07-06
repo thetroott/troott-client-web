@@ -59,7 +59,7 @@ const AppSidebar = (data: ISideBar) => {
       <SearchForm />
       <SidebarContent>
         {visibleItem.map((group) => (
-          <SidebarGroup>
+          <SidebarGroup key={group.title}>
             <SidebarGroupLabel className="uppercase text-muted-foreground/60">
               {group.title}
             </SidebarGroupLabel>
@@ -74,6 +74,8 @@ const AppSidebar = (data: ISideBar) => {
 
                   return (
                     <SidebarMenuItem key={item.title}>
+
+                      
                       <SidebarMenuButton
                         asChild
                         data-active={isActive}

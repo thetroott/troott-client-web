@@ -7,7 +7,7 @@ import NavBar from "../containers/navigation/NavBar";
 
 const DashboardLayout = () => {
   const [defaultOpen] = React.useState(() => {
-    const stored = storage.fetchData("sidebar-collapsed");
+    const stored = storage.fetch("sidebar-collapsed");
     return stored ? stored !== "true" : true;
   });
 

@@ -1,7 +1,7 @@
 
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils"
-import type { IForm, IOtpFormErrors } from "@/utils/interface.util"
+import type { IForm, IOtpFormErrors } from "@/utils/interfaces.util"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

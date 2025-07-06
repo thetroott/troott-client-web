@@ -47,7 +47,7 @@ export default function CountrySelect() {
       <Select value={selectedCountry} onValueChange={setSelectedCountry}>
         <SelectTrigger
           id={id}
-          className="h-auto ps-2 text-left gap-60 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_img]:shrink-0 cursor-pointer"
+          className="h-auto ps-2 text-left [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_img]:shrink-0 cursor-pointer w-full"
         >
           <SelectValue />
         </SelectTrigger>
@@ -69,7 +69,7 @@ export default function CountrySelect() {
             </div>
           </div>
 
-          {/* ✅ Scrollable country list */}
+          {/* Scrollable country list */}
           <div className="">
             {filtered.map((country) => (
               <SelectItem key={country.code2} value={country.code2}>

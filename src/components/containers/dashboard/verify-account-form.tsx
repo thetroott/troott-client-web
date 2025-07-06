@@ -2,18 +2,15 @@ import CountrySelect from "@/components/containers/dashboard/CountrySelect";
 
 import type { IForm } from "@/utils/interfaces.util";
 import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import { IconText } from "./IconText";
-import LegalNameInput from "./LegalNameInput";
-import DateOfBirthPicker from "./DOBPicker";
 
 const VerifyAccountForm = (data: IForm) => {
   const { className, ...props } = data;
-  const navigate = useNavigate();
+  
 
   return (
     <>
-      <div className="w-full ">
+      <div className="w-full">
         <CountrySelect />
 
         <h2 className="text-[15px] font-medium mt-6 text-muted-foreground">
@@ -32,25 +29,6 @@ const VerifyAccountForm = (data: IForm) => {
           text="Government-issued ID"
           className="text-sm text-muted-foreground mt-2"
         />
-
-
-        <LegalNameInput
-          id="Legal-name"
-          firstName="Damola"
-          lastName="Oladipo"
-          label="Legal Name"
-          description="As shown on your government-issued ID"
-          // description="This will be your legal name on your account"
-          className="mt-8 "
-        />
-
-        <DateOfBirthPicker
-          label="Date of Birth"
-          className="mt-6"
-        />
-        
-
-
 
       </div>
     </>

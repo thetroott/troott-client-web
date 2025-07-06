@@ -1,4 +1,4 @@
-import { DotIcon } from "lucide-react"
+import { DotIcon } from "lucide-react";
 
 const OnboardingItems = [
   {
@@ -8,6 +8,18 @@ const OnboardingItems = [
     text: "Add the required information to verify your account and avoid any interruptions to your access or sermon publishing.",
     button: "Verify account",
     action: "/get-started/verify-account",
+    steps: [
+      {
+        id: "verify-personal",
+        title: "Personal Information",
+        action: "/get-started/verify-account/personal-information",
+      },
+      {
+        id: "verify-doc",
+        title: "Document Verification",
+        action: "/get-started/verify-account/verify-document",
+      },
+    ],
   },
   {
     id: "2",
@@ -33,7 +45,6 @@ const OnboardingItems = [
     button: "Upload sermon",
     action: "/upload-sermon",
   },
-]
+];
 
-
-export default OnboardingItems
+export default OnboardingItems;

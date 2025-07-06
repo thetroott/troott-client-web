@@ -1,5 +1,7 @@
+import { Outlet } from "react-router-dom";
 import PageHeader from "@/components/containers/dashboard/PageHeader";
 import VerifyAccountForm from "@/components/containers/dashboard/verify-account-form";
+
 
 function UserAccount() {
   return (
@@ -11,8 +13,9 @@ function UserAccount() {
         />
       </div>
 
-      <div className="mt-8 mx-auto pr-56">
+      <div className="mt-8 mx-auto pr-80">
         <VerifyAccountForm />
+        <Outlet />
       </div>
     </>
   );

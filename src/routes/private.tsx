@@ -12,8 +12,8 @@ import InnerLayout from "@/components/layouts/InnerLayout";
 import UploadSermon from "@/screens/upload/UploadSermon";
 import UserAccount from "@/screens/account/UserAccount";
 import UserProfile from "@/screens/profile/UserProfile";
-
-// Example private routes with role metadata
+import PersonalInfo from "@/screens/account/UserAccount copy 2";
+import VerifyDocument from "@/screens/account/UserAccount copy";
 export const privateRoutes = [
   {
     path: "/",
@@ -29,63 +29,76 @@ export const privateRoutes = [
         element: <Dashboard />,
         roles: ["admin", "staff", "preacher"],
       },
+      
+      // get-started landing page
       {
-        path: "/get-started",
+        path: "get-started",
         element: <GetStarted />,
         roles: ["admin", "staff", "preacher"],
       },
-      {
-        path: "/upload-sermon",
-        element: <Upload />,
-        roles: ["admin", "staff", "preacher"],
-      },
-      {
-        path: "/get-sermons",
-        element: <Sermons />,
-        roles: ["admin", "staff", "preacher"],
-      },
-      {
-        path: "/my-analytics",
-        element: <Analytics />,
-        roles: ["admin", "staff", "preacher"],
-      },
 
+      // get-started sub routes using InnerLayout
       {
-        path: "/my-drafts",
-        element: <Drafts />,
-        roles: ["admin", "staff", "preacher"],
-      },
-      {
-        path: "/my-series",
-        element: <Series />,
-        roles: ["admin", "staff", "preacher"],
-      },
-      {
-        path: "/my-trash",
-        element: <Trash />,
-        roles: ["admin", "staff", "preacher"],
-      },
-
-      {
-        path: "/get-started",
+        path: "get-started",
         element: <InnerLayout />,
+        roles: ["admin", "staff", "preacher"],
         children: [
           {
             path: "verify-account",
             element: <UserAccount />,
-            roles: ["admin", "staff", "preacher"],
+          },
+          {
+            path: "verify-account/personal-information",
+            element: <PersonalInfo />,
+          },
+          {
+            path: "verify-account/verify-document",
+            element: <VerifyDocument />,
           },
           {
             path: "complete-profile",
             element: <UserProfile />,
-            roles: ["admin", "staff", "preacher"],
-          },
-          {
-            path: "tour-guide",
-            element: <UploadSermon />,
-            roles: ["admin", "staff", "preacher"],
           },
         ],
+      },
+
+      // get-started tour guide
+
+      {
+        path: "get-started/tour-guide",
+        element: <UploadSermon />,
+      },
+
+      // other dashboard routes
+      {
+        path: "upload-sermon",
+        element: <Upload />,
+        roles: ["admin", "staff", "preacher"],
+      },
+      {
+        path: "get-sermons",
+        element: <Sermons />,
+        roles: ["admin", "staff", "preacher"],
+      },
+      {
+        path: "my-analytics",
+        element: <Analytics />,
+        roles: ["admin", "staff", "preacher"],
+      },
+      {
+        path: "my-drafts",
+        element: <Drafts />,
+        roles: ["admin", "staff", "preacher"],
+      },
+      {
+        path: "my-series",
+        element: <Series />,
+        roles: ["admin", "staff", "preacher"],
+      },
+      {
+        path: "my-trash",
+        element: <Trash />,
+        roles: ["admin", "staff", "preacher"],
       },
     ],
   },

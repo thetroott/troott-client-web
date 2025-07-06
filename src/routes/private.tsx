@@ -15,8 +15,10 @@ import UserProfile from "@/screens/profile/UserProfile";
 import PersonalInfo from "@/screens/account/VerifyUserInfo";
 import VerifyDocument from "@/screens/account/VerifyDocument";
 import SelectDocumentType from "@/components/containers/dashboard/SelectDocumentType";
-import UploadDocument from "@/components/containers/dashboard/UploadDocument";
 import VerifyDocumentForm from "@/components/containers/dashboard/verify-document";
+import UploadDocument from "@/components/containers/dashboard/UploadDocument";
+import LoginForm from "@/components/containers/auth/login-form";
+
 export const privateRoutes = [
   {
     path: "/",
@@ -46,21 +48,16 @@ export const privateRoutes = [
         element: <InnerLayout />,
         roles: ["admin", "staff", "preacher"],
         children: [
-          {
-            path: "verify-account",
-            element: <UserAccount />,
-          },
-          {
-            path: "verify-account/personal-information",
-            element: <PersonalInfo />,
-          },
+          { path: "verify-account", element: <UserAccount /> },
+          { path: "verify-account/personal-information", element: <PersonalInfo /> },
           {
             path: "verify-account/verify-document",
             element: <VerifyDocument />,
             children: [
-              { path: "", element: <VerifyDocumentForm /> }, 
-              { path: "select", element: <SelectDocumentType /> }, 
-              { path: "upload", element: <UploadDocument /> }
+              { index: true, path: "", element: <SelectDocumentType /> },
+              { path: "select", element: <VerifyDocumentForm /> },
+              { path: "upload", element: <UploadDocument /> },
+              { path: "start", element: <LoginForm /> },
             ],
           },
           {

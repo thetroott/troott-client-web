@@ -1,5 +1,4 @@
 import PageHeader from "@/components/containers/dashboard/PageHeader";
-//import VerifyDocumentForm from "@/components/containers/dashboard/verify-document";
 import { Outlet } from "react-router-dom";
 
 function VerifyDocument() {
@@ -13,9 +12,7 @@ function VerifyDocument() {
       </div>
 
       <div className="mt-8 mx-auto pr-80 ">
-        <Outlet/>
-        {/* <VerifyDocumentForm /> */}
-        
+        <Outlet />
       </div>
     </>
   );

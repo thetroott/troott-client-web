@@ -19,15 +19,20 @@ const OnboardingItems = [
         title: "Document Verification",
         action: "/get-started/verify-account/verify-document",
       },
-       {
+      {
         id: "3",
         title: "Document Verification",
         action: "/get-started/verify-account/verify-document/select",
       },
       {
         id: "4",
-        title: "Document Verification",
+        title: "Upload your documents",
         action: "/get-started/verify-account/verify-document/upload",
+      },
+      {
+        id: "5",
+        title: "Document Verification",
+        action: "/get-started/verify-account/verify-document/start",
       },
     ],
   },

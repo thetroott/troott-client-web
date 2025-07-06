@@ -10,10 +10,10 @@ import Sermons from "@/screens/dashboard/MySermons";
 import Analytics from "@/screens/dashboard/Analytics";
 import InnerLayout from "@/components/layouts/InnerLayout";
 import UploadSermon from "@/screens/upload/UploadSermon";
-import UserAccount from "@/screens/account/UserAccount";
+import UserAccount from "@/screens/account/GetVerified";
 import UserProfile from "@/screens/profile/UserProfile";
-import PersonalInfo from "@/screens/account/UserAccount copy 2";
-import VerifyDocument from "@/screens/account/UserAccount copy";
+import PersonalInfo from "@/screens/account/VerifyUserInfo";
+import VerifyDocument from "@/screens/account/VerifyDocument";
 export const privateRoutes = [
   {
     path: "/",

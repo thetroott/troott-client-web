@@ -10,12 +10,12 @@ const OnboardingItems = [
     action: "/get-started/verify-account",
     steps: [
       {
-        id: "verify-personal",
+        id: "1",
         title: "Personal Information",
         action: "/get-started/verify-account/personal-information",
       },
       {
-        id: "verify-doc",
+        id: "2",
         title: "Document Verification",
         action: "/get-started/verify-account/verify-document",
       },

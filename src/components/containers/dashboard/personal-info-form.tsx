@@ -1,13 +1,11 @@
 import CountrySelect from "@/components/containers/dashboard/CountrySelect";
-
-import type { IForm } from "@/utils/interfaces.util";
 import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
 import { IconText } from "./IconText";
 import LegalNameInput from "./LegalNameInput";
 import DateOfBirthPicker from "./DOBPicker";
 
-const PersonalInfoForm = (data: IForm) => {
-  const { className, ...props } = data;
+const PersonalInfoForm = () => {
+  
   
 
   return (
@@ -48,9 +46,7 @@ const PersonalInfoForm = (data: IForm) => {
           className="mt-6"
 
         />
-        
-
-
+      
 
       </div>
     </>

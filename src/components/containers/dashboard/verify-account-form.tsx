@@ -1,11 +1,11 @@
 import CountrySelect from "@/components/containers/dashboard/CountrySelect";
 
-import type { IForm } from "@/utils/interfaces.util";
+import type { IOnboarding } from "@/utils/interfaces.util";
 import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
 import { IconText } from "./IconText";
 
-const VerifyAccountForm = (data: IForm) => {
-  const { className, ...props } = data;
+const VerifyAccountForm = (data: IOnboarding) => {
+  const { step } = data;
   
 
   return (

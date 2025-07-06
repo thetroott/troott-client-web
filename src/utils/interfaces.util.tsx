@@ -271,3 +271,7 @@ export interface IDOBPicker {
   id?: string;
   className?: string;
 }
+
+export interface IOnboarding {
+  step?: string
+}

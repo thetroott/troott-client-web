@@ -12,7 +12,7 @@ function ProgressButtons() {
   }
 
   const handleContinue = () => {
-    navigate("/onboarding/complete-profile/preacher-details")
+    navigate("/onboarding")
   }
 
   return (

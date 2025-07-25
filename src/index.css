@@ -226,3 +226,17 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Autofill style for light mode */
+:root input:-webkit-autofill {
+  @apply bg-white text-black;
+  -webkit-text-fill-color: black !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Autofill style for dark mode */
+.dark input:-webkit-autofill {
+  @apply bg-neutral-900 text-white;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 9999s ease-in-out 0s;
+}

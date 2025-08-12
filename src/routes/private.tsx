@@ -1,7 +1,6 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import Home from "../screens/home/Home";
 import Dashboard from "@/screens/dashboard/Dashboard";
-import Upload from "@/components/containers/modal/upload-sermon";
 import Drafts from "@/screens/dashboard/Drafts";
 import Series from "@/screens/dashboard/Series";
 import Trash from "@/screens/dashboard/Trash";
@@ -10,6 +9,7 @@ import Sermons from "@/screens/dashboard/MySermons";
 import Analytics from "@/screens/dashboard/Analytics";
 import InnerLayout from "@/components/layouts/InnerLayout";
 import UploadSermon from "@/screens/upload/UploadSermon";
+import { UploadProvider } from "@/context/upload/upload.context";
 import UserAccount from "@/screens/account/GetVerified";
 import UserProfile from "@/screens/profile/UserProfile";
 import PersonalInfo from "@/screens/account/VerifyUserInfo";
@@ -77,7 +77,11 @@ export const privateRoutes = [
       // other dashboard routes
       {
         path: "upload-sermon",
-        element: <Upload />,
+        element: (
+          <UploadProvider>
+            <UploadSermon />
+          </UploadProvider>
+        ),
         roles: ["admin", "staff", "preacher"],
       },
       {

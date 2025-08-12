@@ -1,4 +1,4 @@
-import CountrySelect from "@/components/containers/dashboard/CountrySelect";
+import CountrySelect from "@/components/containers/get-started/CountrySelect";
 import type { ICountry } from "@/utils/interfaces.util";
 import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
 import { IconText } from "./IconText";

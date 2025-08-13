@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
 import { SermonProvider } from "./context/sermon.context";
 
 const App = () => {

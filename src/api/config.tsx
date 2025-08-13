@@ -55,7 +55,7 @@ const api = {
  */
 axiosPrivate.interceptors.request.use(
   async function (config) {
-    const accessToken = await storage.fetchData("accessToken");
+    const accessToken = await storage.getToken();
     if (accessToken) {
       config.headers.authorization = `Bearer ${accessToken}`;
     }
@@ -79,7 +79,7 @@ axiosPrivate.interceptors.response.use(
     }
 
     if (status === 401 || status === 403) {
-      await storage.removeData("accessToken");
+      await storage.deleteItem("accessToken");
       console.warn("Session expired. Redirecting to login...");
       window.location.href = "/login";
     }

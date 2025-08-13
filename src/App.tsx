@@ -1,38 +1,13 @@
-import { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ErrorBoundary } from "react-error-boundary";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "sonner"
 
-import Preview from "./screens/Review";
-import Login from "./screens/auth/Login";
-import Register from "./screens/auth/Register";
-
+<Toaster richColors position="top-center" />
 
 const App = () => {
-  const errorHandler = (err: any, info: any) => {
-    console.log(err, "logged error");
-    console.log(info, "logged error info");
-  };
-
   return (
     <Router>
-      <Suspense fallback={<></>}>
-        <ErrorBoundary
-          FallbackComponent={() => <></>}
-          onReset={() => {
-            window.location.reload();
-          }}
-          onError={errorHandler}
-        >
-          <Routes>
-            
-            <Route path="/preview" element={<Preview/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-
-            
-          </Routes>
-        </ErrorBoundary>
-      </Suspense>
+      <AppRoutes />
     </Router>
   );
 };

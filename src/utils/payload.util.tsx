@@ -1,18 +1,18 @@
-import { EUserType } from "./enum.util";
+import { UserType } from "./enums.util";
 
 export interface registerUserPayload {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  userType?: EUserType;
+  userType?: UserType;
 }
 export interface loginPayload {
   email: string;
   password: string;
 }
 
-export interface forgotPasswordPayload {
+export interface IforgotPassword {
   email: string;
 }
 export interface verifyOtpPayload {
@@ -37,6 +37,7 @@ export interface changePasswordPayload {
   currentPassword: string;
   newPassword: string;
 }
+
 
 export interface logoutPayload {
   userId: string;

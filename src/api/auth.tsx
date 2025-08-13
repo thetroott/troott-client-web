@@ -1,7 +1,9 @@
 import type {
     activatePayload,
     changePasswordPayload,
-    forgotPasswordPayload,
+    
+    IforgotPassword,
+    
     loginPayload,
     logoutPayload,
     registerUserPayload,
@@ -102,7 +104,7 @@ import type {
      * @param {forgotPasswordPayload} payload - Forgot password request data
      * @returns {Promise<any>} Forgot password response
      */
-    forgotPassword(payload: forgotPasswordPayload) {
+    forgotPassword(payload: IforgotPassword) {
       return this.client.post("/auth/forgot-password", payload);
     }
   

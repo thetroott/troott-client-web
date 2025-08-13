@@ -1,6 +1,5 @@
-import { ChangeEvent } from "react";
-import { ButtonProps as MuiButtonProps } from "@mui/material/Button";
-import { SxProps } from "@mui/system";
+import type { ChangeEvent } from "react";
+
 export interface IPasswordField {
   label?: string;
   value: string;
@@ -111,23 +110,4 @@ export interface IMultiSelectField
   value: (string | number)[];
   onChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
   renderOption?: (option: { value: string; label: string }) => React.ReactNode;
-}
-
-export interface IButton extends MuiButtonProps {
-  title?: string;
-  loading?: boolean;
-  left?: React.ReactNode;
-  right?: React.ReactNode;
-  alignSelf?: string;
-  borderRadius?: number | string;
-  backgroundColor?: string;
-}
-
-export interface IToggleButton extends MuiButtonProps {
-  loading?: boolean;
-  selected?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  borderRadius?: number | string;
-  sx?: SxProps;
 }

@@ -16,7 +16,7 @@ import Staff from "./staff";
 import Subscription from "./subscription";
 import User from "./user";
 
-const BaseURL = import.meta.env.REACT_TROOTT_API_URL as string;
+const BaseURL = import.meta.env.VITE_API_URL as string;
 
 export const axiosPublic = axios.create({
   baseURL: BaseURL,
@@ -30,7 +30,7 @@ export const axiosPrivate = axios.create({
   withCredentials: true,
 });
 
-const api = {
+const apiCall = {
   auth: new Auth(axiosPublic, axiosPrivate),
   bite: new Bite(axiosPrivate),
   catalog: new Catalog(axiosPrivate),
@@ -93,4 +93,4 @@ axiosPrivate.interceptors.response.use(
   }
 )
 
-export default api;
+export default apiCall;

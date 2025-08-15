@@ -34,12 +34,10 @@ export enum CookieKeyType {
   }
   
   export enum UserType {
-    SUPERADMIN = "superadmin",
     STAFF = "staff",
     PREACHER = "preacher",
     CREATOR = "creator",
     LISTENER = "listener",
-    USER = "user",
   }
   
   export enum StaffUnit {

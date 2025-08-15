@@ -1,5 +1,6 @@
 import countries from "world-countries"
 import type { ICountry } from "./interfaces.util";
+import { toast } from "sonner";
 
 const sortData = (data: Array<any>, filter: string = ''): Array<any> => {
 
@@ -161,6 +162,16 @@ const handleUserNavigation = (
   }
 };
 
+
+const handleMutationError = (error: any) => {
+  const message =
+    error?.response?.data?.errors?.[0] ||
+    error?.response?.data?.message ||
+    error.message
+  toast.error(message);
+};
+
+
 export {
     sortData,
     getCountry,
@@ -169,6 +180,7 @@ export {
     handleUserNavigation,
     isFirstTimeUser,
     markUserAsReturning,
+    handleMutationError,
     currentYear,
     years,
     months,

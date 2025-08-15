@@ -39,7 +39,7 @@ class Auth {
    * @param {ActivateDTO} payload - Account activation data
    * @returns {Promise<any>} Account activation response
    */
-  activateUser(payload: ActivateDTO) {
+  activateUser(payload: ActivateDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/activate", payload);
   }
 
@@ -48,7 +48,7 @@ class Auth {
    * @param {LoginDTO} payload - User login credentials
    * @returns {Promise<any>} Login response with auth tokens
    */
-  login(payload: LoginDTO) {
+  login(payload: LoginDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/login", payload);
   }
 
@@ -57,7 +57,7 @@ class Auth {
    * @param {VerifyOtpDTO} payload - OTP verification data
    * @returns {Promise<any>} OTP verification response
    */
-  verifyOTP(payload: VerifyOtpDTO) {
+  verifyOTP(payload: VerifyOtpDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/verify-otp", payload);
   }
 
@@ -66,7 +66,7 @@ class Auth {
    * @param {ResendOtpDTO} payload - Data for OTP resend request
    * @returns {Promise<any>} OTP resend response
    */
-  resendOTP(payload: ResendOtpDTO) {
+  resendOTP(payload: ResendOtpDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/resend-otp", payload);
   }
 
@@ -77,7 +77,7 @@ class Auth {
    * @param {any} payload - Token request data
    * @returns {Promise<any>} Token response
    */
-  getToken(payload: any) {
+  getToken(payload: any): Promise<IAPIResponse> {
     return this.client.post("/auth/token", payload);
   }
 
@@ -86,7 +86,7 @@ class Auth {
    * @param {ChangePasswordDTO} payload - Password change data
    * @returns {Promise<any>} Password change response
    */
-  changePassword(payload: ChangePasswordDTO) {
+  changePassword(payload: ChangePasswordDTO): Promise<IAPIResponse> {
     return this.secondaryClient.post("/auth/change-password", payload);
   }
 
@@ -95,7 +95,7 @@ class Auth {
    * @param {logoutPayload} payload - Logout request data
    * @returns {Promise<any>} Logout response
    */
-  logout(payload: LogoutDTO) {
+  logout(payload: LogoutDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/logout", payload);
   }
 
@@ -104,7 +104,7 @@ class Auth {
    * @param {ForgotPasswordDTO} payload - Forgot password request data
    * @returns {Promise<any>} Forgot password response
    */
-  forgotPassword(payload: ForgotPasswordDTO) {
+  forgotPassword(payload: ForgotPasswordDTO): Promise<IAPIResponse> {
     return this.client.post("/auth/forgot-password", payload);
   }
 
@@ -113,7 +113,7 @@ class Auth {
    * @param {ResetPasswordDTO} payload - Password reset data
    * @returns {Promise<any>} Password reset response
    */
-  resetPassword(payload: ResetPasswordDTO) {
+  resetPassword(payload: ResetPasswordDTO): Promise<IAPIResponse> {
     return this.secondaryClient.post("/auth/reset-password", payload);
   }
 }

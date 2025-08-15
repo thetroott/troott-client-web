@@ -6,11 +6,20 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail } from "lucide-react";
-import type { IForgotPwdFormErrors, IForm } from "@/utils/interfaces.util";
+import { Loader2, Mail } from "lucide-react";
+import type { IAPIResponse, IForgotPwdFormErrors, IForm } from "@/utils/interfaces.util";
+import { useMutation } from "@tanstack/react-query";
+import type { ForgotPasswordDTO, ResendOtpDTO, VerifyOtpDTO } from "@/utils/payload.util";
+import apiCall from "@/api/config";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { OtpType } from "@/utils/enums.util";
+import { handleMutationError } from "@/utils/helpers.util";
 
 function ForgotPasswordForm(data: IForm) {
+  
   const { className,onStepChange, ...props } = data;
+  const navigate = useNavigate()
 
   const [step, setStep] = useState<"email" | "otp" | "success">("email");
   const [formData, setFormData] = useState({
@@ -23,9 +32,15 @@ function ForgotPasswordForm(data: IForm) {
     otp: false,
   });
   const [resendCountdown, setResendCountdown] = useState(0);
-
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const updateStep = (newStep: "email" | "otp" | "success") => {
+    setStep(newStep);
+    onStepChange?.(newStep);
+  };
+
+
+  // validation
   const validateEmail = (email: string): string | undefined => {
     if (!email) return "Email is required";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,11 +79,59 @@ function ForgotPasswordForm(data: IForm) {
     }, 1000);
   };
 
-  const updateStep = (newStep: "email" | "otp" | "success") => {
-    setStep(newStep);
-    onStepChange?.(newStep);
-  };
+  // payload helper
+     const buildOtpPayload = (): VerifyOtpDTO => ( {
+      email: formData.email as string,
+      otp: Number(formData.otp.join("")), 
+      otpType: OtpType.FORGOTPASSWORD, 
+    })
+  
 
+  // mutations
+
+  const sendOtpMutation = useMutation({
+    mutationFn: async (payload: ForgotPasswordDTO) => {
+      return apiCall.auth.forgotPassword(payload)
+    },
+    onSuccess: (data: IAPIResponse) => {
+      toast.success(data.message);
+
+      updateStep("otp");
+      startResendCountdown();
+      setTimeout(() => otpRefs.current[0]?.focus(), 100);
+    },
+    onError: handleMutationError
+  });
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: async (payload: VerifyOtpDTO) => {
+      return apiCall.auth.verifyOTP(payload);
+    },
+    onSuccess: (data: IAPIResponse) => {
+      toast.success(data.message);
+      updateStep("success")
+    },
+    onError: handleMutationError
+  });
+
+  const resendOtpMutation = useMutation({
+    mutationFn: async (payload: ResendOtpDTO) => {
+      return apiCall.auth.resendOTP(payload)
+    },
+    onSuccess: () => {
+      setFormData((prev) => ({ ...prev, otp: Array(6).fill("") }));
+      setErrors({});
+      setTouched((prev) => ({ ...prev, otp: false }));
+      startResendCountdown();
+      otpRefs.current[0]?.focus();
+    },
+    onError: handleMutationError
+  });
+
+
+
+
+  // handlers
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData((prev) => ({ ...prev, email: value }));
@@ -83,9 +146,9 @@ function ForgotPasswordForm(data: IForm) {
     // Only allow single digit
     if (value.length > 1) return;
 
-    const newOtp = [...formData.otp];
-    newOtp[index] = value;
-    setFormData((prev) => ({ ...prev, otp: newOtp }));
+    const otp = [...formData.otp];
+    otp[index] = value;
+    setFormData((prev) => ({ ...prev, otp: otp }));
 
     // Clear error when user starts typing
     if (errors.otp) {
@@ -97,37 +160,15 @@ function ForgotPasswordForm(data: IForm) {
       otpRefs.current[index + 1]?.focus();
     }
 
-    // Auto-submit when all fields are filled
-    if (value && index === 5) {
-      const fullOtp = [...newOtp];
-      fullOtp[index] = value;
-      if (fullOtp.every((digit) => digit !== "")) {
-         // Use setTimeout to ensure state is updated and avoid validation errors
-         setTimeout(() => {
-          setTouched((prev) => ({ ...prev, otp: true }))
-
-          const otpError = validateOTP(fullOtp)
-          if (!otpError) {
-            setErrors({})
-            setIsSubmitting(true)
-
-            // Simulate API call to verify OTP
-            setTimeout(async () => {
-              try {
-                await new Promise((resolve) => setTimeout(resolve, 2000))
-                console.log("OTP verified:", fullOtp.join(""))
-                updateStep("success")
-              } catch (error) {
-                console.error("OTP verification failed:", error)
-              } finally {
-                setIsSubmitting(false)
-              }
-            }, 0)
-          } else {
-            setErrors({ otp: otpError })
-          }
-        }, 100)
-      }
+ // Auto-submit if last digit
+    if (index === 5 && otp.every((d) => d !== "")) {
+      const otpError = validateOTP(otp);
+      if (!otpError) verifyOtpMutation.mutate({
+        email: formData.email,
+        otp: Number(otp.join("")),
+        otpType: OtpType.FORGOTPASSWORD,
+      });
+      else setErrors({ otp: otpError });
     }
   };
 
@@ -169,25 +210,7 @@ function ForgotPasswordForm(data: IForm) {
     }
 
     setErrors({});
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call to send OTP
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Password reset OTP sent to:", formData.email);
-
-      // Move to OTP step
-      setStep("otp");
-      updateStep("otp");
-      startResendCountdown();
-
-      // Focus first OTP input
-      setTimeout(() => otpRefs.current[0]?.focus(), 100);
-    } catch (error) {
-      console.error("Failed to send reset OTP:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    await sendOtpMutation.mutate({email: formData.email});
   };
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
@@ -201,50 +224,19 @@ function ForgotPasswordForm(data: IForm) {
     }
 
     setErrors({});
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call to verify OTP
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("OTP verified:", formData.otp.join(""));
-
-      // Move to success step
-      setStep("success");
-      updateStep("success");
-    } catch (error) {
-      console.error("OTP verification failed:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    verifyOtpMutation.mutate(buildOtpPayload());
   };
 
   const handleResendOTP = async () => {
     if (resendCountdown > 0) return;
 
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call to resend OTP
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Resending OTP to:", formData.email);
-
-      // Clear current OTP
-      setFormData((prev) => ({ ...prev, otp: ["", "", "", "", "", ""] }));
-      setErrors({});
-      setTouched((prev) => ({ ...prev, otp: false }));
-      startResendCountdown();
-      otpRefs.current[0]?.focus();
-    } catch (error) {
-      console.error("Failed to resend OTP:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    resendOtpMutation.mutate(buildOtpPayload())
   };
 
   const handleBackToEmail = () => {
     setStep("email");
     updateStep("email");
-    setFormData((prev) => ({ ...prev, otp: ["", "", "", "", "", ""] }));
+    setFormData((prev) => ({ ...prev, otp: Array(6).fill("") }));
     setErrors({});
     setTouched({ email: false, otp: false });
   };
@@ -292,8 +284,17 @@ function ForgotPasswordForm(data: IForm) {
           )}
         </div>
 
-        <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Request OTP"}
+        <Button type="submit" className="w-full h-12" 
+         disabled={sendOtpMutation.isPending}
+        >
+          {sendOtpMutation.isPending ? (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" />
+              Sending...
+            </>
+          ) : (
+            "Request OTP"
+          )}
         </Button>
 
         <div className="text-center text-sm">
@@ -372,7 +373,7 @@ function ForgotPasswordForm(data: IForm) {
                 <button
                   type="button"
                   onClick={handleResendOTP}
-                  disabled={isSubmitting}
+                  disabled={resendOtpMutation.isPending}
                   className="text-primary underline underline-offset-4 hover:no-underline disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Resend code
@@ -381,8 +382,18 @@ function ForgotPasswordForm(data: IForm) {
             </p>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Verifying..." : "Verify code"}
+          <Button type="submit" className="w-full" 
+          disabled={verifyOtpMutation.isPending}
+        >
+          {verifyOtpMutation.isPending ? (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" />
+              Verifying..
+            </>
+          ) : (
+            "Verify code"
+          )}
+      
           </Button>
 
           <Button
@@ -390,8 +401,14 @@ function ForgotPasswordForm(data: IForm) {
             variant="ghost"
             className="w-full"
             onClick={handleBackToEmail}
-            disabled={isSubmitting}
-          >
+            disabled={verifyOtpMutation.isPending || sendOtpMutation.isPending}
+        >
+          {verifyOtpMutation.isPending || sendOtpMutation.isPending && (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" />
+            </>
+          )}
+    
             Back to email
           </Button>
         </div>
@@ -426,14 +443,14 @@ function ForgotPasswordForm(data: IForm) {
       </div>
 
       <Button
-        onClick={() => (window.location.href = "/reset-password")}
+        onClick={() => navigate("/reset-password")}
         className="w-full"
       >
         Create new password
       </Button>
 
       <Button
-        onClick={() => (window.location.href = "/login")}
+        onClick={() =>  navigate("/login")}
         variant="outline"
         className="w-full"
       >

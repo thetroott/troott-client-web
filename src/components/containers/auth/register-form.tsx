@@ -15,6 +15,7 @@ import apiCall from "@/api/config";
 import { toast } from "sonner";
 import { UserType } from "@/utils/enums.util";
 import { useNavigate } from "react-router-dom";
+import { handleMutationError } from "@/utils/helpers.util";
 
 const RegisterForm = (data: IForm) => {
   const { className, ...props } = data;
@@ -50,11 +51,7 @@ const RegisterForm = (data: IForm) => {
       toast.success(data.message);
       navigate("/verify-otp");
     },
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.errors[0] || error.response.data.message;
-      toast.error(message);
-    },
+    onError:handleMutationError
   });
 
   const validateName = (

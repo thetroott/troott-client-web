@@ -15,6 +15,7 @@ import apiCall from "@/api/config";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { OtpType } from "@/utils/enums.util";
+import { handleMutationError } from "@/utils/helpers.util";
 
 const OtpForm = (data: IForm) => {
   const { className, email, onSuccess, onResend, ...props } = data;
@@ -36,13 +37,7 @@ const OtpForm = (data: IForm) => {
       navigate("/login");
       onSuccess?.();
     },
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.errors?.[0] ||
-        error?.response?.data?.message ||
-        error.message;
-      toast.error(message);
-    },
+    onError: handleMutationError
   });
 
   const validateOTP = (otp: string[]): string | undefined => {

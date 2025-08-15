@@ -8,7 +8,7 @@ import { Eye, EyeOff, Loader2, LockIcon, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import apiCall from "@/api/config";
-import { handleUserNavigation } from "@/utils/helpers.util";
+import { handleMutationError, handleUserNavigation } from "@/utils/helpers.util";
 import { toast } from "sonner";
 
 
@@ -48,13 +48,7 @@ const LoginForm = (data: IForm) => {
       () => navigate('/dashboard')   // returning user
     );
     },
-    onError: (error: any) => {
-     const message =
-        error?.response?.data?.errors?.[0] ||
-        error?.response?.data?.message ||
-        error.message;
-      toast.error(message);
-    },
+    onError: handleMutationError
   });
 
   const validateEmail = (email: string): string | undefined => {

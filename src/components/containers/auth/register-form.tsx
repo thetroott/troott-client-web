@@ -8,7 +8,7 @@ import type {
   IRegisterFormErrors,
 } from "@/utils/interfaces.util";
 import { useState } from "react";
-import { Eye, EyeOffIcon, LockIcon, Mail, User } from "lucide-react";
+import { Eye, EyeOffIcon, Loader2, LockIcon, Mail, User } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import type { RegisterUserDTO } from "@/utils/payload.util";
 import apiCall from "@/api/config";
@@ -17,7 +17,6 @@ import { UserType } from "@/utils/enums.util";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = (data: IForm) => {
-  
   const { className, ...props } = data;
   const navigate = useNavigate();
 
@@ -49,10 +48,11 @@ const RegisterForm = (data: IForm) => {
     },
     onSuccess: (data: IAPIResponse) => {
       toast.success(data.message);
-      navigate("/verify-otp")
+      navigate("/verify-otp");
     },
     onError: (error: any) => {
-      const message = error?.response?.data?.errors[0] || error.response.data.message;
+      const message =
+        error?.response?.data?.errors[0] || error.response.data.message;
       toast.error(message);
     },
   });
@@ -119,7 +119,7 @@ const RegisterForm = (data: IForm) => {
     return { score, feedback, label };
   };
 
-   const validators = {
+  const validators = {
     firstName: (value: string) => validateName(value, "First Name"),
     lastName: (value: string) => validateName(value, "Last Name"),
     email: validateEmail,
@@ -128,10 +128,14 @@ const RegisterForm = (data: IForm) => {
 
   const validateForm = () => {
     const newErrors: IRegisterFormErrors = {};
-    (Object.keys(validators) as Array<keyof typeof validators>).forEach((field) => {
-      const error = validators[field](formData[field as keyof typeof validators]);
-      if (error) newErrors[field] = error;
-    });
+    (Object.keys(validators) as Array<keyof typeof validators>).forEach(
+      (field) => {
+        const error = validators[field](
+          formData[field as keyof typeof validators]
+        );
+        if (error) newErrors[field] = error;
+      }
+    );
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -153,12 +157,11 @@ const RegisterForm = (data: IForm) => {
       }
     };
 
-   const handleBlur = (field: keyof typeof validators) => () => {
+  const handleBlur = (field: keyof typeof validators) => () => {
     setTouched((prev) => ({ ...prev, [field]: true }));
     const error = validators[field](formData[field]);
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,7 +177,6 @@ const RegisterForm = (data: IForm) => {
     if (!validateForm()) return;
 
     await registerMutation.mutate(formData);
-
   };
 
   return (
@@ -412,8 +414,16 @@ const RegisterForm = (data: IForm) => {
           className="w-full h-12"
           disabled={registerMutation.isPending}
         >
-          {registerMutation.isPending ? "Creating account..." : "Create Account"}
+          {registerMutation.isPending ? (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" />
+              Creating account...
+            </>
+          ) : (
+            "Create Account"
+          )}
         </Button>
+        
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
             Or continue with

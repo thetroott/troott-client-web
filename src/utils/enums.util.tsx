@@ -205,7 +205,7 @@ export enum CookieKeyType {
     IOS = "ios",
   }
   
-  export enum EOtpType {
+  export enum OtpType {
     REGISTER = "register",
     LOGIN = "login",
     GENERIC = "generic",

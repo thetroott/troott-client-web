@@ -1,273 +1,265 @@
-
 import { useRef, useState } from "react";
-import { cn } from "@/lib/utils"
-import type { IForm, IOtpFormErrors } from "@/utils/interfaces.util"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils";
+import type {
+  IAPIResponse,
+  IForm,
+  IOtpFormErrors,
+} from "@/utils/interfaces.util";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import type { VerifyOtpDTO } from "@/utils/payload.util";
+import apiCall from "@/api/config";
+import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import { OtpType } from "@/utils/enums.util";
 
 const OtpForm = (data: IForm) => {
-    const { className, email, onSuccess, onResend, ...props } = data;
+  const { className, email, onSuccess, onResend, ...props } = data;
 
-    const [otp, setOtp] = useState(["", "", "", "", "", ""])
-    const [errors, setErrors] = useState<IOtpFormErrors>({})
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [touched, setTouched] = useState(false)
-    const [resendCountdown, setResendCountdown] = useState(0)
-  
-    const otpRefs = useRef<(HTMLInputElement | null)[]>([])
-  
-    const validateOTP = (otp: string[]): string | undefined => {
-      const otpString = otp.join("")
-      if (!otpString) return "OTP is required"
-      if (otpString.length !== 6) return "Please enter all 6 digits"
-      if (!/^\d+$/.test(otpString)) return "OTP must contain only numbers"
-      return undefined
-    }
+  const navigate = useNavigate();
 
-    
+  const [otp, setOtp] = useState(Array(6).fill(""));
+  const [errors, setErrors] = useState<IOtpFormErrors>({});
+  const [touched, setTouched] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const otpMutation = useMutation({
+    mutationFn: (payload: VerifyOtpDTO) => {
+      return apiCall.auth.verifyOTP(payload);
+    },
+    onSuccess: (data: IAPIResponse) => {
+      toast.success(data.message);
+      navigate("/login");
+      onSuccess?.();
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.errors?.[0] ||
+        error?.response?.data?.message ||
+        error.message;
+      toast.error(message);
+    },
+  });
+
+  const validateOTP = (otp: string[]): string | undefined => {
+    const otpString = otp.join("");
+    if (!otpString) return "OTP is required";
+    if (otpString.length !== 6) return "Please enter all 6 digits";
+    if (!/^\d+$/.test(otpString)) return "OTP must contain only numbers";
+  };
+
   const maskEmail = (email: string): string => {
-    if (!email) return ""
-    const [localPart, domain] = email.split("@")
-    if (localPart.length <= 2) return email
-    const maskedLocal = localPart[0] + "*".repeat(localPart.length - 2) + localPart[localPart.length - 1]
-    return `${maskedLocal}@${domain}`
-  }
+    if (!email) return "";
+    const [localPart, domain] = email.split("@");
+    if (localPart.length <= 2) return email;
+    const maskedLocal =
+      localPart[0] +
+      "*".repeat(localPart.length - 2) +
+      localPart[localPart.length - 1];
+    return `${maskedLocal}@${domain}`;
+  };
 
   const startResendCountdown = () => {
-    setResendCountdown(60)
+    setResendCountdown(60);
     const timer = setInterval(() => {
       setResendCountdown((prev) => {
         if (prev <= 1) {
-          clearInterval(timer)
-          return 0
+          clearInterval(timer);
+          return 0;
         }
-        return prev - 1
-      })
-    }, 1000)
-  }
-  
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
-  
+   const buildOtpPayload = (): VerifyOtpDTO => ( {
+    email: email as string,
+    otp: Number(otp.join("")), 
+    otpType: OtpType.REGISTER, 
+  })
+
+
+ 
   const handleOTPChange = (index: number, value: string) => {
     // Only allow single digit
-    if (value.length > 1) return
+    if (value.length > 1) return;
 
-    const newOtp = [...otp]
-    newOtp[index] = value
-    setOtp(newOtp)
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
 
     // Clear error when user starts typing
     if (errors.otp) {
-      setErrors({})
+      setErrors({});
     }
 
     // Auto-focus next input
     if (value && index < 5) {
-      otpRefs.current[index + 1]?.focus()
+      otpRefs.current[index + 1]?.focus();
     }
+  };
 
-    // Auto-submit when all fields are filled
-    if (value && index === 5) {
-      const fullOtp = [...newOtp]
-      if (fullOtp.every((digit) => digit !== "")) {
-        // Use setTimeout to ensure state is updated and avoid validation errors
-        setTimeout(() => {
-          setTouched(true)
+  const handleOTPKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    // Handle backspace
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
 
-          const otpError = validateOTP(fullOtp)
-          if (!otpError) {
-            setErrors({})
-            setIsSubmitting(true)
+  
 
-            // Simulate API call to verify OTP
-            setTimeout(async () => {
-              try {
-                await new Promise((resolve) => setTimeout(resolve, 2000))
-                console.log("OTP verified:", fullOtp.join(""))
-                onSuccess?.()
-              } catch (error) {
-                console.error("OTP verification failed:", error)
-              } finally {
-                setIsSubmitting(false)
-              }
-            }, 0)
-          } else {
-            setErrors({ otp: otpError })
-          }
-        }, 100)
-      }
+ const handleOTPPaste = (e: React.ClipboardEvent) => {
+  e.preventDefault();
+
+  const pasted = e.clipboardData
+    .getData("text")
+    .replace(/\D/g, "")
+    .slice(0, 6);
+
+  if (!pasted) return;
+
+  const newOtp = pasted.split("");
+  setOtp(newOtp);
+
+  // Focus last input
+  otpRefs.current[newOtp.length - 1]?.focus();
+
+  // Auto-submit if all 6 digits present
+  if (newOtp.length === 6) {
+    setTouched(true);
+
+    const otpError = validateOTP(newOtp);
+    if (!otpError) {
+      setErrors({});
+      otpMutation.mutate(buildOtpPayload());
+    } else {
+      setErrors({ otp: otpError });
     }
   }
-  
-    const handleOTPKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Handle backspace
-      if (e.key === "Backspace" && !otp[index] && index > 0) {
-        otpRefs.current[index - 1]?.focus()
-      }
-    }
-  
-    const handleOTPPaste = (e: React.ClipboardEvent) => {
-      e.preventDefault()
-      const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6)
-  
-      if (pastedData.length === 6) {
-        const newOtp = pastedData.split("")
-        setOtp(newOtp)
-  
-        // Focus the last input
-        otpRefs.current[5]?.focus()
-  
-        // Auto-submit after paste
-        setTimeout(() => {
-          setTouched(true)
-  
-          const otpError = validateOTP(newOtp)
-          if (!otpError) {
-            setErrors({})
-            setIsSubmitting(true)
-  
-            // Simulate API call to verify OTP
-            setTimeout(async () => {
-              try {
-                await new Promise((resolve) => setTimeout(resolve, 2000))
-                console.log("OTP verified:", newOtp.join(""))
-                onSuccess?.()
-              } catch (error) {
-                console.error("OTP verification failed:", error)
-              } finally {
-                setIsSubmitting(false)
-              }
-            }, 0)
-          } else {
-            setErrors({ otp: otpError })
-          }
-        }, 100)
-      }
-    }
-  
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault()
-  
-      setTouched(true)
-  
-      const otpError = validateOTP(otp)
-      if (otpError) {
-        setErrors({ otp: otpError })
-        return
-      }
-  
-      setErrors({})
-  
-      setIsSubmitting(true)
-  
-      try {
-        // Simulate API call to verify OTP
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        console.log("Verifying OTP:", otp.join(""))
-  
-        // Handle successful verification here
-        toast.success("OTP verified successfully!")
-      } catch (error) {
-        console.error("OTP verification failed:", error)
-        
-        toast.error("Verification failed. Please check your code and try again.")
-      } finally {
-        setIsSubmitting(false)
-      }
-    }
-  
-    const handleResendOTP = async () => {
-      setIsSubmitting(true)
-  
-      try {
-        // Simulate API call to resend OTP
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log("Resending OTP")
-  
-        // Clear current OTP
-        setOtp(["", "", "", "", "", ""])
-        setErrors({})
-        setTouched(false)
-        startResendCountdown()
-        otpRefs.current[0]?.focus()
-        onResend?.()
-      } catch (error) {
-        console.error("Failed to resend OTP:", error)
-      } finally {
-        setIsSubmitting(false)
-      }
-    }
-  
-    return (
-      <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
+};
 
-        <div className="grid gap-6">
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setTouched(true);
+
+    const otpError = validateOTP(otp);
+    if (otpError) {
+      setErrors({ otp: otpError });
+      return;
+    }
+
+    setErrors({});
+
+    await otpMutation.mutate(buildOtpPayload());
+  };
+
+    const handleResendOTP = async () => {
+    setOtp(Array(6).fill(""));
+    setErrors({});
+    setTouched(false);
+    startResendCountdown();
+    otpRefs.current[0]?.focus();
+    onResend?.();
+  };
+
+  return (
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={handleSubmit}
+      {...props}
+    >
+      <div className="grid gap-6">
         {email && (
           <div className="text-center text-sm text-muted-foreground">
             <p>We sent a verification code to</p>
             <p className="font-medium text-foreground">{maskEmail(email)}</p>
           </div>
         )}
-          <div className="grid gap-2">
-            <Label htmlFor="otp-0">Verification Code</Label>
-            <div className="flex gap-2 justify-center">
-              {otp.map((digit, index) => (
-                <Input
-                  key={index}
-                  id={`otp-${index}`}
-                  ref={(el) => {
-                    otpRefs.current[index] = el;
-                    return undefined;
-                  }}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOTPChange(index, e.target.value)}
-                  onKeyDown={(e) => handleOTPKeyDown(index, e)}
-                  onPaste={index === 0 ? handleOTPPaste : undefined}
-                  className={cn(
-                    "w-12 h-12 text-center text-lg font-semibold",
-                    errors.otp && touched && "border-destructive focus-visible:ring-destructive",
-                  )}
-                  aria-invalid={errors.otp && touched ? "true" : "false"}
-                  aria-describedby={errors.otp && touched ? "otp-error" : undefined}
-                />
-              ))}
-            </div>
-            {errors.otp && touched && (
-              <p id="otp-error" className="text-sm text-destructive text-center" role="alert">
-                {errors.otp}
-              </p>
-            )}
+        <div className="grid gap-2">
+          <Label htmlFor="otp-0">Verification Code</Label>
+          <div className="flex gap-2 justify-center">
+            {otp.map((digit, index) => (
+              <Input
+                key={index}
+                id={`otp-${index}`}
+                ref={(el) => {
+                  otpRefs.current[index] = el;
+                  return undefined;
+                }}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleOTPChange(index, e.target.value)}
+                onKeyDown={(e) => handleOTPKeyDown(index, e)}
+                onPaste={index === 0 ? handleOTPPaste : undefined}
+                className={cn(
+                  "w-12 h-12 text-center text-lg font-semibold",
+                  errors.otp &&
+                    touched &&
+                    "border-destructive focus-visible:ring-destructive"
+                )}
+                aria-invalid={errors.otp && touched ? "true" : "false"}
+                aria-describedby={
+                  errors.otp && touched ? "otp-error" : undefined
+                }
+              />
+            ))}
           </div>
-  
-          <div className="text-center text-sm text-muted-foreground">
-            <p>
-              Didn't receive the code?{" "}
-              {resendCountdown > 0 ? (
+          {errors.otp && touched && (
+            <p
+              id="otp-error"
+              className="text-sm text-destructive text-center"
+              role="alert"
+            >
+              {errors.otp}
+            </p>
+          )}
+        </div>
+
+        <div className="text-center text-sm text-muted-foreground">
+          <p>
+            Didn't receive the code?{" "}
+            {resendCountdown > 0 ? (
               <span>Resend in {resendCountdown}s</span>
             ) : (
               <button
                 type="button"
                 onClick={handleResendOTP}
-                disabled={isSubmitting}
+                disabled={otpMutation.isPending}
                 className="text-primary underline underline-offset-4 hover:no-underline disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Resend code
               </button>
             )}
-            </p>
-          </div>
-  
-          <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
-            {isSubmitting ? "Verifying..." : "Verify code"}
-          </Button>
+          </p>
         </div>
-      </form>
-    )
-  }
-  
-  export default OtpForm
+
+        <Button
+          type="submit"
+          className="w-full h-12 "
+          disabled={otpMutation.isPending}
+        >
+          {otpMutation.isPending ? (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" />
+              Verifying...
+            </>
+          ) : (
+            "Verify code"
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default OtpForm;

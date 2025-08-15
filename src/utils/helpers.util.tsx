@@ -114,13 +114,64 @@ const months = [
 
 const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`.padStart(2, "0"))
 
+
+// utils/firstTimeUser.ts
+const STORAGE_KEY = 'hasVisited';
+
+/**
+ * Check if the user is visiting for the first time
+ * @returns boolean - true if first time, false if returning
+ */
+const isFirstTimeUser = (): boolean => {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY);
+    return value !== 'true';
+  } catch (error) {
+    console.error('Error accessing localStorage:', error);
+    // fallback to treating user as first time
+    return true;
+  }
+};
+
+/**
+ * Mark user as returning
+ */
+const markUserAsReturning = (): void => {
+  try {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  } catch (error) {
+    console.error('Error setting localStorage:', error);
+  }
+};
+
+/**
+ * Full helper to check and handle navigation logic
+ * @param onFirstTime callback when user is first time
+ * @param onReturning callback when user is returning
+ */
+const handleUserNavigation = (
+  onFirstTime: () => void,
+  onReturning: () => void
+) => {
+  if (isFirstTimeUser()) {
+    onFirstTime();
+    markUserAsReturning();
+  } else {
+    onReturning();
+  }
+};
+
 export {
     sortData,
     getCountry,
     readCountries,
     listCountries,
+    handleUserNavigation,
+    isFirstTimeUser,
+    markUserAsReturning,
     currentYear,
     years,
     months,
     days,
+    
 }

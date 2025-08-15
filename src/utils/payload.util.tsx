@@ -1,4 +1,4 @@
-import { UserType } from "./enums.util";
+import { OtpType, UserType } from "./enums.util";
 
 export interface RegisterUserDTO {
   firstName: string;
@@ -17,20 +17,24 @@ export interface ForgotPasswordDTO {
 }
 export interface VerifyOtpDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
 export interface ActivateDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
 
 export interface ResendOtpDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
 export interface ResetPasswordDTO {
   email: string;
   newPassword: string;
+  
 }
 
 export interface ChangePasswordDTO {

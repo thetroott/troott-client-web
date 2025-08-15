@@ -15,10 +15,9 @@ function ForgotPasswordForm(data: IForm) {
   const [step, setStep] = useState<"email" | "otp" | "success">("email");
   const [formData, setFormData] = useState({
     email: "",
-    otp: ["", "", "", "", "", ""],
+    otp: (Array(6).fill(""))
   });
   const [errors, setErrors] = useState<IForgotPwdFormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [touched, setTouched] = useState({
     email: false,
     otp: false,

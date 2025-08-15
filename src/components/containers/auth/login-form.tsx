@@ -2,22 +2,28 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { IForm, ILoginrFormErrors } from "@/utils/interfaces.util";
+import type { IAPIResponse, IForm, ILoginrFormErrors } from "@/utils/interfaces.util";
 import { useState } from "react";
-import { Eye, EyeOff, LockIcon, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader2, LockIcon, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import apiCall from "@/api/config";
+import { handleUserNavigation } from "@/utils/helpers.util";
+import { toast } from "sonner";
 
 
 
 const LoginForm = (data: IForm) => {
+  
   const { className, ...props } = data;
   const navigate = useNavigate();
+  
+  // State to manage form data and errors
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState<ILoginrFormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [touched, setTouched] = useState({
     email: false,
     password: false,
@@ -29,17 +35,37 @@ const LoginForm = (data: IForm) => {
     label: "Very Weak",
   });
 
+    const loginMutation = useMutation({
+    mutationFn: async (payload: typeof formData) => {
+      return apiCall.auth.login(payload);
+    },
+    onSuccess: (data: IAPIResponse) => {
+      
+      toast.success(data.message)
+
+        handleUserNavigation(
+      () => navigate('/onboarding'), // first-time user
+      () => navigate('/dashboard')   // returning user
+    );
+    },
+    onError: (error: any) => {
+     const message =
+        error?.response?.data?.errors?.[0] ||
+        error?.response?.data?.message ||
+        error.message;
+      toast.error(message);
+    },
+  });
+
   const validateEmail = (email: string): string | undefined => {
     if (!email) return "Email is required";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return "Please enter a valid email address";
-    return undefined;
   };
 
   const validatePassword = (password: string): string | undefined => {
     if (!password) return "Password is required";
     if (password.length < 8) return "Password must be at least 8 characters";
-    return undefined;
   };
 
   const calculatePasswordStrength = (password: string) => {
@@ -95,8 +121,7 @@ const LoginForm = (data: IForm) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange =
-    (field: keyof typeof formData) =>
+  const handleInputChange = (field: keyof typeof formData) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setFormData((prev) => ({ ...prev, [field]: value }));
@@ -135,20 +160,7 @@ const LoginForm = (data: IForm) => {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Login attempt:", formData);
-
-      navigate("/dashboard");
-      // Handle successful login here
-    } catch (error) {
-      console.error("Login failed:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    await loginMutation.mutate(formData)
   };
 
   return (
@@ -174,7 +186,7 @@ const LoginForm = (data: IForm) => {
                 "pl-9",
                 "pr-10", 
                 "h-12" ,
-                "focus-visible:ring-2",           // enable ring on focus
+                "focus-visible:ring-2",        
                 "focus-visible:ring-teal-400", 
                 "focus-visible:outline-none",    
                 errors.email &&
@@ -308,9 +320,17 @@ const LoginForm = (data: IForm) => {
             )}
           </div>
           
-          <Button type="submit" className="w-full h-12" disabled={isSubmitting}>
-            {isSubmitting ? "Signing in..." : "Login"}
-          </Button>
+         <Button type="submit" className="w-full h-12" disabled={loginMutation.isPending}>
+          {loginMutation.isPending ? (
+            <>
+              <Loader2 className="animate-spin h-5 w-5 mr-2" />
+              Signing in...
+            </>
+          ) : (
+            "Login"
+          )}
+        </Button>
+        
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
             <span className="relative z-10 bg-background px-2 text-muted-foreground">
               Or continue with

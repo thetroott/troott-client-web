@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { OtpType } from "@/utils/enums.util";
 import { handleMutationError } from "@/utils/helpers.util";
 
+
 function ForgotPasswordForm(data: IForm) {
   
   const { className,onStepChange, ...props } = data;

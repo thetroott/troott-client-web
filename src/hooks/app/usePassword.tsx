@@ -1,8 +1,13 @@
-
 /**
- * 
+ *
  */
 export const usePasswordUtils = () => {
+  const validateName = (name: string, fieldName: string) => {
+    if (!name) return `${fieldName} is required`;
+    if (name.length < 2) return `${fieldName} must be at least 2 characters`;
+    return undefined;
+  };
+
   const validateEmail = (email: string) => {
     if (!email) return "Email is required";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,5 +38,5 @@ export const usePasswordUtils = () => {
     return { score, feedback, label: labels[Math.min(score, 4)] };
   };
 
-  return { validateEmail, validatePassword, calculateStrength };
+  return { validateName, validateEmail, validatePassword, calculateStrength };
 };

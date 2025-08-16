@@ -2,119 +2,31 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type {
-  IAPIResponse,
-  IForm,
-  IRegisterFormErrors,
-} from "@/utils/interfaces.util";
-import { useState } from "react";
+import type { IForm, IRegisterFormErrors } from "@/utils/interfaces.util";
 import { Eye, EyeOffIcon, Loader2, LockIcon, Mail, User } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import type { RegisterUserDTO } from "@/utils/payload.util";
-import apiCall from "@/api/config";
-import { toast } from "sonner";
-import { UserType } from "@/utils/enums.util";
-import { useNavigate } from "react-router-dom";
-import { handleMutationError } from "@/utils/helpers.util";
+import { useAuth } from "@/hooks/useAuth";
+import { usePasswordUtils } from "@/hooks/app/usePassword";
+import type { RegisterUserDTO } from "@/dtos/auth.dto";
+import { useRegisterStore } from "@/store/auth/register-store";
 
 const RegisterForm = (data: IForm) => {
   const { className, ...props } = data;
-  const navigate = useNavigate();
+  const {
+    formData,
+    errors,
+    touched,
+    showPassword,
+    passwordStrength,
+    setField,
+    setTouched,
+    setErrors,
+    togglePassword,
+    setPasswordStrength,
+  } = useRegisterStore();
 
-  const [formData, setFormData] = useState<RegisterUserDTO>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    userType: UserType.PREACHER,
-  });
-  const [errors, setErrors] = useState<IRegisterFormErrors>({});
-  const [touched, setTouched] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    password: false,
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState({
-    score: 0,
-    feedback: [] as string[],
-    label: "Very Weak",
-  });
-
-  //
-  const registerMutation = useMutation({
-    mutationFn: (payload: RegisterUserDTO) => {
-      return apiCall.auth.register(payload);
-    },
-    onSuccess: (data: IAPIResponse) => {
-      toast.success(data.message);
-      navigate("/verify-otp");
-    },
-    onError:handleMutationError
-  });
-
-  const validateName = (
-    name: string,
-    fieldName: string
-  ): string | undefined => {
-    if (!name) return `${fieldName} is required`;
-    if (name.length < 2) return `${fieldName} must be at least 4 characters`;
-    return undefined;
-  };
-
-  const validateEmail = (email: string): string | undefined => {
-    if (!email) return "Email is required";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return "Please enter a valid email address";
-    return undefined;
-  };
-
-  const validatePassword = (password: string): string | undefined => {
-    if (!password) return "Password is required";
-    if (password.length < 6) return "Password must be at least 6 characters";
-    return undefined;
-  };
-
-  const calculatePasswordStrength = (password: string) => {
-    let score = 0;
-    const feedback: string[] = [];
-
-    if (password.length >= 8) {
-      score += 1;
-    } else {
-      feedback.push("At least 8 characters");
-    }
-
-    if (/[a-z]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One lowercase letter");
-    }
-
-    if (/[A-Z]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One uppercase letter");
-    }
-
-    if (/[0-9]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One number");
-    }
-
-    if (/[^a-zA-Z0-9]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One special character");
-    }
-
-    const labels = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
-    const label = labels[Math.min(score, 4)];
-
-    return { score, feedback, label };
-  };
+  const { validateName, validateEmail, validatePassword, calculateStrength } =
+    usePasswordUtils();
+  const { registerMutation } = useAuth();
 
   const validators = {
     firstName: (value: string) => validateName(value, "First Name"),
@@ -141,35 +53,33 @@ const RegisterForm = (data: IForm) => {
     (field: keyof Omit<RegisterUserDTO, "userType">) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setFormData((prev) => ({ ...prev, [field]: value }));
+      setField(field, value);
 
-      // Calculate password strength for password field
       if (field === "password") {
-        setPasswordStrength(calculatePasswordStrength(value));
+        setPasswordStrength(calculateStrength(value));
       }
 
-      // Clear error when user starts typing
       if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
+        setErrors({ [field]: undefined });
       }
     };
 
   const handleBlur = (field: keyof typeof validators) => () => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
+    // mark the field as touched
+    setTouched(field, true);
+
+    // validate field and update error
     const error = validators[field](formData[field]);
-    setErrors((prev) => ({ ...prev, [field]: error }));
+    setErrors({ [field]: error });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Mark all fields as touched
-    setTouched({
-      firstName: true,
-      lastName: true,
-      email: true,
-      password: true,
-    });
+    // mark all fields touched
+    (Object.keys(validators) as Array<keyof typeof validators>).forEach(
+      (field) => setTouched(field, true)
+    );
 
     if (!validateForm()) return;
 
@@ -340,7 +250,7 @@ const RegisterForm = (data: IForm) => {
               variant="ghost"
               size="sm"
               className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={togglePassword}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -420,7 +330,7 @@ const RegisterForm = (data: IForm) => {
             "Create Account"
           )}
         </Button>
-        
+
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
             Or continue with

@@ -17,6 +17,7 @@ import { Loader2 } from "lucide-react";
 import { OtpType } from "@/utils/enums.util";
 import { handleMutationError } from "@/utils/helpers.util";
 
+
 const OtpForm = (data: IForm) => {
   const { className, email, onSuccess, onResend, ...props } = data;
 

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Mail } from "lucide-react";
 import type { IAPIResponse, IForgotPwdFormErrors, IForm } from "@/utils/interfaces.util";
 import { useMutation } from "@tanstack/react-query";
-import type { ForgotPasswordDTO, ResendOtpDTO, VerifyOtpDTO } from "@/utils/payload.util";
+import type { ForgotPasswordDTO, ResendOtpDTO, VerifyOtpDTO } from "@/dtos/auth.dto";
 import apiCall from "@/api/config";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";

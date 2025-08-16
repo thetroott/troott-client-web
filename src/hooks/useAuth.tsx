@@ -5,6 +5,9 @@ import { handleMutationError, handleUserNavigation } from "@/utils/helpers.util"
 import type { IAPIResponse } from "@/utils/interfaces.util";
 import useGoTo from "@/hooks/app/useGoTo";
 import { useRegisterStore } from "@/store/auth/register-store";
+import { useForgotPasswordStore } from "@/store/auth/otp-store";
+import { useRef } from "react";
+
 
 
 
@@ -12,6 +15,30 @@ export const useAuth = () => {
 
    const { goTo } = useGoTo()
    const { reset } = useRegisterStore()
+   const {
+    setFormData,
+    setErrors,
+    setTouched,
+    setResendCountdown,
+    setStep,
+  } = useForgotPasswordStore();
+
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+
+  const startResendCountdown = () => {
+    let count = 60
+    setResendCountdown(count);
+    const timer = setInterval(() => {
+      count -= 1;
+      setResendCountdown(count)
+      
+      if (count <= 0) {
+        clearInterval(timer)
+      }
+    }, 1000);
+  };
+  
 
    const registerMutation = useMutation({
     
@@ -59,7 +86,8 @@ export const useAuth = () => {
 
   });
 
-  
+
+
   const sendOtpMutation = useMutation({
 
     mutationFn: AuthService.sendOtp,
@@ -67,10 +95,11 @@ export const useAuth = () => {
     onSuccess: (data: IAPIResponse) => {
       toast.success(data.message);
 
-      updateStep("otp");
+      setStep("otp");
       startResendCountdown();
       setTimeout(() => otpRefs.current[0]?.focus(), 100);
     },
+
     onError: handleMutationError
   });
 
@@ -80,8 +109,9 @@ export const useAuth = () => {
     
     onSuccess: (data: IAPIResponse) => {
       toast.success(data.message);
-      updateStep("success")
+      setStep("success")
     },
+    
     onError: handleMutationError
   });
 
@@ -90,9 +120,9 @@ export const useAuth = () => {
     mutationFn: AuthService.resendOtp,
     
     onSuccess: () => {
-      setFormData((prev) => ({ ...prev, otp: Array(6).fill("") }));
+      setFormData({otp: Array(6).fill("") });
       setErrors({});
-      setTouched((prev) => ({ ...prev, otp: false }));
+      setTouched({otp: false });
       startResendCountdown();
       otpRefs.current[0]?.focus();
     },

@@ -9,7 +9,7 @@ import type {
   ResendOtpDTO,
   ResetPasswordDTO,
   VerifyOtpDTO,
-} from "../utils/payload.util";
+} from "@/dtos/auth.dto";
 
 class Auth {
   client;

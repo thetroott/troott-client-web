@@ -1,4 +1,4 @@
-import { TroottLogo } from "../ui/troot-logo"
+import { TroottLogo } from "../containers/app/troot-logo"
 import { Copyright } from "../ui/copyright"
 import type { IAuthLayout } from "@/utils/interfaces.util"
 

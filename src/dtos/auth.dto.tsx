@@ -1,4 +1,5 @@
-import { OtpType, UserType } from "./enums.util";
+import type { OtpType, UserType } from "@/utils/enums.util";
+
 
 export interface RegisterUserDTO {
   firstName: string;
@@ -45,6 +46,7 @@ export interface ChangePasswordDTO {
 
 export interface LogoutDTO {
   userId: string;
+  goTo?: (url: string) => Promise<void>
 }
 
 export interface editUserDTO {

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { readCountries, getCountry } from "@/utils/helpers.util";
-import { getUserLocation } from "@/lib/useLocation";
+import { getUserLocation } from "@/hooks/app/useLocation";
 import type { ICountry, ICountrySelect } from "@/utils/interfaces.util";
 
 export default function CountryCombobox(data: ICountrySelect) {

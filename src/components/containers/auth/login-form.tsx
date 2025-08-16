@@ -2,159 +2,51 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { IAPIResponse, IForm, ILoginrFormErrors } from "@/utils/interfaces.util";
-import { useState } from "react";
+import type { IForm } from "@/utils/interfaces.util";
 import { Eye, EyeOff, Loader2, LockIcon, Mail } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import apiCall from "@/api/config";
-import { handleMutationError, handleUserNavigation } from "@/utils/helpers.util";
-import { toast } from "sonner";
-
-
+import { useAuthStore } from "@/store/auth/login-store";
+import { usePasswordUtils } from "@/hooks/app/usePassword";
+import { useAuth } from "@/hooks/useAuth";
 
 const LoginForm = (data: IForm) => {
-  
   const { className, ...props } = data;
-  const navigate = useNavigate();
-  
-  // State to manage form data and errors
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<ILoginrFormErrors>({});
-  const [touched, setTouched] = useState({
-    email: false,
-    password: false,
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState({
-    score: 0,
-    feedback: [] as string[],
-    label: "Very Weak",
-  });
 
-    const loginMutation = useMutation({
-    mutationFn: async (payload: typeof formData) => {
-      return apiCall.auth.login(payload);
-    },
-    onSuccess: (data: IAPIResponse) => {
-      
-      toast.success(data.message)
+  const {
+    formData,
+    errors,
+    touched,
+    showPassword,
+    passwordStrength,
+    setField,
+    setTouched,
+    setErrors,
+    togglePassword,
+    setPasswordStrength,
+  } = useAuthStore();
 
-        handleUserNavigation(
-      () => navigate('/onboarding'), // first-time user
-      () => navigate('/dashboard')   // returning user
-    );
-    },
-    onError: handleMutationError
-  });
-
-  const validateEmail = (email: string): string | undefined => {
-    if (!email) return "Email is required";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return "Please enter a valid email address";
-  };
-
-  const validatePassword = (password: string): string | undefined => {
-    if (!password) return "Password is required";
-    if (password.length < 8) return "Password must be at least 8 characters";
-  };
-
-  const calculatePasswordStrength = (password: string) => {
-    let score = 0;
-    const feedback: string[] = [];
-
-    if (password.length >= 8) {
-      score += 1;
-    } else {
-      feedback.push("At least 8 characters");
-    }
-
-    if (/[a-z]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One lowercase letter");
-    }
-
-    if (/[A-Z]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One uppercase letter");
-    }
-
-    if (/[0-9]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One number");
-    }
-
-    if (/[^a-zA-Z0-9]/.test(password)) {
-      score += 1;
-    } else {
-      feedback.push("One special character");
-    }
-
-    const labels = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
-    const label = labels[Math.min(score, 4)];
-
-    return { score, feedback, label };
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: ILoginrFormErrors = {};
-
-    const emailError = validateEmail(formData.email);
-    const passwordError = validatePassword(formData.password);
-
-    if (emailError) newErrors.email = emailError;
-    if (passwordError) newErrors.password = passwordError;
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleInputChange = (field: keyof typeof formData) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setFormData((prev) => ({ ...prev, [field]: value }));
-
-      // Calculate password strength for password field
-      if (field === "password") {
-        setPasswordStrength(calculatePasswordStrength(value));
-      }
-
-      // Clear error when user starts typing
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
-      }
-    };
-
-  const handleBlur = (field: keyof typeof formData) => () => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-
-    // Validate field on blur
-    const newErrors = { ...errors };
-    if (field === "email") {
-      const emailError = validateEmail(formData.email);
-      if (emailError) newErrors.email = emailError;
-    } else if (field === "password") {
-      const passwordError = validatePassword(formData.password);
-      if (passwordError) newErrors.password = passwordError;
-    }
-    setErrors(newErrors);
-  };
+  const { validateEmail, validatePassword, calculateStrength } =
+    usePasswordUtils();
+  const { loginMutation } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Mark all fields as touched
-    setTouched({ email: true, password: true });
+    setTouched("email");
+    setTouched("password");
 
-    if (!validateForm()) return;
+    const newErrors: any = {};
+    const emailErr = validateEmail(formData.email);
+    const passErr = validatePassword(formData.password);
 
-    await loginMutation.mutate(formData)
+    if (emailErr) newErrors.email = emailErr;
+    if (passErr) newErrors.password = passErr;
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      await loginMutation.mutate(formData);
+    }
   };
 
   return (
@@ -168,30 +60,34 @@ const LoginForm = (data: IForm) => {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              value={formData.email}
-              onChange={handleInputChange("email")}
-              onBlur={handleBlur("email")}
-              className={cn(
-                "pl-9",
-                "pr-10", 
-                "h-12" ,
-                "focus-visible:ring-2",        
-                "focus-visible:ring-teal-400", 
-                "focus-visible:outline-none",    
-                errors.email &&
-                  touched.email &&
-                  "border-destructive focus-visible:ring-destructive"
-              )}
-              aria-invalid={errors.email && touched.email ? "true" : "false"}
-              aria-describedby={
-                errors.email && touched.email ? "email-error" : undefined
-              }
-            />
+              <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={formData.email}
+                onChange={(e) => setField("email", e.target.value)}
+                onBlur={() => {
+                  setTouched("email");
+                  const err = validateEmail(formData.email);
+                  if (err) setErrors({ ...errors, email: err });
+                }}
+                className={cn(
+                  "pl-9",
+                  "pr-10",
+                  "h-12",
+                  "focus-visible:ring-2",
+                  "focus-visible:ring-teal-400",
+                  "focus-visible:outline-none",
+                  errors.email &&
+                    touched.email &&
+                    "border-destructive focus-visible:ring-destructive"
+                )}
+                aria-invalid={errors.email && touched.email ? "true" : "false"}
+                aria-describedby={
+                  errors.email && touched.email ? "email-error" : undefined
+                }
+              />
             </div>
             {errors.email && touched.email && (
               <p
@@ -203,7 +99,6 @@ const LoginForm = (data: IForm) => {
               </p>
             )}
           </div>
-
 
           <div className="grid gap-2">
             <div className="flex items-center">
@@ -217,17 +112,24 @@ const LoginForm = (data: IForm) => {
             </div>
 
             <div className="relative">
-            <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <LockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
-                onChange={handleInputChange("password")}
-                onBlur={handleBlur("password")}
+                onChange={(e) => {
+                  setField("password", e.target.value);
+                  setPasswordStrength(calculateStrength(e.target.value));
+                }}
+                onBlur={() => {
+                  setTouched("password");
+                  const err = validatePassword(formData.password);
+                  if (err) setErrors({ ...errors, password: err });
+                }}
                 className={cn(
                   "pl-9",
                   "pr-10",
-                  "h-12" ,
+                  "h-12",
                   errors.password &&
                     touched.password &&
                     "border-destructive focus-visible:ring-destructive"
@@ -241,13 +143,13 @@ const LoginForm = (data: IForm) => {
                     : undefined
                 }
               />
-            
+
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={togglePassword}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -301,7 +203,6 @@ const LoginForm = (data: IForm) => {
                 )}
               </div>
             )}
-            
 
             {errors.password && touched.password && (
               <p
@@ -313,25 +214,33 @@ const LoginForm = (data: IForm) => {
               </p>
             )}
           </div>
-          
-         <Button type="submit" className="w-full h-12" disabled={loginMutation.isPending}>
-          {loginMutation.isPending ? (
-            <>
-              <Loader2 className="animate-spin h-5 w-5 mr-2" />
-              Signing in...
-            </>
-          ) : (
-            "Login"
-          )}
-        </Button>
-        
+
+          <Button
+            type="submit"
+            className="w-full h-12"
+            disabled={loginMutation.isPending}
+          >
+            {loginMutation.isPending ? (
+              <>
+                <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                Signing in...
+              </>
+            ) : (
+              "Login"
+            )}
+          </Button>
+
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
             <span className="relative z-10 bg-background px-2 text-muted-foreground">
               Or continue with
             </span>
           </div>
           <Button variant="outline" className="w-full" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="mr-2 h-4 w-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="mr-2 h-4 w-4"
+            >
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -364,7 +273,6 @@ const LoginForm = (data: IForm) => {
             </svg>
             Login with GitHub
           </Button>
-          
         </div>
         <div className="text-center text-sm">
           Don&apos;t have an account?{" "}

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import type { IForm } from "@/utils/interfaces.util";
 import { Eye, EyeOff, Loader2, LockIcon, Mail } from "lucide-react";
 import { useAuthStore } from "@/store/auth/login-store";
-import { usePasswordUtils } from "@/hooks/app/usePassword";
+import { usePasswordUtils } from "@/hooks/app/useValidaton";
 import { useAuth } from "@/hooks/useAuth";
 
 const LoginForm = (data: IForm) => {

@@ -19,7 +19,7 @@ export const usePasswordUtils = () => {
     if (password.length < 8) return "Password must be at least 8 characters";
   };
 
-   const validateOTP = (otp: string[]) => {
+  const validateOTP = (otp: string[]) => {
     const code = otp.join("");
     if (!code) return "OTP is required";
     if (code.length !== 6) return "Enter all 6 digits";
@@ -29,9 +29,10 @@ export const usePasswordUtils = () => {
   const maskEmail = (email: string) => {
     const [local, domain] = email.split("@");
     if (local.length <= 2) return email;
-    return `${local[0]}${"*".repeat(local.length - 2)}${local[local.length - 1]}@${domain}`;
+    return `${local[0]}${"*".repeat(local.length - 2)}${
+      local[local.length - 1]
+    }@${domain}`;
   };
-
 
   const calculateStrength = (password: string) => {
     let score = 0;
@@ -51,9 +52,14 @@ export const usePasswordUtils = () => {
     const labels = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
     return { score, feedback, label: labels[Math.min(score, 4)] };
   };
+  
 
-
-
-
-  return { validateName, validateEmail, validatePassword, validateOTP, maskEmail, calculateStrength };
+  return {
+    validateName,
+    validateEmail,
+    validatePassword,
+    validateOTP,
+    maskEmail,
+    calculateStrength,
+  };
 };

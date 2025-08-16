@@ -9,6 +9,8 @@ import type {
   ResendOtpDTO,
   VerifyOtpDTO,
 } from "@/dtos/auth.dto";
+import { UserType } from "@/utils/enums.util";
+import cookieService from "@/services/cookie";
 
 /**
  * AuthService
@@ -30,8 +32,7 @@ const AuthService = {
     return res;
   },
 
-
-   /**
+  /**
    * @name activateUser
    * @description Activate a user account (OTP verification after registeration)
    * @param {VerifyOtpDTO} payload - The OTP verification request payload.
@@ -53,13 +54,39 @@ const AuthService = {
    * @returns {Promise<IAPIResponse>} The API response with user data and tokens.
    */
   login: async (payload: LoginDTO): Promise<IAPIResponse> => {
-    const res = await apiCall.auth.login(payload);
-
-    if (res?.data?.token && res?.data?.id) {
-      storage.storeAuth(res.data.token, res.data.id); // persist token & user id
+    // 1. Call the login API with the provided credentials
+    const response = await apiCall.auth.login(payload);
+    
+    if (response?.data?.token && response?.data?.id) {
+      // Persist token and user ID locally
+      storage.storeAuth(response.data.token, response.data.id);
     }
 
-    return res;
+
+    // 2. Check if there was no error from the API
+    if (!response.error && response.status === 200) {
+      const { userType, _id } = response.data;
+
+      // 3. If the user is SUPER or STAFF, store authentication info
+      if (userType === UserType.SUPER || userType === UserType.STAFF) {
+        // 3a. Store token and user ID in local storage
+        storage.storeAuth(response.token!, _id);
+
+        // 3b. Set user type cookie with 24-hour expiration
+        cookieService.setData({
+          key: "userType",
+          payload: userType,
+          expireAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          path: "/",
+        });
+
+        // Optional: update your app state to logged in
+        // setIsLoggedIn(true);
+      }
+    }
+
+    // 4. Return the API response to the caller
+    return response;
   },
 
   /**

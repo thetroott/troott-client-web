@@ -34,6 +34,7 @@ export enum CookieKeyType {
   }
   
   export enum UserType {
+    SUPER = "super",
     STAFF = "staff",
     PREACHER = "preacher",
     CREATOR = "creator",

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import type { IForm, IRegisterFormErrors } from "@/utils/interfaces.util";
 import { Eye, EyeOffIcon, Loader2, LockIcon, Mail, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { usePasswordUtils } from "@/hooks/app/usePassword";
+import { usePasswordUtils } from "@/hooks/app/useValidaton";
 import type { RegisterUserDTO } from "@/dtos/auth.dto";
 import { useRegisterStore } from "@/store/auth/register-store";
 

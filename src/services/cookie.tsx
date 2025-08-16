@@ -109,4 +109,5 @@ class CookieService {
 
 }
 
-export default new CookieService()
+const cookieService: CookieService = new CookieService();
+export default cookieService;

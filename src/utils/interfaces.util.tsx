@@ -330,6 +330,7 @@ export interface IUploadContext {
   errors: IUploadFormErrors;
   isLoading: boolean;
   progress: number;
+  uploadComplete: boolean;
 }
 
 export interface IFileUploadZone {

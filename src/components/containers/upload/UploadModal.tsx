@@ -16,9 +16,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { X, Upload } from 'lucide-react';
 import { useUpload, uploadActions } from '@/context/upload/upload.context';
+import UploadProgressStep from './UploadProgressStep';
 import SermonDetailsForm from './SermonDetailsForm';
-import ThumbnailUpload from './ThumbnailUpload';
-import PublishSettings from './PublishSettings';
+import ListenerSettings from './ListenerSettings';
+import ReviewSubmit from './ReviewSubmit';
 
 interface UploadModalProps {
   open: boolean;
@@ -27,41 +28,65 @@ interface UploadModalProps {
 
 const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
   const { state, dispatch } = useUpload();
-  const { currentStep, uploadData } = state;
+  const { currentStep, uploadData, uploadComplete } = state;
 
   // Step configuration
   const steps = [
+    { key: 'progress', label: 'Upload Progress', completed: false },
     { key: 'details', label: 'Details', completed: false },
-    { key: 'thumbnail', label: 'Thumbnail', completed: false },
-    { key: 'publish', label: 'Publish', completed: false },
+    { key: 'settings', label: 'Listener Settings', completed: false },
+    { key: 'review', label: 'Review & Submit', completed: false },
   ];
 
   // Update step completion status
   const updatedSteps = steps.map(step => ({
     ...step,
     completed: 
-      (step.key === 'details' && uploadData.title && uploadData.description && uploadData.category && uploadData.tags.length > 0) ||
-      (step.key === 'thumbnail' && uploadData.thumbnailPreview) ||
-      (step.key === 'publish' && false) // Will be completed when published
+      (step.key === 'progress' && uploadData.file && uploadComplete) ||
+      (step.key === 'details' && uploadData.title?.trim() && uploadData.description?.trim() && uploadData.category?.trim()) ||
+      (step.key === 'settings' && uploadData.isPublic !== undefined) ||
+      (step.key === 'review' && false) // Will be completed when published
   }));
 
   const currentStepIndex = updatedSteps.findIndex(step => step.key === currentStep);
 
   const handleStepClick = (stepKey: string) => {
-    // Only allow navigation to completed steps or the next step
     const stepIndex = updatedSteps.findIndex(step => step.key === stepKey);
-    const canNavigate = stepIndex <= currentStepIndex + 1 || updatedSteps[stepIndex - 1]?.completed;
     
-    if (canNavigate) {
+    // Allow navigation to previous steps or current step
+    if (stepIndex <= currentStepIndex) {
+      dispatch(uploadActions.setStep(stepKey));
+      return;
+    }
+    
+    // For forward navigation, check if current step is completed
+    if (stepIndex === currentStepIndex + 1 && canProceed()) {
       dispatch(uploadActions.setStep(stepKey));
     }
+    
+    // Don't allow skipping steps - must complete current step first
   };
 
   const handleNext = () => {
+    if (!canProceed()) {
+      return; // Don't proceed if current step is not valid
+    }
+    
     const nextStepIndex = currentStepIndex + 1;
     if (nextStepIndex < updatedSteps.length) {
       dispatch(uploadActions.setStep(updatedSteps[nextStepIndex].key));
     }
+  };
+
+  const handleClose = () => {
+    // Clear stored data when closing modal without completing upload
+    if (!uploadComplete && (uploadData.file || uploadData.title || uploadData.description)) {
+      dispatch(uploadActions.clearStoredData());
+    }
+    
+    onOpenChange(false);
+    // Reset to file step when closing
+    dispatch(uploadActions.setStep('file'));
   };
 
   const handlePrevious = () => {
@@ -69,39 +94,42 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
     if (prevStepIndex >= 0) {
       dispatch(uploadActions.setStep(updatedSteps[prevStepIndex].key));
     } else {
+      // Clear stored data when going back to file upload without completing
+      if (!uploadComplete && (uploadData.file || uploadData.title || uploadData.description)) {
+        dispatch(uploadActions.clearStoredData());
+      }
+      
       // Go back to file upload
       dispatch(uploadActions.setStep('file'));
       onOpenChange(false);
     }
   };
 
-  const handleClose = () => {
-    onOpenChange(false);
-    // Reset to file step when closing
-    dispatch(uploadActions.setStep('file'));
-  };
-
   const getStepContent = () => {
     switch (currentStep) {
+      case 'progress':
+        return <UploadProgressStep />;
       case 'details':
         return <SermonDetailsForm />;
-      case 'thumbnail':
-        return <ThumbnailUpload />;
-      case 'publish':
-        return <PublishSettings />;
+      case 'settings':
+        return <ListenerSettings />;
+      case 'review':
+        return <ReviewSubmit />;
       default:
-        return <SermonDetailsForm />;
+        return <UploadProgressStep />;
     }
   };
 
   const getStepTitle = () => {
     switch (currentStep) {
+      case 'progress':
+        return 'Upload Progress';
       case 'details':
         return 'Sermon Details';
-      case 'thumbnail':
-        return 'Upload Thumbnail';
-      case 'publish':
-        return 'Publish Settings';
+      case 'settings':
+        return 'Listener Settings';
+      case 'review':
+        return 'Review & Submit';
       default:
         return 'Upload Sermon';
     }
@@ -109,12 +137,18 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
 
   const canProceed = () => {
     switch (currentStep) {
+      case 'progress':
+        return uploadData.file && uploadComplete;
       case 'details':
-        return uploadData.title && uploadData.description && uploadData.category && uploadData.tags.length > 0;
-      case 'thumbnail':
-        return true; // Thumbnail is optional
-      case 'publish':
-        return true;
+        return uploadData.title?.trim() && 
+               uploadData.description?.trim() && 
+               uploadData.category?.trim() &&
+               uploadData.title.length >= 3 &&
+               uploadData.description.length >= 10;
+      case 'settings':
+        return true; // Settings are optional
+      case 'review':
+        return uploadData.file && uploadData.title;
       default:
         return false;
     }
@@ -125,7 +159,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="w-[827px] h-[531px] max-w-[95vw] max-h-[95vh] overflow-hidden p-0 flex flex-col" 
+        className="w-[min(800px,85vw)] h-[min(450px,75vh)] !max-w-none aspect-[16/9] overflow-hidden p-0 flex flex-col" 
         showCloseButton={false}
       >
         {/* Header with breadcrumbs and close button */}
@@ -142,8 +176,17 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink 
+                      onClick={() => handleStepClick('progress')}
+                      className={`cursor-pointer ${currentStep === 'progress' ? 'text-primary font-medium' : ''}`}
+                    >
+                      Upload Progress
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink 
                       onClick={() => handleStepClick('details')}
-                      className={`cursor-pointer ${currentStep === 'details' ? 'text-primary font-medium' : ''}`}
+                      className={`cursor-pointer ${currentStep === 'details' ? 'text-primary font-medium' : ''} ${!updatedSteps[0].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       Details
                     </BreadcrumbLink>
@@ -151,22 +194,22 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbLink 
-                      onClick={() => handleStepClick('thumbnail')}
-                      className={`cursor-pointer ${currentStep === 'thumbnail' ? 'text-primary font-medium' : ''} ${!updatedSteps[0].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      onClick={() => handleStepClick('settings')}
+                      className={`cursor-pointer ${currentStep === 'settings' ? 'text-primary font-medium' : ''} ${!updatedSteps[1].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      Thumbnail
+                      Listener Settings
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    {currentStep === 'publish' ? (
-                      <BreadcrumbPage>Publish</BreadcrumbPage>
+                    {currentStep === 'review' ? (
+                      <BreadcrumbPage>Review & Submit</BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink 
-                        onClick={() => handleStepClick('publish')}
-                        className={`cursor-pointer ${!updatedSteps[1].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={() => handleStepClick('review')}
+                        className={`cursor-pointer ${!updatedSteps[2].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
-                        Publish
+                        Review & Submit
                       </BreadcrumbLink>
                     )}
                   </BreadcrumbItem>

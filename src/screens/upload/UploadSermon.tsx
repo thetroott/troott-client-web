@@ -6,13 +6,18 @@ import UploadModal from '@/components/containers/upload/UploadModal';
 
 const UploadContent: React.FC = () => {
   const { state, dispatch } = useUpload();
-  const { currentStep } = state;
+  const { currentStep, uploadComplete, uploadData } = state;
 
   // Modal is open when step is not 'file'
   const isModalOpen = currentStep !== 'file';
 
   const handleModalOpenChange = (open: boolean) => {
     if (!open) {
+      // Clear stored data when modal closes without completing upload
+      if (!uploadComplete && (uploadData.file || uploadData.title || uploadData.description)) {
+        dispatch(uploadActions.clearStoredData());
+      }
+      
       // When modal closes, reset to file step
       dispatch(uploadActions.setStep('file'));
     }

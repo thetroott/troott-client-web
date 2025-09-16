@@ -1,46 +1,52 @@
-import { UserType } from "./enums.util";
+import type { OtpType, UserType } from "@/utils/enums.util";
 
-export interface registerUserPayload {
+
+export interface RegisterUserDTO {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   userType?: UserType;
 }
-export interface loginPayload {
+export interface LoginDTO {
   email: string;
   password: string;
 }
 
-export interface IforgotPassword {
+export interface ForgotPasswordDTO {
   email: string;
 }
-export interface verifyOtpPayload {
+export interface VerifyOtpDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
-export interface activatePayload {
+export interface ActivateDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
 
-export interface resendOtpPayload {
+export interface ResendOtpDTO {
   email: string;
-  OTP: number;
+  otp: number;
+  otpType: OtpType
 }
-export interface resetPasswordPayload {
+export interface ResetPasswordDTO {
   email: string;
   newPassword: string;
+  
 }
 
-export interface changePasswordPayload {
+export interface ChangePasswordDTO {
   currentPassword: string;
   newPassword: string;
 }
 
 
-export interface logoutPayload {
+export interface LogoutDTO {
   userId: string;
+  goTo?: (url: string) => Promise<void>
 }
 
 export interface editUserDTO {

@@ -1,5 +1,6 @@
 import countries from "world-countries"
 import type { ICountry } from "./interfaces.util";
+import { toast } from "sonner";
 
 const sortData = (data: Array<any>, filter: string = ''): Array<any> => {
 
@@ -114,13 +115,77 @@ const months = [
 
 const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`.padStart(2, "0"))
 
+
+// utils/firstTimeUser.ts
+const STORAGE_KEY = 'hasVisited';
+
+/**
+ * Check if the user is visiting for the first time
+ * @returns boolean - true if first time, false if returning
+ */
+const isFirstTimeUser = (): boolean => {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY);
+    return value !== 'true';
+  } catch (error) {
+    console.error('Error accessing localStorage:', error);
+    // fallback to treating user as first time
+    return true;
+  }
+};
+
+/**
+ * Mark user as returning
+ */
+const markUserAsReturning = (): void => {
+  try {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  } catch (error) {
+    console.error('Error setting localStorage:', error);
+  }
+};
+
+/**
+ * Full helper to check and handle navigation logic
+ * @param onFirstTime callback when user is first time
+ * @param onReturning callback when user is returning
+ */
+const handleUserNavigation = (
+  onFirstTime: () => void,
+  onReturning: () => void
+) => {
+  if (isFirstTimeUser()) {
+    onFirstTime();
+    markUserAsReturning();
+  } else {
+    onReturning();
+  }
+};
+
+
+const handleMutationError = (error: any) => {
+  const message =
+    error?.response?.data?.errors?.[0] ||
+    error?.response?.data?.message ||
+    error.message
+  toast.error(message);
+};
+
+
+
+
 export {
     sortData,
     getCountry,
     readCountries,
     listCountries,
+    handleUserNavigation,
+    isFirstTimeUser,
+    markUserAsReturning,
+    handleMutationError,
     currentYear,
     years,
     months,
     days,
+    
 }

@@ -52,7 +52,7 @@ const getConfig = () => {
 
     const config = {
         headers: {
-            ContentType: 'application/json',
+            "Content-Type": 'application/json',
             lg: 'en',
             ch: 'web'
         }
@@ -66,7 +66,7 @@ const getConfigWithBearer = () => {
 
     const config: any = {
         headers: {
-            ContentType: 'application/json',
+            "Content-Type": 'application/json',
             Authorization: `Bearer ${getToken()}`,
             lg: 'en',
             ch: 'web'

@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import IconRadioSelect from './IconRadioSelect';
-import { IoIosCamera, IoIosCloudUpload } from 'react-icons/io';
+import { useState } from "react";
+import IconRadioSelect from "./IconRadioSelect";
+import { Camera, UploadCloud } from "lucide-react";
 
 function UploadDocument() {
-
   const [contactType, setContactType] = useState("email");
-  
+
   return (
     <>
       <div className="text-base text-muted-foreground">
@@ -20,19 +19,18 @@ function UploadDocument() {
             {
               label: "Take picture with phone",
               value: "images",
-              icon: <IoIosCamera className="w-5 h-5" />,
+              icon: <Camera className="w-5 h-5" />,
             },
             {
               label: "Upload Photos",
               value: "photos",
-              icon: <IoIosCloudUpload className="w-5 h-5" />,
+              icon: <UploadCloud className="w-5 h-5" />,
             },
-
           ]}
         />
       </div>
     </>
-  )
+  );
 }
 
-export default UploadDocument
+export default UploadDocument;

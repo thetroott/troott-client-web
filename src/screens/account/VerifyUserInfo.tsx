@@ -1,5 +1,5 @@
-import PageHeader from "@/components/containers/dashboard/PageHeader";
-import PersonalInfoForm from "@/components/containers/dashboard/personal-info-form";
+import PageHeader from "@/components/containers/get-started/PageHeader";
+import PersonalInfoForm from "@/components/containers/get-started/personal-info-form";
 
 function PersonalInfo() {
   return (

@@ -1,4 +1,4 @@
-import CountrySelect from "@/components/containers/dashboard/CountrySelect";
+import CountrySelect from "@/components/containers/get-started/CountrySelect";
 import LegalNameInput from "./LegalNameInput";
 import DateOfBirthPicker from "./DOBPicker";
 

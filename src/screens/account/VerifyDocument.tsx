@@ -1,4 +1,4 @@
-import PageHeader from "@/components/containers/dashboard/PageHeader";
+import PageHeader from "@/components/containers/get-started/PageHeader";
 import { Outlet } from "react-router-dom";
 
 function VerifyDocument() {

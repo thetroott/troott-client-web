@@ -14,9 +14,9 @@ import UserAccount from "@/screens/account/GetVerified";
 import UserProfile from "@/screens/profile/UserProfile";
 import PersonalInfo from "@/screens/account/VerifyUserInfo";
 import VerifyDocument from "@/screens/account/VerifyDocument";
-import SelectDocumentType from "@/components/containers/dashboard/SelectDocumentType";
-import VerifyDocumentForm from "@/components/containers/dashboard/verify-document";
-import UploadDocument from "@/components/containers/dashboard/UploadDocument";
+import SelectDocumentType from "@/components/containers/get-started/SelectDocumentType";
+import VerifyDocumentForm from "@/components/containers/get-started/verify-document";
+import UploadDocument from "@/components/containers/get-started/UploadDocument";
 import LoginForm from "@/components/containers/auth/login-form";
 
 export const privateRoutes = [

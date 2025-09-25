@@ -1,6 +1,6 @@
 import { dummySermons } from "@/_data/dummySermons";
-import EmptySermonsState from "@/components/containers/dashboard/EmptySermonsState";
-import SermonsTable from "@/components/containers/dashboard/SermonsTable";
+//import EmptySermonsState from "@/components/containers/dashboard/EmptySermonsState";
+//import SermonsTable from "@/components/containers/dashboard/SermonsTable";
 
 const Sermons = () => {
   const hasSermons = dummySermons.length > 0;

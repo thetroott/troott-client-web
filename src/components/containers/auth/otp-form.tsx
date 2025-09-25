@@ -10,12 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import type { VerifyOtpDTO } from "@/utils/payload.util";
+import type { VerifyOtpDTO } from "@/dtos/auth.dto";
 import apiCall from "@/api/config";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { OtpType } from "@/utils/enums.util";
 import { handleMutationError } from "@/utils/helpers.util";
+
 
 
 const OtpForm = (data: IForm) => {

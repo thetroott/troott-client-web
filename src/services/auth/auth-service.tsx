@@ -69,7 +69,7 @@ const AuthService = {
       const { userType, _id } = response.data;
 
       // 3. If the user is SUPER or STAFF, store authentication info
-      if (userType === UserType.SUPER || userType === UserType.STAFF) {
+      if (userType === UserType.PREACHER || userType === UserType.STAFF) {
         // 3a. Store token and user ID in local storage
         storage.storeAuth(response.token!, _id);
 

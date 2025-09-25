@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import SaveAndExit from "../containers/dashboard/SaveAndExit";
-import ProgressButtons from "../containers/dashboard/ProgressButtons";
+import SaveAndExit from "../containers/get-started/SaveAndExit";
+import ProgressButtons from "../containers/get-started/ProgressButtons";
 
 const InnerLayout = () => {
   return (

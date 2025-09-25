@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import PageHeader from "@/components/containers/dashboard/PageHeader";
-import VerifyAccountForm from "@/components/containers/dashboard/verify-account-form";
+import PageHeader from "@/components/containers/get-started/PageHeader";
+import VerifyAccountForm from "@/components/containers/get-started/verify-account-form";
 
 
 function UserAccount() {

@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { Navigate } from "react-router-dom";
 
 const Register = lazy(() => import("../screens/auth/Register"));
 const Verification = lazy(() => import("../screens/auth/Verification"));
@@ -8,7 +9,10 @@ const ResetPassword = lazy(() => import("../screens/auth/ResetPassword"));
 const Preview = lazy(() => import("../screens/Preview"));
 
 export const publicRoutes = [
-  
+    {
+    path: "/",
+    element: <Navigate to="/login" replace />,
+  },
   { path: "/register", element: <Register /> },
   { path: "/verify-otp", element: <Verification /> },
   { path: "/login", element: <Login /> },

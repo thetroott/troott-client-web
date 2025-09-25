@@ -17,6 +17,8 @@ import { Loader2 } from "lucide-react";
 import { OtpType } from "@/utils/enums.util";
 import { handleMutationError } from "@/utils/helpers.util";
 
+
+
 const OtpForm = (data: IForm) => {
   const { className, email, onSuccess, onResend, ...props } = data;
 
@@ -37,7 +39,7 @@ const OtpForm = (data: IForm) => {
       navigate("/login");
       onSuccess?.();
     },
-    onError: handleMutationError,
+    onError: handleMutationError
   });
 
   const validateOTP = (otp: string[]): string | undefined => {
@@ -71,12 +73,14 @@ const OtpForm = (data: IForm) => {
     }, 1000);
   };
 
-  const buildOtpPayload = (): VerifyOtpDTO => ({
+   const buildOtpPayload = (): VerifyOtpDTO => ( {
     email: email as string,
-    otp: Number(otp.join("")),
-    otpType: OtpType.REGISTER,
-  });
+    otp: Number(otp.join("")), 
+    otpType: OtpType.REGISTER, 
+  })
 
+
+ 
   const handleOTPChange = (index: number, value: string) => {
     // Only allow single digit
     if (value.length > 1) return;
@@ -106,35 +110,37 @@ const OtpForm = (data: IForm) => {
     }
   };
 
-  const handleOTPPaste = (e: React.ClipboardEvent) => {
-    e.preventDefault();
+  
 
-    const pasted = e.clipboardData
-      .getData("text")
-      .replace(/\D/g, "")
-      .slice(0, 6);
+ const handleOTPPaste = (e: React.ClipboardEvent) => {
+  e.preventDefault();
 
-    if (!pasted) return;
+  const pasted = e.clipboardData
+    .getData("text")
+    .replace(/\D/g, "")
+    .slice(0, 6);
 
-    const newOtp = pasted.split("");
-    setOtp(newOtp);
+  if (!pasted) return;
 
-    // Focus last input
-    otpRefs.current[newOtp.length - 1]?.focus();
+  const newOtp = pasted.split("");
+  setOtp(newOtp);
 
-    // Auto-submit if all 6 digits present
-    if (newOtp.length === 6) {
-      setTouched(true);
+  // Focus last input
+  otpRefs.current[newOtp.length - 1]?.focus();
 
-      const otpError = validateOTP(newOtp);
-      if (!otpError) {
-        setErrors({});
-        otpMutation.mutate(buildOtpPayload());
-      } else {
-        setErrors({ otp: otpError });
-      }
+  // Auto-submit if all 6 digits present
+  if (newOtp.length === 6) {
+    setTouched(true);
+
+    const otpError = validateOTP(newOtp);
+    if (!otpError) {
+      setErrors({});
+      otpMutation.mutate(buildOtpPayload());
+    } else {
+      setErrors({ otp: otpError });
     }
-  };
+  }
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,7 +158,7 @@ const OtpForm = (data: IForm) => {
     await otpMutation.mutate(buildOtpPayload());
   };
 
-  const handleResendOTP = async () => {
+    const handleResendOTP = async () => {
     setOtp(Array(6).fill(""));
     setErrors({});
     setTouched(false);

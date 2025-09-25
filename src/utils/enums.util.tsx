@@ -38,7 +38,6 @@ export enum CookieKeyType {
     PREACHER = "preacher",
     CREATOR = "creator",
     LISTENER = "listener",
-    USER = "user",
   }
   
   export enum StaffUnit {
@@ -206,7 +205,7 @@ export enum CookieKeyType {
     IOS = "ios",
   }
   
-  export enum EOtpType {
+  export enum OtpType {
     REGISTER = "register",
     LOGIN = "login",
     GENERIC = "generic",

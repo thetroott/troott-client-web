@@ -12,20 +12,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
+import { useState } from "react";
 
 const UserAvatar = () => {
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  // Use a more reliable avatar source or fallback to user icon
+  const avatarSrc = "https://github.com/shadcn.png";
+
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar className="flex cursor-pointer justify-center items-center pt-1.5">
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              width={24}
-              height={24}
-              className="rounded-lg  h-5 w-5 "
-            />
-            <AvatarFallback className="text-xs">CN</AvatarFallback>
+            {!imageError && (
+              <AvatarImage
+                  src={avatarSrc}
+                  width={24}
+                  height={24}
+                  className="rounded-lg h-5 w-5"
+                  onError={handleImageError}
+                  loading="lazy"
+                />
+            )}
+            <AvatarFallback className="text-xs bg-primary/10 text-primary">
+              <FaUser className="h-3 w-3" />
+            </AvatarFallback>
             <IoIosArrowDown className="h-5 w-5"/>
           </Avatar>
         </DropdownMenuTrigger>

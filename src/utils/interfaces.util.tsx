@@ -294,3 +294,48 @@ export interface ICountrySelect {
   value?: ICountry | null;
   onChange?: (country: ICountry) => void;
 }
+
+// Upload Interfaces
+export interface IUploadStep {
+  id: string;
+  title: string;
+  description: string;
+  component: React.ComponentType<any>;
+}
+
+export interface ISermonUpload {
+  file?: File | null;
+  title: string;
+  description: string;
+  tags: string[];
+  thumbnail?: File | null;
+  thumbnailPreview?: string | null;
+  category: string;
+  isPublic: boolean;
+  scheduledDate?: Date | null;
+}
+
+export interface IUploadFormErrors {
+  file?: string;
+  title?: string;
+  description?: string;
+  tags?: string;
+  thumbnail?: string;
+  category?: string;
+}
+
+export interface IUploadContext {
+  currentStep: string;
+  uploadData: ISermonUpload;
+  errors: IUploadFormErrors;
+  isLoading: boolean;
+  progress: number;
+}
+
+export interface IFileUploadZone {
+  onFileSelect: (file: File | null) => void;
+  acceptedTypes: string[];
+  maxSize: number;
+  error?: string;
+  isLoading?: boolean;
+}

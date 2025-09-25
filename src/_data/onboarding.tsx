@@ -59,6 +59,28 @@ const OnboardingItems = [
     text: "Create your first sermon post with title, description, and upload your audio or video content.",
     button: "Upload sermon",
     action: "/upload-sermon",
+    steps: [
+      {
+        id: "1",
+        title: "Upload File",
+        action: "/upload-sermon/file",
+      },
+      {
+        id: "2",
+        title: "Sermon Details",
+        action: "/upload-sermon/details",
+      },
+      {
+        id: "3",
+        title: "Thumbnail & Preview",
+        action: "/upload-sermon/thumbnail",
+      },
+      {
+        id: "4",
+        title: "Publish Settings",
+        action: "/upload-sermon/publish",
+      },
+    ],
   },
 ];
 

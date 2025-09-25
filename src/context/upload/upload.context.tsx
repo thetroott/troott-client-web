@@ -9,8 +9,10 @@ type UploadAction =
   | { type: 'SET_ERRORS'; payload: IUploadFormErrors }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_PROGRESS'; payload: number }
+  | { type: 'SET_UPLOAD_COMPLETE'; payload: boolean }
   | { type: 'RESET_UPLOAD' }
-  | { type: 'LOAD_FROM_STORAGE'; payload: ISermonUpload };
+  | { type: 'LOAD_FROM_STORAGE'; payload: Partial<ISermonUpload> }
+  | { type: 'CLEAR_STORED_DATA' };
 
 // Initial state
 const initialUploadData: ISermonUpload = {
@@ -30,6 +32,7 @@ const initialState: IUploadContext = {
   errors: {},
   isLoading: false,
   progress: 0,
+  uploadComplete: false,
 };
 
 // Reducer
@@ -42,6 +45,9 @@ const uploadReducer = (state: IUploadContext, action: UploadAction): IUploadCont
         ...state,
         uploadData: { ...state.uploadData, file: action.payload },
         errors: { ...state.errors, file: undefined },
+        // Reset upload progress when a new file is selected
+        progress: action.payload ? 0 : state.progress,
+        uploadComplete: action.payload ? false : state.uploadComplete,
       };
     case 'SET_UPLOAD_DATA':
       return {
@@ -54,13 +60,21 @@ const uploadReducer = (state: IUploadContext, action: UploadAction): IUploadCont
       return { ...state, isLoading: action.payload };
     case 'SET_PROGRESS':
       return { ...state, progress: action.payload };
+    case 'SET_UPLOAD_COMPLETE':
+      return { ...state, uploadComplete: action.payload };
     case 'RESET_UPLOAD':
       return { ...initialState };
     case 'LOAD_FROM_STORAGE':
       return {
         ...state,
         uploadData: { ...state.uploadData, ...action.payload },
+        // Reset file-related state on load since File objects can't be persisted
+        progress: 0,
+        uploadComplete: false,
       };
+    case 'CLEAR_STORED_DATA':
+      clearStoredData();
+      return state;
     default:
       return state;
   }
@@ -74,6 +88,11 @@ const UploadContext = createContext<{
 
 // Storage key
 const UPLOAD_STORAGE_KEY = 'sermon_upload_draft';
+
+// Helper function to clear stored data
+const clearStoredData = () => {
+  localStorage.removeItem(UPLOAD_STORAGE_KEY);
+};
 
 // Provider
 export const UploadProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -92,12 +111,36 @@ export const UploadProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
-  // Save to localStorage when upload data changes
+  // Save to localStorage when upload data changes (excluding File objects)
   useEffect(() => {
-    if (state.uploadData.title || state.uploadData.description || state.uploadData.file) {
-      localStorage.setItem(UPLOAD_STORAGE_KEY, JSON.stringify(state.uploadData));
+    if (state.uploadData.title || state.uploadData.description) {
+      const dataToSave = {
+        ...state.uploadData,
+        file: null, // Don't save File objects as they can't be serialized
+        thumbnail: null, // Don't save File objects
+        thumbnailPreview: null, // Don't save blob URLs
+      };
+      localStorage.setItem(UPLOAD_STORAGE_KEY, JSON.stringify(dataToSave));
     }
   }, [state.uploadData]);
+
+  // Cleanup on page unload if upload is not complete
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!state.uploadComplete && (state.uploadData.file || state.uploadData.title || state.uploadData.description)) {
+        // Clear data when user navigates away without completing upload
+        clearStoredData();
+        
+        // Show confirmation dialog
+        const message = 'You have an incomplete upload. Your progress will be lost if you leave.';
+        event.returnValue = message;
+        return message;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [state.uploadComplete, state.uploadData]);
 
   return (
     <UploadContext.Provider value={{ state, dispatch }}>
@@ -123,5 +166,7 @@ export const uploadActions = {
   setErrors: (errors: IUploadFormErrors) => ({ type: 'SET_ERRORS' as const, payload: errors }),
   setLoading: (loading: boolean) => ({ type: 'SET_LOADING' as const, payload: loading }),
   setProgress: (progress: number) => ({ type: 'SET_PROGRESS' as const, payload: progress }),
+  setUploadComplete: (complete: boolean) => ({ type: 'SET_UPLOAD_COMPLETE' as const, payload: complete }),
   resetUpload: () => ({ type: 'RESET_UPLOAD' as const }),
+  clearStoredData: () => ({ type: 'CLEAR_STORED_DATA' as const }),
 };

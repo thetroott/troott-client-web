@@ -1,10 +1,17 @@
+import { dummySermons } from "@/_data/dummySermons";
+import EmptySermonsState from "@/components/containers/my-sermons/EmptySermonsState";
+import SermonsTable from "@/components/containers/my-sermons/SermonsTable";
 
 const Sermons = () => {
-  return (
-    <div>
-      My Sermons
-    </div>
-  )
-}
+  const hasSermons = dummySermons.length > 0;
 
-export default Sermons
+  // Empty state
+  if (!hasSermons) {
+    return <EmptySermonsState />;
+  }
+
+  // Table view
+  return <SermonsTable sermons={dummySermons} />;
+};
+
+export default Sermons;

@@ -1,11 +1,10 @@
 import CountrySelect from "@/components/containers/get-started/CountrySelect";
 import type { ICountry } from "@/utils/interfaces.util";
-import { IoDocumentAttach, IoIdCard } from "react-icons/io5";
+import { FileText, IdCard } from "lucide-react";
 import { IconText } from "./IconText";
 import { useState } from "react";
 
 const VerifyAccountForm = () => {
-  
   const [country, setCountry] = useState<ICountry | null>(null);
 
   return (
@@ -19,13 +18,13 @@ const VerifyAccountForm = () => {
         </h2>
 
         <IconText
-          icon={IoIdCard}
+          icon={IdCard}
           text="Personal information"
           className="text-sm text-muted-foreground mt-4"
         />
 
         <IconText
-          icon={IoDocumentAttach}
+          icon={FileText}
           text="Government-issued ID"
           className="text-sm text-muted-foreground mt-2"
         />

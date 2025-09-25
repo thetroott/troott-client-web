@@ -65,7 +65,6 @@ const AuthService = {
 
     // 2. Check if there was no error from the API
     if (!response.error && response.status === 200) {
-      
       const { userType, _id } = response.data;
 
       // 3. If the user is SUPER or STAFF, store authentication info
@@ -136,7 +135,7 @@ const AuthService = {
    * @goto redirects to login page.
    */
   Logout: async () => {
-    apiCall.auth.logout({ userId: storage.getUserID() });
+    await apiCall.auth.logout({ userId: storage.getUserID() });
     storage.clearAuth();
 
     window.location.href = "/login";

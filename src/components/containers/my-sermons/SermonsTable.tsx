@@ -3,8 +3,8 @@ import { dummySermons } from "@/_data/dummySermons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Search, Filter, ArrowDown, Grid3X3, List } from "lucide-react";
-import SermonsGridView from "../my-sermons/SermonsGridView";
-import SermonsListView from "../my-sermons/SermonsListView";
+import SermonsGridView from "./SermonsGridView";
+import SermonsListView from "./SermonsListView";
 
 interface SermonsTableProps {
   sermons: typeof dummySermons;

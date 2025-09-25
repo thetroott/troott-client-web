@@ -1,5 +1,5 @@
 import { Music } from "lucide-react";
-import SermonContextMenu from "../my-sermons/SermonContextMenu";
+import SermonContextMenu from "./SermonContextMenu";
 
 interface Sermon {
   id: string;

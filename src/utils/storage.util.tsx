@@ -1,99 +1,179 @@
-import { IStorage } from "./interface.util";
+import CookieService from "../services/cookie";
+import IdempotentService  from "../services/idempotent";
+import { HeaderType } from "./enums.util";
+import type { IStorage } from "./interfaces.util";
 
-const keep = (key: string, data: any | string) => {
-  let result: string = "";
+const storeAuth = (token: string, id: string) => {
+    
+    localStorage.setItem('token', token);
+    localStorage.setItem('userId', id);
 
-  if (typeof data == "object") {
-    result = JSON.stringify(data);
-  } else {
-    result = data;
-  }
+    CookieService.setData({
+        key: 'token',
+        payload: token,
+        expireAt: new Date( Date.now() + 24 * 60 * 60 * 1000 ),
+        path: '/'
+    })
 
-  localStorage.setItem(key, result);
-};
+    CookieService.setData({
+        key: 'userId',
+        payload: id,
+        expireAt: new Date( Date.now() + 24 * 60 * 60 * 1000 ),
+        path: '/'
+    })
+}
 
-const fetch = (key: string): string | null => {
-  const data = localStorage.getItem(key);
-  return data ? data : null;
-};
+const checkToken = () => {
+    return localStorage.getItem('token') ? true : false;
+}
 
-const getJSON = async (key: string): Promise<any | null> => {
-  const data = await fetch(key);
-  return data ? JSON.parse(data) : null;
-};
+const getToken = () => {
+    return localStorage.getItem('token');
+}
 
-const exists = async (key: string): Promise<boolean> => {
-  const value = localStorage.getItem(key);
-  return value !== null;
-};
+const checkUserID = () => {
+    return localStorage.getItem('userId') ? true : false;
+}
 
-const update = async (key: string, newData: object | string): Promise<void> => {
-  const existingData = await fetch(key);
-  if (existingData) {
-    const parsedData =
-      typeof existingData === "string"
-        ? JSON.parse(existingData)
-        : existingData;
-    const updatedData =
-      typeof newData === "object" ? { ...parsedData, ...newData } : newData;
-    await keep(key, updatedData);
-  }
-};
+const getUserID = () => {
+    const uid = localStorage.getItem('userId');
+    return uid ? uid : '';
+}
 
-const merge = async (key: string, newData: object): Promise<void> => {
-  const existingData = await getJSON(key);
-  if (existingData) {
-    const mergedData = { ...existingData, ...newData };
-    await keep(key, mergedData);
-  }
-};
+const checkUserEmail = () => {
+    return localStorage.getItem('user-email') ? true : false;
+}
 
-const remove = async (key: string): Promise<void> => {
-  localStorage.removeItem(key);
-};
+const getUserEmail = () => {
+    return localStorage.getItem('user-email');
+}
 
-const clearAll = async (): Promise<void> => {
-  localStorage.clear();
-};
+const getConfig = () => {
 
-const multiKeep = async (
-  items: { key: string; data: object | string }[]
-): Promise<void> => {
-  items.forEach(({ key, data }) => {
-    const value = typeof data === "object" ? JSON.stringify(data) : data;
-    localStorage.setItem(key, value);
-  });
-};
+    const config = {
+        headers: {
+            ContentType: 'application/json',
+            lg: 'en',
+            ch: 'web'
+        }
+    }
 
-const multiFetch = async (
-  keys: string[]
-): Promise<{ [key: string]: any | null }> => {
-  const result: { [key: string]: any | null } = {};
-  keys.forEach((key) => {
-    const value = localStorage.getItem(key);
-    result[key] = value ? JSON.parse(value) : null;
-  });
-  return result;
-};
+    return config;
 
-const multiRemove = async (keys: string[]): Promise<void> => {
-  keys.forEach((key) => {
-    localStorage.removeItem(key);
-  });
-};
+}
+
+const getConfigWithBearer = () => {
+
+    const config: any = {
+        headers: {
+            ContentType: 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+            lg: 'en',
+            ch: 'web'
+        }
+    }
+
+    config.headers[HeaderType.IDEMPOTENT] = IdempotentService .getRequestKey();
+
+    return config;
+
+}
+
+const clearAuth = () => {
+    
+    if(checkToken() && checkUserID()){
+        localStorage.clear();
+        CookieService.removeData({ key: 'token' });
+        CookieService.removeData({ key: 'userId' })
+        CookieService.removeData({ key: 'userType' })
+    }
+}
+
+const keep = (key: string, data: any) => {
+
+    if(data && data !== undefined && data !== null){
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
+    }else{
+        return false
+    }
+    
+}
+
+const keepLegacy = (key: string, data: any) => {
+
+    if(data){
+        localStorage.setItem(key, data);
+        return true;
+    }else{
+        return false
+    }
+    
+}
+
+const fetch = (key: string) => {
+
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+}
+
+const fetchLegacy = (key: string) => {
+    const data = localStorage.getItem(key);
+    return data ? data : null;
+}
+
+const deleteItem = (key: string, legacy: boolean = false) => {
+    
+    let data; 
+
+    if(legacy && legacy === true){
+        data = localStorage.getItem(key);
+    }else{
+        data = fetch(key);
+    }
+
+    if(data && data !== null && data !== undefined){
+        localStorage.removeItem(key)
+        return true;
+    }else{
+        return false;
+    }
+}
+
+const trimSpace = (str: string) => {
+    return str.replace(/\s/g, '');
+}
+
+const copyCode = (code: string) => {
+    
+    if(code !== '' && code !== undefined && typeof(code) === 'string'){
+        navigator.clipboard.writeText(code);
+        return true;
+    }else{
+        return false;
+    }
+}
 
 const storage: IStorage = {
-  keepData: keep,
-  fetchData: fetch,
-  getJSON,
-  exists,
-  updateData: update,
-  mergeData: merge,
-  removeData: remove,
-  clearAll,
-  multiKeep,
-  multiFetch,
-  multiRemove,
-};
+
+    storeAuth: storeAuth,
+    checkToken: checkToken,
+    getToken: getToken,
+    checkUserID: checkUserID,
+    getUserID: getUserID,
+    checkUserEmail: checkUserEmail,
+    getUserEmail: getUserEmail,
+    getConfig: getConfig,
+    getConfigWithBearer: getConfigWithBearer,
+    clearAuth: clearAuth,
+    keep: keep,
+    keepLegacy: keepLegacy,
+    fetch: fetch,
+    fetchLegacy: fetchLegacy,
+    deleteItem: deleteItem,
+    trimSpace: trimSpace,
+    copyCode: copyCode
+
+}
 
 export default storage;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { FileAudio, CheckCircle2, Trash2 } from 'lucide-react';
@@ -15,31 +15,51 @@ const UploadProgressStep: React.FC = () => {
   const { state, dispatch } = useUpload();
   const { uploadData, progress, uploadComplete } = state;
   const [showRemoveDialog, setShowRemoveDialog] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const progressRef = useRef(progress);
 
-  // Simulate upload progress with more realistic timing
+  // Update progress ref when progress changes
   useEffect(() => {
-    if (uploadData.file && !uploadComplete && progress < 100) {
-      dispatch(uploadActions.setLoading(true));
-      
-      // Calculate file size-based timing for more realistic progress
-      const fileSizeInMB = uploadData.file.size / (1024 * 1024);
-      const baseInterval = Math.max(50, Math.min(150, fileSizeInMB * 10)); // 50-150ms based on file size
-      const progressIncrement = Math.max(1, Math.min(8, 100 / (fileSizeInMB * 2))); // Smaller increments for larger files
-      
-      const interval = setInterval(() => {
-         const newProgress = Math.min(progress + progressIncrement, 100);
-         dispatch(uploadActions.setProgress(newProgress));
-         
-         if (newProgress >= 100) {
-           dispatch(uploadActions.setUploadComplete(true));
-           dispatch(uploadActions.setLoading(false));
-           clearInterval(interval);
-         }
-       }, baseInterval);
+    progressRef.current = progress;
+  }, [progress]);
 
-      return () => clearInterval(interval);
-    }
-  }, [uploadData.file, uploadComplete, progress, dispatch]);
+  useEffect(() => {
+    if (!uploadData.file) return;
+
+    // Start loading state
+    dispatch(uploadActions.setLoading(true));
+
+    // Calculate timing based on file size (simulate realistic upload)
+    const fileSizeInMB = uploadData.file.size / (1024 * 1024);
+    const estimatedTimeInSeconds = Math.max(10, Math.min(60, fileSizeInMB * 2)); // 10-60 seconds
+    const totalSteps = 100;
+    const intervalTime = (estimatedTimeInSeconds * 1000) / totalSteps; // ms per step
+
+    intervalRef.current = setInterval(() => {
+      const currentProgress = progressRef.current;
+      const newProgress = currentProgress + 1;
+      
+      if (newProgress >= 100) {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        dispatch(uploadActions.setUploadComplete(true));
+        dispatch(uploadActions.setLoading(false));
+        dispatch(uploadActions.setProgress(100));
+      } else {
+        dispatch(uploadActions.setProgress(newProgress));
+      }
+    }, intervalTime);
+
+    // Cleanup function
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [uploadData.file, dispatch]);
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';

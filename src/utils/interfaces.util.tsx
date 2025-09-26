@@ -311,8 +311,13 @@ export interface ISermonUpload {
   thumbnail?: File | null;
   thumbnailPreview?: string | null;
   category: string;
-  isPublic: boolean;
+  isPublic: boolean | undefined;
   scheduledDate?: Date | null;
+  // Add these fields for dynamic link generation
+  sermonId?: string;
+  slug?: string;
+  preacherId?: string;
+  seriesId?: string;
 }
 
 export interface IUploadFormErrors {
@@ -322,6 +327,7 @@ export interface IUploadFormErrors {
   tags?: string;
   thumbnail?: string;
   category?: string;
+  seriesId?: string;
 }
 
 export interface IUploadContext {

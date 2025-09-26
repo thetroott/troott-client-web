@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileAudio, Calendar, Globe, Lock, Tag, User, Clock } from 'lucide-react';
+import { FileAudio, Clock, Globe, Lock, User, Tag, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useUpload, uploadActions } from '@/context/upload/upload.context';
 
-const ReviewSubmit: React.FC = () => {
+interface ReviewSubmitProps {
+  onModalClose?: () => void;
+}
+
+const ReviewSubmit: React.FC<ReviewSubmitProps> = ({ onModalClose }) => {
   const { state, dispatch } = useUpload();
   const { uploadData, isLoading } = state;
+  const navigate = useNavigate();
+
+  // Clear any previous loading states when component mounts
+  useEffect(() => {
+    dispatch(uploadActions.setLoading(false));
+  }, [dispatch]);
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -24,15 +36,28 @@ const ReviewSubmit: React.FC = () => {
     // Simulate API call
     setTimeout(() => {
       dispatch(uploadActions.setLoading(false));
-      // Reset form or redirect to success page
-      alert('Sermon uploaded successfully!');
+      // Close modal and navigate to My Sermons
+      onModalClose?.();
+      navigate('/get-sermons');
+      // Show success toast
+      toast.success('Sermon published successfully', {
+        description: 'Your sermon is now live and available to your audience.',
+      });
     }, 2000);
   };
 
   const handleSaveDraft = () => {
+    dispatch(uploadActions.setLoading(true));
     // Save to drafts logic
-    console.log('Saving to drafts:', uploadData);
-    alert('Sermon saved to drafts!');
+    setTimeout(() => {
+      dispatch(uploadActions.setLoading(false));
+      onModalClose?.();
+      navigate('/get-sermons');
+      // Show success toast
+      toast.success('Sermon saved to drafts', {
+        description: 'You can continue editing and publish it later.',
+      });
+    }, 1000);
   };
 
   return (
@@ -94,7 +119,7 @@ const ReviewSubmit: React.FC = () => {
             <div>
               <label className="text-sm font-medium text-muted-foreground">Tags</label>
               <div className="flex flex-wrap gap-2 mt-2">
-                {uploadData.tags.map((tag, index) => (
+                {uploadData.tags.map((tag: string, index: number) => (
                   <Badge key={index} variant="secondary" className="flex items-center space-x-1">
                     <Tag className="h-3 w-3" />
                     <span>{tag}</span>

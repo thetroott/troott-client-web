@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,10 @@ import {
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import { X, Upload } from 'lucide-react';
+import { X, Upload, ArrowUp, CheckCircle2 } from 'lucide-react';
 import { useUpload, uploadActions } from '@/context/upload/upload.context';
 import UploadProgressStep from './UploadProgressStep';
 import SermonDetailsForm from './SermonDetailsForm';
@@ -28,7 +27,28 @@ interface UploadModalProps {
 
 const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
   const { state, dispatch } = useUpload();
-  const { currentStep, uploadData, uploadComplete } = state;
+  const { currentStep, uploadData, uploadComplete, progress, isLoading } = state;
+
+  // Auto-switch to details step when upload completes
+  useEffect(() => {
+    if (uploadData.file && currentStep === 'progress' && uploadComplete) {
+      dispatch(uploadActions.setStep('details'));
+    }
+  }, [uploadData.file, currentStep, uploadComplete, dispatch]);
+
+  // Remove this problematic auto-switch effect that switches too early
+  // useEffect(() => {
+  //   if (uploadData.file && currentStep === 'progress' && progress > 0 && !uploadComplete) {
+  //     dispatch(uploadActions.setStep('details'));
+  //   }
+  // }, [uploadData.file, currentStep, progress, uploadComplete, dispatch]);
+
+  // Auto-switch to details step when upload starts
+  useEffect(() => {
+    if (uploadData.file && currentStep === 'progress' && progress > 0 && !uploadComplete) {
+      dispatch(uploadActions.setStep('details'));
+    }
+  }, [uploadData.file, currentStep, progress, uploadComplete, dispatch]);
 
   // Step configuration
   const steps = [
@@ -44,14 +64,19 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
     completed: 
       (step.key === 'progress' && uploadData.file && uploadComplete) ||
       (step.key === 'details' && uploadData.title?.trim() && uploadData.description?.trim() && uploadData.category?.trim()) ||
-      (step.key === 'settings' && uploadData.isPublic !== undefined) ||
-      (step.key === 'review' && false) // Will be completed when published
+      (step.key === 'settings' && uploadData.isPublic !== undefined) || // Only completed when user has made a choice
+      (step.key === 'review' && uploadData.title?.trim() && uploadData.description?.trim() && uploadData.category?.trim() && uploadComplete) 
   }));
 
   const currentStepIndex = updatedSteps.findIndex(step => step.key === currentStep);
 
   const handleStepClick = (stepKey: string) => {
     const stepIndex = updatedSteps.findIndex(step => step.key === stepKey);
+    
+    // Don't allow going back to progress step if upload has started
+    if (stepKey === 'progress' && uploadData.file && progress > 0) {
+      return;
+    }
     
     // Allow navigation to previous steps or current step
     if (stepIndex <= currentStepIndex) {
@@ -89,22 +114,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
     dispatch(uploadActions.setStep('file'));
   };
 
-  const handlePrevious = () => {
-    const prevStepIndex = currentStepIndex - 1;
-    if (prevStepIndex >= 0) {
-      dispatch(uploadActions.setStep(updatedSteps[prevStepIndex].key));
-    } else {
-      // Clear stored data when going back to file upload without completing
-      if (!uploadComplete && (uploadData.file || uploadData.title || uploadData.description)) {
-        dispatch(uploadActions.clearStoredData());
-      }
-      
-      // Go back to file upload
-      dispatch(uploadActions.setStep('file'));
-      onOpenChange(false);
-    }
-  };
-
   const getStepContent = () => {
     switch (currentStep) {
       case 'progress':
@@ -114,7 +123,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
       case 'settings':
         return <ListenerSettings />;
       case 'review':
-        return <ReviewSubmit />;
+        return <ReviewSubmit onModalClose={() => onOpenChange(false)} />;
       default:
         return <UploadProgressStep />;
     }
@@ -156,6 +165,52 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
 
   const isLastStep = currentStepIndex === updatedSteps.length - 1;
 
+  // Calculate estimated time remaining
+  const getEstimatedTimeRemaining = () => {
+    if (!uploadData.file || uploadComplete || progress === 0) return null;
+    
+    const fileSizeInMB = uploadData.file.size / (1024 * 1024);
+    const baseTimePerMB = 2; // seconds per MB (adjust based on your upload speed)
+    const totalEstimatedTime = fileSizeInMB * baseTimePerMB;
+    const timeElapsed = (progress / 100) * totalEstimatedTime;
+    const timeRemaining = totalEstimatedTime - timeElapsed;
+    
+    if (timeRemaining < 60) {
+      return `${Math.ceil(timeRemaining)}s left`;
+    } else {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = Math.ceil(timeRemaining % 60);
+      return `${minutes}m ${seconds}s left`;
+    }
+  };
+
+  // Helper function to get breadcrumb item styling
+  const getBreadcrumbItemStyle = (stepKey: string, stepIndex: number) => {
+    const step = updatedSteps[stepIndex];
+    const isActive = currentStep === stepKey;
+    const isCompleted = step.completed;
+    const isAccessible = stepIndex <= currentStepIndex || isCompleted;
+    
+    // Don't allow access to progress step if upload has started
+    const isProgressStepBlocked = stepKey === 'progress' && uploadData.file && progress > 0;
+    
+    let className = 'cursor-pointer transition-all duration-200 flex items-center gap-2 px-3 py-2 rounded-md ';
+    
+    if (isProgressStepBlocked) {
+      className += 'opacity-50 cursor-not-allowed text-muted-foreground';
+    } else if (isActive) {
+      className += 'text-primary font-semibold bg-primary/10 border border-primary/20';
+    } else if (isCompleted) {
+      className += 'text-green-600 font-medium hover:bg-green-50';
+    } else if (isAccessible) {
+      className += 'text-foreground hover:bg-muted/50';
+    } else {
+      className += 'opacity-50 cursor-not-allowed text-muted-foreground';
+    }
+    
+    return className;
+  };
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
@@ -165,50 +220,54 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
         {/* Header with breadcrumbs and close button */}
         <DialogHeader className="px-6 py-4 border-b bg-muted/30">
           <div className="flex items-center justify-between">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <DialogTitle className="flex items-center gap-2">
                 <Upload className="h-5 w-5" />
                 {getStepTitle()}
               </DialogTitle>
               
-              {/* Breadcrumb Navigation */}
+              {/* Enhanced Breadcrumb Navigation with Active States */}
               <Breadcrumb>
-                <BreadcrumbList>
+                <BreadcrumbList className="gap-2">
                   <BreadcrumbItem>
                     <BreadcrumbLink 
                       onClick={() => handleStepClick('progress')}
-                      className={`cursor-pointer ${currentStep === 'progress' ? 'text-primary font-medium' : ''}`}
+                      className={getBreadcrumbItemStyle('progress', 0)}
                     >
+                      {updatedSteps[0].completed && <CheckCircle2 className="h-4 w-4" />}
                       Upload Progress
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbLink 
                       onClick={() => handleStepClick('details')}
-                      className={`cursor-pointer ${currentStep === 'details' ? 'text-primary font-medium' : ''} ${!updatedSteps[0].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={getBreadcrumbItemStyle('details', 1)}
                     >
+                      {updatedSteps[1].completed && <CheckCircle2 className="h-4 w-4" />}
                       Details
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbLink 
                       onClick={() => handleStepClick('settings')}
-                      className={`cursor-pointer ${currentStep === 'settings' ? 'text-primary font-medium' : ''} ${!updatedSteps[1].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={getBreadcrumbItemStyle('settings', 2)}
                     >
+                      {updatedSteps[2].completed && <CheckCircle2 className="h-4 w-4" />}
                       Listener Settings
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     {currentStep === 'review' ? (
-                      <BreadcrumbPage>Review & Submit</BreadcrumbPage>
+                      <BreadcrumbPage className={getBreadcrumbItemStyle('review', 3)}>
+                        {updatedSteps[3].completed && <CheckCircle2 className="h-4 w-4" />}
+                        Review & Submit
+                      </BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink 
                         onClick={() => handleStepClick('review')}
-                        className={`cursor-pointer ${!updatedSteps[2].completed ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={getBreadcrumbItemStyle('review', 3)}
                       >
+                        {updatedSteps[3].completed && <CheckCircle2 className="h-4 w-4" />}
                         Review & Submit
                       </BreadcrumbLink>
                     )}
@@ -235,36 +294,72 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, onOpenChange }) => {
           </div>
         </div>
 
-        {/* Footer with navigation buttons */}
+        {/* Enhanced Footer with upload progress and buttons */}
         <div className="px-6 py-4 border-t bg-muted/30">
           <div className="flex items-center justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-            >
-              {currentStepIndex === 0 ? 'Back to Upload' : 'Previous'}
-            </Button>
+            {/* Left: Upload Progress Info (show during upload regardless of current step) */}
+            {uploadData.file && !uploadComplete && isLoading && progress > 0 && (
+              <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-2 text-blue-600">
+                  <ArrowUp className="h-4 w-4 animate-pulse" />
+                  <span className="font-semibold">{Math.round(progress)}%</span>
+                </div>
+                <div className="text-muted-foreground">
+                  Uploading {uploadData.file.name}
+                </div>
+                {getEstimatedTimeRemaining() && (
+                  <div className="text-muted-foreground">
+                    • {getEstimatedTimeRemaining()}
+                  </div>
+                )}
+              </div>
+            )}
             
-            <div className="flex items-center gap-2">
-              {/* Step indicators */}
-              {updatedSteps.map((step, index) => (
-                <div
-                  key={step.key}
-                  className={`h-2 w-8 rounded-full transition-colors ${
-                    index <= currentStepIndex 
-                      ? 'bg-primary' 
-                      : 'bg-muted-foreground/20'
+            {/* Show upload complete status */}
+            {uploadData.file && uploadComplete && (
+              <div className="flex items-center gap-2 text-sm text-green-600">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="font-medium">Upload completed successfully</span>
+              </div>
+            )}
+            
+            {/* Spacer when no progress info */}
+            {!(uploadData.file && ((!uploadComplete && isLoading && progress > 0) || uploadComplete)) && (
+              <div></div>
+            )}
+            
+            {/* Right: Action Buttons */}
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                onClick={handleClose}
+                className="min-w-[100px]"
+              >
+                Close
+              </Button>
+              
+              {/* Hide the Continue/Publish button on Review step since ReviewSubmit has its own buttons */}
+              {currentStep !== 'review' && (
+                <Button
+                  onClick={handleNext}
+                  disabled={!canProceed()}
+                  className={`min-w-[120px] transition-all ${
+                    isLastStep 
+                      ? 'bg-green-600 hover:bg-green-700 text-white' 
+                      : ''
                   }`}
-                />
-              ))}
+                >
+                  {isLastStep ? (
+                    <>
+                      <Upload className="h-4 w-4 mr-2" />
+                      Publish Sermon
+                    </>
+                  ) : (
+                    'Continue'
+                  )}
+                </Button>
+              )}
             </div>
-            
-            <Button
-              onClick={handleNext}
-              disabled={!canProceed()}
-            >
-              {isLastStep ? 'Publish Sermon' : 'Continue'}
-            </Button>
           </div>
         </div>
       </DialogContent>

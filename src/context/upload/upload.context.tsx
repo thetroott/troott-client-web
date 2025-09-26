@@ -23,7 +23,7 @@ const initialUploadData: ISermonUpload = {
   tags: [],
   thumbnail: null,
   thumbnailPreview: null,
-  isPublic: true,
+  isPublic: undefined, // Changed from true to undefined
 };
 
 const initialState: IUploadContext = {
